@@ -7,6 +7,16 @@
 \usepackage{subfig} % makra pro "podobrazky" a "podtabulky"
 \usepackage[cpp]{diplomalst}
 
+\usepackage{pgffor}
+\usepackage{catchfile}
+
+\newcommand{\inputall}[1]{
+  \CatchFileDef{\filelist}{|ls -1 #1/*.tex}{}
+  \foreach \x in \filelist {
+    \input{#1/\x}
+  }
+}
+
 % Zadame pozadovane vstupy pro generovani titulnich stran.
 \ThesisAuthor{Filip Łuński}
 
@@ -60,8 +70,14 @@
 \clearpage
 
 % A nasleduje text zaverecne prace.
-\input{Chapters/01_Introduction.tex}
-\input{Chapters/90_Conclusion.tex}
+\input{Chapters/01_Introduction}
+\input{Chapters/02_NN}
+\input{Chapters/03_CNN}
+\input{Chapters/04_Pose}
+
+
+
+\input{Chapters/90_Conclusion}
 
 % Seznam literatury
 \printbibliography[title={Literatura}, heading=bibintoc]

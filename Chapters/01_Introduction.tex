@@ -3,31 +3,66 @@
 
 Kamerové systémy jsou využívány již mnoho let a jejich využití je stále širší.
 Dnes se odhaduje, že celkový počet bezpečnostních kamer ve světě přesahuje
-miliardu. Využívaný jsou v průmyslu, dopravě, obchodě, veřejných prostorech,
-zdravotnictví či v domácnostech.
+miliardu. Využívány jsou v průmyslu, dopravě, obchodě, veřejných prostorech,
+zdravotnictví či domácnostech.
 
 Zpočátku bylo možné video sledovat pouze živě, později, s příchodem videokazet,
 bylo možné záznam sledovat až po události. Digitální era a síťové kamery
 umožnily přístup ke kamerovým záznamům z libovolného místa na světě. V poslední
-době se taky začalo nahrazovat živé sledování automatickým zpracováním obrazu a
+době se také začalo nahrazovat živé sledování automatickým zpracováním obrazu a
 detekcí událostí s využitím technik umělé inteligence.
 
-Tyto systémy se používají zejména pro dvě oblasti: zabezpečení (ang. security),
-myšleno jako ochrana před úmyslnými hrozbami a protiprávními činy, jako jsou
-krádeže, poškozování majetku, či neoprávněný vstup; a bezpečnost (ang. safety),
-myšleno jako ochrana před nehodami a náhodnými hrozbami, jako jsou pády, požár,
-úniky nebezpečných látek, či porušování bezpečnostních předpisů.
+Kamerové systémy se používají zejména ve dvou oblastech: zabezpečení (ang.
+security), myšleno jako ochrana před úmyslnými hrozbami a protiprávními činy,
+jako jsou krádeže, poškozování majetku, či neoprávněný vstup; a bezpečnost
+(ang. safety), což zahrnuje ochranu před nehodami a náhodnými hrozbami, jako
+jsou pády, požár, úniky nebezpečných látek, či porušování bezpečnostních
+předpisů.
 
 Jak již bylo zmíněno, lze kamery využívat jednak pro živé sledování, jednak pro
-záznam a jeho analýzu po události. Pro zabezpečení je živé sledování často
-dostačující, protože umožňuje rychlou reakci na události, zatímco pro
-bezpečnost je důležitější záznam a jeho analýza po události, protože umožňuje
-zjištění
+záznam a jeho analýzu po události. Kamerové záznamy jsou zejména důležité pro
+zpětnou analýzu incidentů, důkazní materiál pro soudní spory, zjišťování příčin
+nehod, či pro zlepšení bezpečnostních opatření. Živé sledování videa se pak
+snaží incidentům přímo předcházet. Bylo však prokázáno, že schopnost lidského
+pozorovatele detekovat nebezpečí se velmi snižuje s délkou sledování a s počtem
+monitorovaných kamer. Právě proto se s příchodem technik umělé inteligence
+začalo využívat automatické zpracování obrazu a detekce hrozeb, nebezpečí, nebo
+již probíhajících incidentů v jejích počátcích. Tyto techniky pak úplně
+nahrazují lidského pozorovatele, nebo mu pomáhají včas zpozorovat nebezpečí a
+zareagovat.
 
-Většinou se živé sledování či automatizovaná analýza používá pro zabezpečení,
-zatímco pro bezpečnost se častěji využívají záznamy a jejich analýza po
-události, a to jednak pro zjištění příčin incidentu, jednak pro zlepšení
-bezpečnostních opatření a prevence budoucích incidentů. Existují ale i situace,
-kdy je
+Automatická analýza obrazu je používaná již několik desítek let, většinou ale
+spíše pro oblast zabezpečení, než pro bezpečnost. To z toho důvodu, že úlohy,
+jako identifikace neoprávněného vstupu, detekce zbraní, rozpoznávání SPZ nebo
+podezřelých osob jsou pro algoritmy mnohem jednodušší, než například detekce
+pádu, nouzové situace či zdravotního problému. Hlavním problémem těchto
+komplexnějších analýz je vysoká falešná pozitivita, kdy je například těžké
+rozeznat člověka trénujícího běh od člověka utíkajícího před nebezpečím.
+Nicméně rozvoj v oblasti hlubokého učení a konvolučních neuronových sítí, jako
+i vývoj a dostupnost hardwaru podporujícího tyto techniky, umožňuje dneska využít
+je i pro složitější úlohy.
+
+Ve firmě Linde jsou kamerové systémy používány v mnoha průmyslových provozech,
+nicméně chybí ucelený systém pro automatickou analýzu obrazu a detekci různých
+druhů nebezpečí. Naším úkolem tedy v budoucnu bude navrhnout a implementovat
+modulární systém s možnosti sledování konkrétních nebezpečí na konkrétních
+místech. Ty budou zahrnovat například detekci pádu, požáru, zdravotních problémů,
+nebo porušování bezpečnostních opatření. Systém pak bude v případě rozpoznání
+nějaké hrozby informovat příslušného pracovníka.
+
+V této práci se zaměříme pouze na jednu z těchto úloh, a to na detekci pádu.
+Pád může mít různé příčiny, ať už je to zdravotní problém jako ztráta vědomí,
+nebo zakopnutí. Někdy se zdá, že samotné zakopnutí je banální problém, nicméně
+pokud se na pracovišti nenachází nikdo, kdo by mohl pomoct, a poškozený není
+schopen sám přivolat pomoc, může vést takový incident k vážným následkům.
+
+V první části práce se budeme zabývat teoretickými základy, jako jsou obecné
+neuronové sítě, konvoluční neuronové sítě a neuronové sítě zaměřené na časové
+řady. V dalších kapitolách se zaměříme na detekci osob a odhad jejich klíčových
+bodů. Projdeme si různé přístupy a otestujeme různé algoritmy s ohledem na
+výkon, možnou hardwarovou akcelerací a preciznost. V další části se budeme
+zabývat samotnou detekcí pádu, tedy algoritmem, který na základě odhadnutých
+klíčových bodů určí, zda došlo k pádu, či nikoliv. V závěru práce se zaměříme
+na otestování výsledného řešení a zhodnocení jeho výkonu.
 
 \endinput

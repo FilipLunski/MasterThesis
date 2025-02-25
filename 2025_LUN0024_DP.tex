@@ -1,4 +1,4 @@
-% Nejprve uvedeme tridu dokumentu s volbami
+
 \documentclass[czech,master]{diploma}
 % Dalsi doplnujici baliky maker
 \usepackage[autostyle=true,czech=quotes]{csquotes} % korektni sazba uvozovek, podpora pro balik biblatex
@@ -10,12 +10,10 @@
 \usepackage{pgffor}
 \usepackage{catchfile}
 
-\newcommand{\inputall}[1]{
-  \CatchFileDef{\filelist}{|ls -1 #1/*.tex}{}
-  \foreach \x in \filelist {
-    \input{#1/\x}
-  }
-}
+% Novy druh tabulkoveho sloupce, ve kterem jsou cisla zarovnana podle desetinne carky
+\newcolumntype{d}[1]{D{,}{,}{#1}}
+
+
 
 % Zadame pozadovane vstupy pro generovani titulnich stran.
 \ThesisAuthor{Filip Łuński}
@@ -30,27 +28,23 @@
 
 \ThesisAssignmentFileName{ThesisSpecification_LUN0024_vsboee2404016E.pdf}
 
-% Pokud nechceme nikomu dekovat makro zapoznamkujeme.
+
 \Acknowledgement{Rád bych na tomto místě poděkoval všem, kteří mi s prací pomohli, protože bez nich by tato práce nevznikla.}
+
 
 \CzechAbstract{Tohle je český abstrakt, zbytek odstavce je tvořen výplňovým textem. Naší si rozmachu potřebami s posílat v poskytnout ty má plot. Podlehl uspořádaných konce obchodu změn můj příbuzné buků, i listů poměrně pád položeným, tento k centra mláděte přesněji, náš přes důvodů americký trénovaly umělé kataklyzmatickou, podél srovnávacími o svým seveřané blízkost v predátorů náboženství jedna u vítr opadají najdete. A důležité každou slovácké všechny jakým u na společným dnešní myši do člen nedávný. Zjistí hází vymíráním výborná.}
 
-\CzechKeywords{typografie; \LaTeX; diplomová práce}
+\CzechKeywords{python, strojové učení, neuronové sítě, konvoluční neuronové sítě, detekce pozy, detekce chování, detekce pádu, }
 
 \EnglishAbstract{This is English abstract. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Fusce tellus odio, dapibus id fermentum quis, suscipit id erat. Aenean placerat. Vivamus ac leo pretium faucibus. Duis risus. Fusce consectetuer risus a nunc. Duis ante orci, molestie vitae vehicula venenatis, tincidunt ac pede. Aliquam erat volutpat. Donec vitae arcu. Nullam lectus justo, vulputate eget mollis sed, tempor sed magna. Curabitur ligula sapien, pulvinar a vestibulum quis, facilisis vel sapien. Vestibulum fermentum tortor id mi. Etiam bibendum elit eget erat. Pellentesque pretium lectus id turpis. Nulla quis diam.}
 
-\EnglishKeywords{typography; \LaTeX; master thesis}
+\EnglishKeywords{python, machine learning, neural networks, convolutional neural networks, pose estimation, behaviour detection, fall detection, }
 
-\AddAcronym{DVD}{Digital Versatile Disc}
-\AddAcronym{TNT}{Trinitrotoluen}
-\AddAcronym{UML}{Unified Modeling Language}
-\AddAcronym{HTML}{Hyper Text Markup Language}
-\AddAcronym{TUG}{\TeX{} Users Group}
+% Seznam zkratek a symbolů 
+\input{acronyms.tex}
 
+% Vlozeni bibliografie
 \addbibresource{biblatex.bib}
-
-% Novy druh tabulkoveho sloupce, ve kterem jsou cisla zarovnana podle desetinne carky
-\newcolumntype{d}[1]{D{,}{,}{#1}}
 
 
 % Zacatek dokumentu
@@ -59,25 +53,23 @@
 % Nechame vysazet titulni strany.
 \MakeTitlePages
 
-% Jsou v praci obrazky? Pokud ano vysazime jejich seznam a odstrankujeme.
+% Jsou v praci obrazky nebo tabulky? Pokud ano vysazime jejich seznam a odstrankujeme.
 % Pokud ne smazeme nasledujici dve makra.
 \listoffigures
 \clearpage
 
-% Jsou v praci tabulky? Pokud ano vysazime jejich seznam a odstrankujeme.
-% Pokud ne smazeme nasledujici dve makra.
 \listoftables
 \clearpage
 
 % A nasleduje text zaverecne prace.
-\input{Chapters/01_Introduction}
-\input{Chapters/02_NN}
-\input{Chapters/03_CNN}
-\input{Chapters/04_Pose}
+\input{Chapters/001_Introduction}
+% \part{Teorie}
+\input{Chapters/101_NN}
+\input{Chapters/102_CNN}
+% \part{Detekce osob a jejich pozice}
+\input{Chapters/201_Pose}
 
-
-
-\input{Chapters/90_Conclusion}
+\input{Chapters/901_Conclusion}
 
 % Seznam literatury
 \printbibliography[title={Literatura}, heading=bibintoc]

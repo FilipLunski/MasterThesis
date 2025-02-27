@@ -90,11 +90,11 @@ Lidská mysl pak funguje na principu posilování nebo oslabování těchto spoj
 Umělý neuron se snaží tuto funkčnost napodobit, viz obrázek \ref{fig:neuron}.
 Jeho vstupy $x_i$ jsou násobeny váhami $w_i$, které reprezentují sílu daného
 spoje. Neuron pak tyto vážené vstupy sečte, a na tento součet aplikuje
-aktivační funkci, který definuje hodnotu výstupu $y$. V prvním a základním
-modelu neuronu, perceptronu, je aktivační funkcí prahová funkce s binárním
-výstupem. Nicméně v praxi se dnes využívají většinou reálné hodnoty a aktivační
-funkce je obvykle spojitá. \cite{Vondrak1994} Existuje mnoho různých
-aktivačních funkcí, některé z nich budou popsány v další části.
+aktivační funkci (AF), který definuje hodnotu výstupu $y$. V prvním a základním
+modelu neuronu, perceptronu, je AF prahová funkce s binárním výstupem. Nicméně
+v praxi se dnes využívají většinou reálné hodnoty a AF je obvykle spojitá.
+\cite{Vondrak1994} Existuje mnoho různých AF, některé z nich budou popsány v
+další části.
 
 Kromě váh jednotlivých vstupů neuron obvykle obsahuje ještě tzv. bias (někdy
 taky prah nebo posun), kterého funkci je posunout vážený součet vstupů tak, aby
@@ -103,13 +103,17 @@ reprezentován jako samostatný parameter, nebo jako váha konstantního vstupu 
 hodnotou 1, jako na obrázku \ref{fig:neuron}.
 
 Funkci umělého neuronů lze tedy formálně vyjádřit takto:
-\begin{equation}
+
+\begin{equation*}
     y=f\left(\sum_{i=0}^{n}w_{i}x_{i}\right)
-\end{equation}
+\end{equation*}
+
 kde $w_0$ je bias a $x_0=1$, anebo s osamostatněným biasem takto:
-\begin{equation}
+
+\begin{equation*}
     y = f\left(\sum_{i=1}^{n} w_i x_i + b\right)
-\end{equation}
+\end{equation*}
+
 kde $b$ je bias.
 
 Obecně tvoří všechny vstupní váhy a bias množinu parametrů, které ovlivňují
@@ -117,35 +121,167 @@ funkčnost celé neuronové sítě. Proces trénování sítě pak spočívá v 
 optimálních hodnot těchto parametrů, které vedou k co nejmenší chybě při řešení
 úlohy.
 
-\subsection{Základní aktivační funkce}
-
-Aktivační funkce hraje stěžejní roli v umělých neuronových sítích zavedením
-nelinearity do celého systému a umožňuje tak učení se složitějších vzorců.
-
-V průběhu let bylo vyvinuto mnoho typů aktivačních funkcí, a i když jejich
-úloha se zdá být podobná, můžou se od sebe výrazně lišit. Jejich rozdíly
-spočívají zejména v oboru hodnot, spojitosti, monotonnosti, a v tom, zda je
-závislá na přídavných trénovaných parametrech. Ve výsledku se taky liší i
-jejích využití. Nyní projdeme několik základních aktivačních funkcí, od kterých
-se většina ostatních nějakým způsobem odvíjí.
-
-\subitem{Sigmoida (lineární křivka)}
-
-Tato funkce transformuje vstup do rozmezí 0 ÷ 1, je tak vhodná pro odhad
-pravděpodobnosti. Proto se taky někdy používá pro ve výstupních vrstvách síti.
-Její nevýhodou je hlavně problém mizejícího gradientu, který způsobuje zamezení změny parametrů 
-
-\begin{equation}
-    f(x)= \frac{1}{1+e^{-x}}
-\end{equation}
-
-\subsection{Dělení neuronových sítí}
-
 \begin{figure}[]
     \centering
     \includegraphics[width=0.5\textwidth]{Figures/neuron.png}
     \caption{Model umělého neuronu \cite{lagan}}
     \label{fig:neuron}
 \end{figure}
+
+\subsection{Základní aktivační funkce}
+
+AF hraje stěžejní roli v umělých neuronových sítích zavedením nelinearity do
+celého systému a umožňuje tak učení se složitějších vzorců.
+
+V průběhu let bylo vyvinuto mnoho typů AF, a i když jejich úloha se zdá být
+podobná, můžou se od sebe výrazně lišit. Jejich rozdíly spočívají zejména v
+oboru hodnot, spojitosti, monotonnosti, a v tom, zda je závislá na přídavných
+trénovaných parametrech. Ve výsledku se taky liší i jejích využití. Nyní
+projdeme několik základních AF, od kterých se většina ostatních nějakým
+způsobem odvíjí.
+
+Sigmoida (lineární křivka) funkce transformuje vstup do rozmezí 0 ÷ 1, je tak
+vhodná pro odhad pravděpodobnosti. Proto se taky někdy používá ve výstupních
+vrstvách síti, zejména pro binární klasifikaci. Její funkčnost lze formálně
+zapsat takto:
+
+\begin{equation*}
+    f(x)= \frac{1}{1+e^{-x}}
+\end{equation*}
+
+Její nevýhodou je hlavně problém mizejícího gradientu, kdy zejména ve
+vícevrstvých sítích se velikost změn váh v počátečních a koncových vrstvách
+významně liší. To pak způsobuje nestabilitu v procesu trénování a může jej
+zpomalit nebo zcela zastavit. Navíc to, že není nulová v počátku souřadnic,
+může způsobit špatnou konvergenci.
+
+Hyperbolický tangens (tanh) je velmi podobný sigmoidě, ale transformuje vstup
+do rozmezí -1 ÷ 1. Řeší tedy poslední zmíněný problém. Nicméně se pořád potýká
+s problémem mizejícího gradientu. Taky, obě tyto funkce představují větší
+výpočetní nároky. Formálně lze tuto AF popsat takto:
+
+\begin{equation*}
+    f(x)= \frac{e^x-e^{-x}}{e^x+e^{-x}}
+\end{equation*}
+
+ReLU (Rectified Linear Unit, taky někdy rampa) je jednoduchá a efektivní AF.
+Pro kladné hodnoty se chová jako identita, pro záporné je nulová.
+
+\begin{equation*}
+    f(x)=\max(0,x)=\begin{cases}x&x>0,\\0&x\leq0,\end{cases}
+\end{equation*}
+
+Jelikož je výpočetně velmi nenáročná, je tato AF velmi oblíbená v hlubokých
+sítích. Její nevýhodou ale je, že nezohledňuje záporné hodnoty, což v jejich
+případě vede k problému mizejícího gradientu a může způsobit tzv. "mrtvé
+neurony". Tento problém řeší různé varianty ReLU, jako například PReLU
+(Parametric ReLU) nebo LReLU (Leaky ReLU). Tyto varianty přidávají parametr $p$
+vynásobený $x$ pro záporné hodnoty:
+
+\begin{equation*}
+    f(x)=\max(0,x)=\begin{cases}x&x>0,\\p \cdot x&x\leq0\end{cases}
+\end{equation*}
+
+LReLU má tento parameter fixně nastavený na $p=0.01$, zatímco v případě PReLU
+je tento parameter trénovaný spolu s jinými parametry sítě.
+
+Další alternativou k ReLU je ELU (Exponential Linear Unit), která v záporné
+části odpovídá exponenciální funkci:
+
+\begin{equation*}
+    f(x)=\begin{cases}x&x>0,\\a \left(e^{x}-1\right)&x\leq0\end{cases}
+\end{equation*}
+
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+                axis lines=middle,
+                xlabel={$x$},
+                ylabel={$f(x)$},
+                samples=100,
+                domain=-3:3,
+                legend pos=north west,
+                ymin=-1, ymax=1.5,
+                width=15cm, height=8cm
+            ]
+            % Sigmoid
+            \addplot[orange, semithick] {1/(1+exp(-x))};
+            \addlegendentry{Sigmoid}
+
+            % Tanh
+            \addplot[red, semithick] {tanh(x)};
+            \addlegendentry{Tanh}
+
+            % ReLU
+            \addplot[green, semithick] {x*(x>0)};
+            \addlegendentry{ReLU}
+
+            % ELU (alpha = 1)
+            \addplot[blue, semithick] {(x>0) * x + (x<=0) * (exp(x)-1) - 0.01};
+            \addlegendentry{ELU}
+
+            % APL (Adaptive Piecewise Linear) - using a simple approximation
+            \addplot[purple, semithick] {max(0,x) + 0.1*min(0,x+1) - 0.1*min(0,x-1) + 0.01};
+            \addlegendentry{APL}
+
+            % Swish (x * sigmoid(x))
+            \addplot[cyan, semithick] {x/(1+exp(-x))};
+            \addlegendentry{Swish}
+
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+\subsection{Dělení neuronových sítí}
+
+Neuronové sítě jsou dnes využívány v mnoha oblastech a dokážou řešit mnoho
+různých úloh, nicméně neexistuje jediný typ sítě, který by dokázal řešit
+všechny. V průběhu let proto bylo vyvinuto mnoho různých architektur sítí,
+každá pro jiné využití.
+
+Jedním ze základních způsobu, jak můžeme neuronové sítě rozdělit, je podle typu
+učení: učení s učitelem (supervised) a učení bez učitele (unsupervised). V
+případě učení s učitelem, předkládáme síti dvojice vstupů a očekávaných
+výstupů, na jejich základě se síť snaží minimalizovat chybu úpravou svých
+parametrů. Oproti tomu, u učení bez učitele nemá síť k dispozici očekávané
+výstupy, ale snaží se najít nějaké struktury v datech, například shluky. V
+další části se budeme věnovat hlavně neuronovým sítím pro učení s učitelem.
+
+Dále můžeme neuronové sítě rozdělit na dopředné (feedforward NN - FFNN) a
+rekurentní (recurrent NN - RNN). U dopředných sítí se informace šíří pouze
+pouze ze vstupu k výstupu a nevyskytují se žádné smyčky. Naopak rekurentní sítě
+obsahují zpětnou vazbu z výstupu přivedenou na vstup. To umožňuje reagovat na
+změny v čase.
+
+Další možnosti jejich rozdělení je dle topologie, která zahrnuje jejich
+hloubku, tzn. počet vrstev, velikost těchto vrstev a jejich vzájemné propojení.
+V další sekci se budeme věnovat právě uspořádání vrstev v neuronových sítích.
+
+\section{Topologie neuronových sítí}
+Nejčastější uspořádání neuronů v neuronových sítích je do vrstev. Neurony dané
+vrstvy jsou spojeny pouze s neurony z předchozí a následující vrstvy. Vrstvy
+pak dělíme na tři typy: vstupní, výstupní a skryté. Vstupní vrstva neobsahuje
+neurony a neprovádí žádné operace, pouze přijímá vnější signály a distribuuje
+je do další vrstvy. Výstup z neuronů ve výstupní vrstvě pak reprezentuje výstup
+celé sítě. 
+
+Pokud síť obsahuje pouze vstupní a výstupní vrstvu, mluvíme o jednovrstvé
+neuronové síti. Takové sítě mají velmi omezené možnosti, proto se v praxi
+nepoužívají. Většina neuronových sítí má mezi vstupní a výstupní vrstvou
+alespoň jednu skrytou vrstvu, viz obrázek \ref{fig:layers}.
+
+U většiny klasických dopředných neuronových síti jsou jednotlivé vrstvy mezi
+sebou plně propojeny. Tzn. každý prvek jedné vrstvy je propojený se všemi prvky
+následující vrstvy.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/layers.png}
+    \caption{Vícevrstvá, plně propojená síť \cite{lagan}}
+    \label{fig:layers}
+\end{figure}
+
+\section{˙Algoritmus backporpagation}
+
 
 \endinput

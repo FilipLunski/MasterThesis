@@ -5,13 +5,13 @@ Umělá neuronová síť (ang. Artificial Neural Network - ANN) nebo jen neurono
 síť (ang. Neural Network - NN) je výpočetní model inspirovaný biologickými
 nervovými systémy v lidském mozku. Na rozdíl od konvenčních výpočetních modelů,
 které zpracovávají informace algoritmicky, a tedy postupují dle předem určeného
-postupu, se informace v tomto modelu šíří paralelně v síti váh mezi
+postupu, se informace v tomto modelu šíří paralelně v síti vah mezi
 jednotlivými neurony. Jelikož je výstup ze sítě dané architektury závislý
 hlavně na numerických parametrech, zejména váhách jednotlivých spojů mezi
 neurony, lze funkčnost sítě měnit bez změny programu pouhou změnou těchto
 parametrů, a to i automaticky v procesu trénování modelu.
 
-Nyní krátce projdeme historií vývoje neuronových síti.
+Nyní krátce projdeme historií vývoje neuronových sítí.
 
 \section{Historie}
 \label{sec:NN_History}
@@ -22,19 +22,19 @@ neurofyziology - Warrenem McCullochem a Walterem Pittsem. \cite{McCulloch1943}
 Model byl založen na síti jednoduchých logických prvků, které provedou vážený
 součet svých vstupů a na výstup odešle signál založený na prahové funkcí.
 
-V roce 1958 pak Frank Rosenblatt představil elektronicky model neuronové sítě.
+V roce 1958 pak Frank Rosenblatt představil elektronický model neuronové sítě.
 Základní jednotku, postavenou na McCulloch-Pittsově modelu, nazval perceptron.
 \cite{Rosenblatt1958} Jeho architektura byla podobná modelu znázorněnému na
 obrázku \ref{fig:neuron}, kde aktivační funkce je prahová funkce. Rosenblattův
 stroj - Mark I Perceptron - byl postavený pro rozpoznávání jednoduchých vzorů v
 obrazech. Hlavním omezením tohoto modelu bylo, že byl schopen rozlišovat pouze
 lineárně separovatelné třídy. Samotný model perceptronu je dodnes používán jako
-základ pro mnoho neuronových síti.
+základ pro mnoho neuronových sítí.
 
 Další systém - ADALINE (Adaptive Linear Neuron) - byl představen Bernardem
-Widrowem and Tedym Hoffem v roce 1960. Tento model umělého neuronu byl velmi
+Widrowem a Tedym Hoffem v roce 1960. Tento model umělého neuronu byl velmi
 podobný perceptronu, na rozdíl od něj ale neobsahoval prahovou ale lineární
-funkcí, výstup tedy nebyl binární ale spojitý. Pro učení pak byla využitá
+funkci, výstup tedy nebyl binární ale spojitý. Pro učení pak byla využita  
 metoda nejmenších čtverců, která minimalizovala chybu mezi skutečným a
 očekávaným výstupem. \cite{nn_history}
 
@@ -62,16 +62,16 @@ obnovil zájem o neuronové sítě a umělou inteligenci obecně.
 
 \section{Struktura neuronové sítě}
 
-Umělé neuronové sítě jsou silně inspirovaný biologickými neuronovými sítěmi. A
+Umělé neuronové sítě jsou silně inspirované biologickými neuronovými sítěmi. A
 i když napodobení celé funkčnosti lidského nervového systému by bylo velmi
-složité - ne-li nereálné, zejména s ohledem na počet neuronů a způsob jejích
+složité - ne-li nereálné, zejména s ohledem na počet neuronů a způsob jejich
 propojení, je možné simulovat alespoň některé funkce lidské mysli.
 
 Pro provádění výpočtů využívají neuronové sítě distribuovaný, paralelní
-přístup. Informace jsou tedy zpracovány, předávaný a ukládány celou sítí,
-nikoliv pomocí určitých paměťových buněk. Většina znalosti je uložena v sílách
-vazeb mezi jednotlivými neurony. Vazby, které vedou k úspěšnému řešení problému
-jsou posilovány, naopak ty, které vedou k neúspěchu jsou oslabovány.
+přístup. Informace jsou tedy zpracovány, předávány a ukládány celou sítí,
+nikoliv pomocí určitých paměťových buněk. Většina znalostí je uložena v silách  
+vazeb mezi jednotlivými neurony. Vazby, které vedou k úspěšnému řešení problému,  
+jsou posilovány, naopak ty, které vedou k neúspěchu, jsou oslabovány.
 
 Podstatnou vlastností neuronových sítí je jejich schopnost učení. Tato
 vlastnost způsobuje, že již není nutná algoritmizace řešené úlohy, ale stačí
@@ -81,7 +81,7 @@ jakým způsobem bude síť transformovat vstupní data na
 výstupní.\cite{Vondrak1994}
 
 \subsection{Neuron}
-Biologický neuron se skládá ze tří hlavních části. Dendrity přijímají vstupní
+Biologický neuron se skládá ze tří hlavních částí. Dendrity přijímají vstupní
 signály. V těle jsou vstupní signály sečteny do jednoho potenciálu, který vede
 k vybuzení neuronu - zaslání signálu na výstup, pokud potenciál překročí
 určitou mez. Axanové vlákno pak vede k synapsím, tedy spojům s dalšími neurony.
@@ -90,19 +90,19 @@ Lidská mysl pak funguje na principu posilování nebo oslabování těchto spoj
 Umělý neuron se snaží tuto funkčnost napodobit, viz obrázek \ref{fig:neuron}.
 Jeho vstupy $x_i$ jsou násobeny váhami $w_i$, které reprezentují sílu daného
 spoje. Neuron pak tyto vážené vstupy sečte, a na tento součet aplikuje
-aktivační funkci (AF), který definuje hodnotu výstupu $y$. V prvním a základním
+aktivační funkci (AF), která definuje hodnotu výstupu $y$. V prvním a základním
 modelu neuronu, perceptronu, je AF prahová funkce s binárním výstupem. Nicméně
 v praxi se dnes využívají většinou reálné hodnoty a AF je obvykle spojitá.
 \cite{Vondrak1994} Existuje mnoho různých AF, některé z nich budou popsány v
 další části.
 
-Kromě váh jednotlivých vstupů neuron obvykle obsahuje ještě tzv. bias (někdy
-taky prah nebo posun), kterého funkci je posunout vážený součet vstupů tak, aby
+Kromě vah jednotlivých vstupů neuron obvykle obsahuje ještě tzv. bias (někdy
+taky práh nebo posun), jehož funkci je posunout vážený součet vstupů tak, aby
 bylo možné modelovat i funkce, které nejsou nulové v počátku souřadnic. Je buď
-reprezentován jako samostatný parameter, nebo jako váha konstantního vstupu s
+reprezentován jako samostatný parametr, nebo jako váha konstantního vstupu s
 hodnotou 1, jako na obrázku \ref{fig:neuron}.
 
-Funkci umělého neuronů lze tedy formálně vyjádřit takto:
+Funkci umělého neuronu lze tedy formálně vyjádřit takto:
 
 \begin{equation*}
     y=f\left(\sum_{i=0}^{n}w_{i}x_{i}\right)
@@ -135,8 +135,8 @@ celého systému a umožňuje tak učení se složitějších vzorců.
 
 V průběhu let bylo vyvinuto mnoho typů AF, a i když jejich úloha se zdá být
 podobná, můžou se od sebe výrazně lišit. Jejich rozdíly spočívají zejména v
-oboru hodnot, spojitosti, monotonnosti, a v tom, zda je závislá na přídavných
-trénovaných parametrech. Ve výsledku se taky liší i jejích využití. Nyní
+oboru hodnot, spojitosti, monotónnosti, a v tom, zda je závislá na přídavných
+trénovaných parametrech. Ve výsledku se taky liší i jejich využití. Nyní
 projdeme několik základních AF, od kterých se většina ostatních nějakým
 způsobem odvíjí.
 
@@ -182,8 +182,8 @@ vynásobený $x$ pro záporné hodnoty:
     f(x)=\max(0,x)=\begin{cases}x&x>0,\\p \cdot x&x\leq0\end{cases}
 \end{equation*}
 
-LReLU má tento parameter fixně nastavený na $p=0.01$, zatímco v případě PReLU
-je tento parameter trénovaný spolu s jinými parametry sítě.
+LReLU má tento parametr fixně nastavený na $p=0.01$, zatímco v případě PReLU
+je tento parametr trénovaný spolu s jinými parametry sítě.
 
 Další alternativou k ReLU je ELU (Exponential Linear Unit), která v záporné
 části odpovídá exponenciální funkci:
@@ -239,17 +239,17 @@ různých úloh, nicméně neexistuje jediný typ sítě, který by dokázal ře
 všechny. V průběhu let proto bylo vyvinuto mnoho různých architektur sítí,
 každá pro jiné využití.
 
-Jedním ze základních způsobu, jak můžeme neuronové sítě rozdělit, je podle typu
+Jedním ze základních způsobů, jak můžeme neuronové sítě rozdělit, je podle typu
 učení: učení s učitelem (supervised) a učení bez učitele (unsupervised). V
 případě učení s učitelem, předkládáme síti dvojice vstupů a očekávaných
-výstupů, na jejich základě se síť snaží minimalizovat chybu úpravou svých
+výstupů, na jejichž základě se síť snaží minimalizovat chybu úpravou svých
 parametrů. Oproti tomu, u učení bez učitele nemá síť k dispozici očekávané
 výstupy, ale snaží se najít nějaké struktury v datech, například shluky. V
 další části se budeme věnovat hlavně neuronovým sítím pro učení s učitelem.
 
 Dále můžeme neuronové sítě rozdělit na dopředné (feedforward NN - FFNN) a
 rekurentní (recurrent NN - RNN). U dopředných sítí se informace šíří pouze
-pouze ze vstupu k výstupu a nevyskytují se žádné smyčky. Naopak rekurentní sítě
+ze vstupu k výstupu a nevyskytují se žádné smyčky. Naopak rekurentní sítě
 obsahují zpětnou vazbu z výstupu přivedenou na vstup. To umožňuje reagovat na
 změny v čase.
 
@@ -270,8 +270,8 @@ neuronové síti. Takové sítě mají velmi omezené možnosti, proto se v prax
 nepoužívají. Většina neuronových sítí má mezi vstupní a výstupní vrstvou
 alespoň jednu skrytou vrstvu, viz obrázek \ref{fig:layers}.
 
-U většiny klasických dopředných neuronových síti jsou jednotlivé vrstvy mezi
-sebou plně propojen, tzn. každý prvek jedné vrstvy je propojený se všemi prvky
+U většiny klasických dopředných neuronových sítí jsou jednotlivé vrstvy mezi
+sebou plně propojeny, tzn. každý prvek jedné vrstvy je propojený se všemi prvky
 následující vrstvy.
 
 \begin{figure}[]
@@ -282,6 +282,8 @@ následující vrstvy.
 \end{figure}
 
 \section{Algoritmus backporpagation}
+
+Jak již bylo řečeno, proces trénování NN spočívá v nalezení optimálních hodnot parametrů jednotlivých neuronů. 
 
 
 \endinput

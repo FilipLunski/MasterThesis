@@ -9,8 +9,8 @@
 *.lot 
 *.out 
 *.run.xml 
-*.synctex.gz 
+*.synctex*
 *.toc
 
-/pdfa.xmpi
-/sRGBIEC1966-2.1.icm
+pdfa.xmpi
+sRGBIEC1966-2.1.icm

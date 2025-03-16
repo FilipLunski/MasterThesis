@@ -1,8 +1,8 @@
 \chapter{Neuronové sítě}
 \label{sec:NN}
 
-Umělá neuronová síť (ang. Artificial Neural Network - ANN) nebo jen neuronová
-síť (ang. Neural Network - NN) je výpočetní model inspirovaný biologickými
+Umělá neuronová síť (ang. artificial neural network - ANN) nebo jen neuronová
+síť (ang. neural network - NN) je výpočetní model inspirovaný biologickými
 nervovými systémy v lidském mozku. Na rozdíl od konvenčních výpočetních modelů,
 které zpracovávají informace algoritmicky, a tedy postupují dle předem určeného
 postupu, se informace v tomto modelu šíří paralelně v síti vah mezi
@@ -34,7 +34,7 @@ základ pro mnoho neuronových sítí.
 Další systém - ADALINE (Adaptive Linear Neuron) - byl představen Bernardem
 Widrowem a Tedym Hoffem v roce 1960. Tento model umělého neuronu byl velmi
 podobný perceptronu, na rozdíl od něj ale neobsahoval prahovou ale lineární
-funkci, výstup tedy nebyl binární ale spojitý. Pro učení pak byla využita  
+funkci, výstup tedy nebyl binární ale spojitý. Pro učení pak byla využita
 metoda nejmenších čtverců, která minimalizovala chybu mezi skutečným a
 očekávaným výstupem. \cite{nn_history}
 
@@ -69,9 +69,9 @@ propojení, je možné simulovat alespoň některé funkce lidské mysli.
 
 Pro provádění výpočtů využívají neuronové sítě distribuovaný, paralelní
 přístup. Informace jsou tedy zpracovány, předávány a ukládány celou sítí,
-nikoliv pomocí určitých paměťových buněk. Většina znalostí je uložena v silách  
-vazeb mezi jednotlivými neurony. Vazby, které vedou k úspěšnému řešení problému,  
-jsou posilovány, naopak ty, které vedou k neúspěchu, jsou oslabovány.
+nikoliv pomocí určitých paměťových buněk. Většina znalostí je uložena v silách
+vazeb mezi jednotlivými neurony. Vazby, které vedou k úspěšnému řešení
+problému, jsou posilovány, naopak ty, které vedou k neúspěchu, jsou oslabovány.
 
 Podstatnou vlastností neuronových sítí je jejich schopnost učení. Tato
 vlastnost způsobuje, že již není nutná algoritmizace řešené úlohy, ale stačí
@@ -182,8 +182,8 @@ vynásobený $x$ pro záporné hodnoty:
     f(x)=\max(0,x)=\begin{cases}x&x>0,\\p \cdot x&x\leq0\end{cases}
 \end{equation*}
 
-LReLU má tento parametr fixně nastavený na $p=0.01$, zatímco v případě PReLU
-je tento parametr trénovaný spolu s jinými parametry sítě.
+LReLU má tento parametr fixně nastavený na $p=0.01$, zatímco v případě PReLU je
+tento parametr trénovaný spolu s jinými parametry sítě.
 
 Další alternativou k ReLU je ELU (Exponential Linear Unit), která v záporné
 části odpovídá exponenciální funkci:
@@ -248,10 +248,10 @@ výstupy, ale snaží se najít nějaké struktury v datech, například shluky.
 další části se budeme věnovat hlavně neuronovým sítím pro učení s učitelem.
 
 Dále můžeme neuronové sítě rozdělit na dopředné (feedforward NN - FFNN) a
-rekurentní (recurrent NN - RNN). U dopředných sítí se informace šíří pouze
-ze vstupu k výstupu a nevyskytují se žádné smyčky. Naopak rekurentní sítě
-obsahují zpětnou vazbu z výstupu přivedenou na vstup. To umožňuje reagovat na
-změny v čase.
+rekurentní (recurrent NN - RNN). U dopředných sítí se informace šíří pouze ze
+vstupu k výstupu a nevyskytují se žádné smyčky. Naopak rekurentní sítě obsahují
+zpětnou vazbu z výstupu přivedenou na vstup. To umožňuje reagovat na změny v
+čase.
 
 Další možnosti jejich rozdělení je dle topologie, která zahrnuje jejich
 hloubku, tzn. počet vrstev, velikost těchto vrstev a jejich vzájemné propojení.
@@ -263,7 +263,7 @@ vrstvy jsou spojeny pouze s neurony z předchozí a následující vrstvy. Vrstv
 pak dělíme na tři typy: vstupní, výstupní a skryté. Vstupní vrstva neobsahuje
 neurony a neprovádí žádné operace, pouze přijímá vnější signály a distribuuje
 je do další vrstvy. Výstup z neuronů ve výstupní vrstvě pak reprezentuje výstup
-celé sítě. 
+celé sítě.
 
 Pokud síť obsahuje pouze vstupní a výstupní vrstvu, mluvíme o jednovrstvé
 neuronové síti. Takové sítě mají velmi omezené možnosti, proto se v praxi
@@ -281,9 +281,50 @@ následující vrstvy.
     \label{fig:layers}
 \end{figure}
 
-\section{Algoritmus backporpagation}
+\section{Proces trénování s využitím backpropagation}
 
-Jak již bylo řečeno, proces trénování NN spočívá v nalezení optimálních hodnot parametrů jednotlivých neuronů. 
+Jak již bylo řečeno, proces trénování NN spočívá v nalezení optimálních hodnot
+parametrů jednotlivých neuronů. Optimální parametry pak vedou k minimální
+chybě. Chybou rozumíme rozdíl mezi skutečným výstupem sítě a očekávaným
+výstupem. K tomu se nejčastěji používá algoritmus backpropagation (taky
+Algoritmus zpětného šíření chyby). Nyní si popíšeme, jak trénování sítě pomocí
+tohoto algoritmu funguje.
 
+Nejprve se ze vstupních dat vypočítají pomocí aktuálních parametrů sítě reálně
+výstupy sítě. Tento proces se nazývá dopředný průchod (ang. forward pass).
+Následně se pomocí chybové funkce (ang. loss function, taky nákladová funkce -
+ang. loss function) spočítá chyba sítě. Ta vyjadřuje, v jaké míře se skutečné
+výstupy liší od očekávaných. Můžou být použity různé chybové funkce, v
+závislosti na typu úlohy, kterou síť řeší.
+
+V klasifikačních úlohách je nejčastěji používaná chybová funkce křížové
+entropie, která porovnává rozdělení pravděpodobnosti skutečného výstupu sítě s
+očekávaným rozdělením pravděpodobnosti. Pro regresní úlohy se používá například
+střední kvadratická chyba (ang. mean squared error - MSE) vyjadřující střední
+hodnotu druhých mocnin rozdílů mezi skutečnými a očekávanými hodnotami. Další
+možností je absolutní chyba (ang. mean absolute error - MAE), která vyjadřuje
+střední hodnotu absolutních rozdílů.
+
+Dále je používaná metoda gradientního sestupu, k nalezení minima chybové
+funkce. Za tímto účelem se vypočítají derivace chyby podle jednotlivých
+parametrů sítě. Tyto derivace pak určují, jakým směrem a jak rychle se mají
+dané parametry měnit, aby se chyba minimalizovala. Jelikož se derivace
+parametrů v dané vrstvě vypočítávají pomocí řetězového pravidla derivací podle
+derivací parametrů následující vrstvy, je tento proces nazýván zpětný průchod
+(ang. backward pass).
+
+Jednotlivé parametry se pak podle vypočítaných derivací upraví. Velikost změny
+je určená hyperparametrem rychlostí učení (ang. learning rate, taky krok),
+který určuje, jak rychle se mají parametry měnit. Vypočítaná derivace se
+vynásobí rychlostí učení a přičte k původní hodnotě parametru. Tento proces se
+opakuje pro všechny parametry sítě. Metoda gradientního sestupu umožňuje větší
+změny parametrů, když jsou daleko od minima - absolutní hodnoty derivací jsou
+větší, a naopak menší změny, když se k němu blíží - derivace se blíží nule.
+
+Proces trénování sítě se skládá z opakování dopředného a zpětného průchodu pro
+všechna trénovací data (někdy postupně pro jejich podmnožiny - dávky, ang.
+batches). Po každém průchodu se upraví parametry sítě podle vypočítaných
+derivací. Tento proces se opakuje, dokud není dosaženo požadované úrovně chyby,
+nebo je dosaženo maximálního počtu iterací.
 
 \endinput

@@ -303,7 +303,7 @@ očekávaným rozdělením pravděpodobnosti. Pro regresní úlohy se používá
 střední kvadratická chyba (ang. mean squared error - MSE) vyjadřující střední
 hodnotu druhých mocnin rozdílů mezi skutečnými a očekávanými hodnotami. Další
 možností je absolutní chyba (ang. mean absolute error - MAE), která vyjadřuje
-střední hodnotu absolutních rozdílů.
+střední hodnotu absolutních hodnot rozdílů.
 
 Dále je používaná metoda gradientního sestupu, k nalezení minima chybové
 funkce. Za tímto účelem se vypočítají derivace chyby podle jednotlivých
@@ -324,7 +324,60 @@ větší, a naopak menší změny, když se k němu blíží - derivace se blí�
 Proces trénování sítě se skládá z opakování dopředného a zpětného průchodu pro
 všechna trénovací data (někdy postupně pro jejich podmnožiny - dávky, ang.
 batches). Po každém průchodu se upraví parametry sítě podle vypočítaných
-derivací. Tento proces se opakuje, dokud není dosaženo požadované úrovně chyby,
-nebo je dosaženo maximálního počtu iterací.
+derivací. Tento proces se opakuje, dokud chyba nedosáhne požadované úrovně,
+nenastane její konvergence nebo není překročen maximální počet iterací.
+
+\section{Optimalizace procesu trénování}
+
+V základní verzi algoritmu backpropagation se využívá výše popsaný gradientní
+sestup. Ten ale může mít některé problémy, které mohou zpomalit proces
+trénování nebo jej někdy zcela znemožnit. Nyní si popíšeme některé z těchto problémů
+a jejích možná řešení.
+
+Jedním z podstatných problémů gradientního sestupu je, že se může lehce
+zaseknout v lokálním minimu, kde je derivace nulová. To může způsobit, že se
+síť zastaví v nějakém suboptimálním bodě a nepokračuje do globálního minima,
+které by odpovídalo optimálnímu řešení. Tento problém se často řeší přidáním
+tzv. momentu do úpravy parametrů. Tento proces bere v úvahu i předchozí změny
+parametrů. V případě, že se derivace parametru v průběhu trénování změní,
+moment umožňuje parametrům ještě nějakou dobu pokračovat v pohybu ve stejném
+směru. To většinou pomůže překonat lokální minima a dosáhnout tak globálního
+minima.
+
+Dalším řešením tohoto problému je využití stochastické aproximace gradientního
+sestupu (ang. stochastic gradient descent - SGD), kde se gradient počítá pro
+náhodně vybrané podmnožiny trénovacích dat. Tento postup umožňuje rychlejší
+konvergenci, počítáme totiž gradient jen pro část dat, a zároveň zabraňuje
+zaseknutí v lokálním minimu zavedením šumu do procesu trénování. Tato metoda se
+využívá nejčastěji pro velké datasety.
+
+Dalším problémem může být nastavení optimálního kroku učení. Pokud je krok
+příliš velký, může dojít k příliš velké změně, která opomine minimum, můžeme
+tak nikdy nedosáhnout konvergence. Naopak, pokud je krok příliš malý, může
+trénování trvat příliš dlouho. Řešením může být například adaptivní nastavení
+kroku. Nejznámější taková metoda je RMSProp (ang. root mean square
+propagation), která upravuje krok učení pro každá parametr podle průměrného
+druhého momentu gradientu. Další možnosti je v průběhu trénování postupně
+snižovat krok (ang. learning rate decay).
+
+Populárním řešením těchto problémů je také Adam (ang. adaptive moment
+estimation, v překladu adaptivní odhad momentu), který kombinuje zavedení
+momentu a adaptivního nastavení kroku pomocí RMSProp.
+
+Další metodou jak optimalizovat nastavení kroku je normalizace dat mezi
+vrstvami sítě (ang. batch normalization). Tím se zamezí příliš velkým změnám v
+jednotlivých vrstvách, které někdy destabilizují proces trénování.
+
+U trénování hlubokých sítí se často naráží také ne problém přetrénování (ang.
+overfitting). Přetrénování nastává, když se síť dobře naučí trénovací data,
+zároveň ale postrádá schopnost generalizace, a když pak dostane nová data,
+nedosahuje dobrých výsledků. K základním řešením tohoto problému patří použití
+většího množství trénovacích dat - pokud jsou dostupná, jinak se někdy zavádí
+umělé variace dat jako rotace či převrácení, dále zjednodušení modelu či
+zastavení trénování v případě, že se chyba na validačních datech začne zvyšovat.
+
+Dalším způsobem, jak zabránit přetrénování, je regularizace. Regularizace je 
+
+
 
 \endinput

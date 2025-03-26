@@ -331,8 +331,8 @@ nenastane její konvergence nebo není překročen maximální počet iterací.
 
 V základní verzi algoritmu backpropagation se využívá výše popsaný gradientní
 sestup. Ten ale může mít některé problémy, které mohou zpomalit proces
-trénování nebo jej někdy zcela znemožnit. Nyní si popíšeme některé z těchto problémů
-a jejích možná řešení.
+trénování nebo jej někdy zcela znemožnit. Nyní si popíšeme některé z těchto
+problémů a jejích možná řešení.
 
 Jedním z podstatných problémů gradientního sestupu je, že se může lehce
 zaseknout v lokálním minimu, kde je derivace nulová. To může způsobit, že se
@@ -368,16 +368,32 @@ Další metodou jak optimalizovat nastavení kroku je normalizace dat mezi
 vrstvami sítě (ang. batch normalization). Tím se zamezí příliš velkým změnám v
 jednotlivých vrstvách, které někdy destabilizují proces trénování.
 
-U trénování hlubokých sítí se často naráží také ne problém přetrénování (ang.
-overfitting). Přetrénování nastává, když se síť dobře naučí trénovací data,
-zároveň ale postrádá schopnost generalizace, a když pak dostane nová data,
-nedosahuje dobrých výsledků. K základním řešením tohoto problému patří použití
-většího množství trénovacích dat - pokud jsou dostupná, jinak se někdy zavádí
-umělé variace dat jako rotace či převrácení, dále zjednodušení modelu či
-zastavení trénování v případě, že se chyba na validačních datech začne zvyšovat.
+U trénování hlubokých sítí se často naráží také na problém přetrénování (taky
+nadměrné přizpůsobení, ang. overfitting). Přetrénování nastává, když se síť
+dobře naučí trénovací data, zároveň ale postrádá schopnost generalizace, a když
+pak dostane nová data, nedosahuje dobrých výsledků. K základním řešením tohoto
+problému patří použití většího množství trénovacích dat - pokud jsou dostupná,
+jinak se někdy zavádí umělé variace dat jako rotace či převrácení, jinak je
+třeba někdy zvážit zjednodušení architektury modelu. Dále pak jsou využívány
+techniky regularizace, které upravují samotný proces trénování.
 
-Dalším způsobem, jak zabránit přetrénování, je regularizace. Regularizace je 
+Nejjednodušší regularizační technikou je tzv. předčasné zastavení, tedy
+zastavení trénování v případě, že se chyba na validačních datech začne
+zvyšovat. Další možností je dropout (taky výpadek), kdy se u určitého počtu
+náhodně zvolených neuronů v průběhu trénováni nastaví na výstupu nula. Tím se
+snižuje závislost sítě na konkrétních neuronech a zvyšuje se tak její schopnost
+generalizace.
 
-
+Další dvě metody, nazývané L1 a L2 regularizace, přičítají k chybové funkci
+člen, který penalizuje velikost parametrů sítě. L1 regularizace (taky metoda
+Lasso, z ang. least absolute shrinkage and selection operator) přičítá k
+chybové funkci součet absolutních hodnot všech parametrů sítě vynásobený
+hyperparametrem , který určuje míru této penalizace. Tato metoda vede k řídké
+síti, ve které je mnoho parametrů nulových. L2 regularizace (taky hřebenová
+regrese, ang. ridge regression) přičítá k chybové funkci součet druhých mocnin
+všech parametrů sítě vynásobený hyperparametrem $\lambda$. Tato metoda vede
+jednak k menší variabilitě parametrů, jednak k pomalejším změnám parametrů v
+průběhů trénování, v důsledku pak k menší citlivosti na šum v datech. Využívá
+se zejména v hlubokých sítích.
 
 \endinput

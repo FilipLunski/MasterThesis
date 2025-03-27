@@ -109,7 +109,6 @@ obrázku \ref{fig:sobel}.
                     0  & 0  & 0  \\
                     1  & 2  & 1  \\
                 \end{bmatrix}},\ \ \ \ }
-        {\displaystyle {\frac {1}{9}}{\begin{bmatrix} 1& 1& 1\\ 1& 1& 1\\ 1& 1& 1\end{bmatrix}}}
     \end{equation*}
 
     \caption{Jádro konvoluce pro detekci vertikálních a horizontálních hran využívané pro Sobelův operátor}
@@ -118,7 +117,7 @@ obrázku \ref{fig:sobel}.
 
 V případě více kanálů vstupního obrazu musí být připraveno zvlášť jádro pro
 každý kanál. Výsledné konvoluce se pak sečtou. Můžeme se na tuto situaci dívat
-jako na třírozměrné konvoluční jádro s rozměrem třetí dimenze rovným počtu
+i jako na třírozměrné konvoluční jádro s rozměrem třetí dimenze rovným počtu
 kanálů vstupního obrazu. Konvoluce je pak prováděná tak, že na každé pozici
 vstupního obrazu provedeme součet váh jádra vynásobených hodnotami vstupního
 obrazu na příslušných pozicích napříč všemi kanály. Výstup takové konvoluce má
@@ -184,12 +183,43 @@ Jedná vrstva může mít několik konvolučních jáder, každé s vlastními v
 biasem. Je třeba zároveň pamatovat, že každé jádro musí mít hloubku rovnou
 počtu vstupních map, resp. počtu kanálu vstupního obrazu v případě vstupní
 vrstvy. Konvoluci pak aplikujeme zvlášť pro každé jádro, počet výstupních map
-příznaků tedy bude roven počtu jader v dané vrstvě.
+příznaků tedy bude roven počtu jader v dané vrstvě. V praxi bude každé jádro
+vyjadřovat jinou vlastnost, kterou se snažíme ze vstupního obrazu extrahovat.
 
 Množinu parametrů dané konvoluční vrstvy tedy tvoří hodnoty jader a jejích
 příslušné biasy. K hyperparametrům pak patří počet jader a jejich velikost,
 aktivační funkce, krok a padding.
 
 \section{Poolovací vrstva}
+Jak již bylo zmíněno, v konvolučních vrstvách vzniká vícero map příznaků
+vyjadřující různé vlastnosti. Tím se ale množství dat zvětšuje, což porušuje
+samotnou myšlenku konvolučních sítí, která je založena na snaze zredukovat
+rozměr dat. Proto se snažíme rozměr map příznaků zmenšovat. Jak již bylo
+zmíněno, dojde k redukci rozměrů v konvoluční vrstvě, pokud použijeme krok $k >
+    1$. Častěji ale je k tomuto účelu prováděno podvzorkování dat v tzv.
+poolovacích vrstvách (z ang. pooling layer).
+
+V poolovací vrstvě je vstupní mapa rozdělená do stejně velkých čtvercových
+oblastí velikosti $t \times t$, na základě hodnot v daném čtverci je pak
+vytvořen jeden pixel výstupní mapy. K nejčastěji používaným metodám patří
+max-pooling a average-pooling. Max-pooling vybere z dané oblasti největší
+hodnotu, zatímco average-pooling vyhodnoti z každé oblasti průměr hodnot.
+Velikost výstupní mapy pro vstup velikosti $n \times n$ a poolovací oblasti
+velikosti $t \times t$ je tedy $\left\lfloor \frac{n}{t} \right\rfloor \times
+    \left\lfloor \frac{n}{t} \right\rfloor$.
+
+\section{Architektura CNN}
+
+Konvoluční neuronové sítě se skládají z dvou části - konvoluční části a plně
+propojené části.
+
+Konvoluční část se skládá z několika konvolučních vrstev proplétaných s
+poolovacími vrstvami. V této části se pracuje s mapami příznaků. Její výstupem
+je soubor map příznaků, který vyjadřuje různé vlastnosti vstupního obrazu.
+
+Plně propojená část je pak klasická dopředná neuronová síť, která na základě
+extrahovaných vlastností provádí klasifikační či regresní úlohu. Před vstupem
+do plně propojené části jsou mapy příznaků převedená do jednoho vektoru o
+velikosti rovné součtu velikostí všech map příznaků.
 
 \endinput

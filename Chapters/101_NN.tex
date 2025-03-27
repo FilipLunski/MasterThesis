@@ -335,7 +335,7 @@ nenastane její konvergence nebo není překročen maximální počet iterací.
 V základní verzi algoritmu backpropagation se využívá výše popsaný gradientní
 sestup. Ten ale může mít některé problémy, které mohou zpomalit proces
 trénování nebo jej někdy zcela znemožnit. Nyní si popíšeme některé z těchto
-problémů a jejích možná řešení.
+problémů a jejich možná řešení.
 
 Jedním z podstatných problémů gradientního sestupu je, že se může lehce
 zaseknout v lokálním minimu, kde je derivace nulová. To může způsobit, že se
@@ -359,15 +359,15 @@ příliš velký, může dojít k příliš velké změně, která opomine minim
 tak nikdy nedosáhnout konvergence. Naopak, pokud je krok příliš malý, může
 trénování trvat příliš dlouho. Řešením může být například adaptivní nastavení
 kroku. Nejznámější taková metoda je RMSProp (ang. root mean square
-propagation), která upravuje krok učení pro každá parametr podle průměrného
-druhého momentu gradientu. Další možnosti je v průběhu trénování postupně
+propagation), která upravuje krok učení pro každý parametr podle průměrného
+druhého momentu gradientu. Další možností je v průběhu trénování postupně
 snižovat krok (ang. learning rate decay).
 
 Populárním řešením těchto problémů je také Adam (ang. adaptive moment
 estimation, v překladu adaptivní odhad momentu), který kombinuje zavedení
 momentu a adaptivního nastavení kroku pomocí RMSProp.
 
-Další metodou jak optimalizovat nastavení kroku je normalizace dat mezi
+Další metodou, jak optimalizovat nastavení kroku, je normalizace dat mezi
 vrstvami sítě (ang. batch normalization). Tím se zamezí příliš velkým změnám v
 jednotlivých vrstvách, které někdy destabilizují proces trénování.
 
@@ -383,7 +383,7 @@ techniky regularizace, které upravují samotný proces trénování.
 Nejjednodušší regularizační technikou je tzv. předčasné zastavení, tedy
 zastavení trénování v případě, že se chyba na validačních datech začne
 zvyšovat. Další možností je dropout (taky výpadek), kdy se u určitého počtu
-náhodně zvolených neuronů v průběhu trénováni nastaví na výstupu nula. Tím se
+náhodně zvolených neuronů v průběhu trénování nastaví na výstupu nula. Tím se
 snižuje závislost sítě na konkrétních neuronech a zvyšuje se tak její schopnost
 generalizace.
 
@@ -391,7 +391,7 @@ Další dvě metody, nazývané L1 a L2 regularizace, přičítají k chybové f
 člen, který penalizuje velikost parametrů sítě. L1 regularizace (taky metoda
 Lasso, z ang. least absolute shrinkage and selection operator) přičítá k
 chybové funkci součet absolutních hodnot všech parametrů sítě vynásobený
-hyperparametrem , který určuje míru této penalizace. Tato metoda vede k řídké
+hyperparametrem, který určuje míru této penalizace. Tato metoda vede k řídké
 síti, ve které je mnoho parametrů nulových. L2 regularizace (taky hřebenová
 regrese, ang. ridge regression) přičítá k chybové funkci součet druhých mocnin
 všech parametrů sítě vynásobený hyperparametrem $\lambda$. Tato metoda vede

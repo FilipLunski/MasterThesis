@@ -11,20 +11,20 @@ network - CNN), která bude popsána v této kapitole.
 \section{Problémy zpracování obrazu pomocí klasických neuronových sítí}
 
 Klasickým přístupem pro zpracování obrazů pomocí neuronové sítě je vytvoření
-sítě se stejným počtem prvků vstupní vrstvy jako je počet pixelů vstupního
+sítě se stejným počtem prvků vstupní vrstvy, jako je počet pixelů vstupního
 obrazu (za předpokladu jednoho kanálu). Tato vrstva je pak plně propojena s
 několika skrytými vrstvami, výstupní vrstva pak buď vrací kategorie, v případě
-klasifikace, nebo hodnoty hledaných atributů, jako je lokalizace objektů čí
+klasifikace, nebo hodnoty hledaných atributů, jako je lokalizace objektů či
 souřadnice klíčových bodů, v případě regrese.
 
 Problémem tohoto přístupu je rozměr vstupních dat takové sítě. Běžná velikost
 obrazu v dnešní době dosahuje několika miliónů pixelů, tento počet je ale ještě
 vynásoben počtem kanálů, většinou třemi (RGB). To znamená, že velikost vstupní
-vrstvy sítě je velmi vysoká, a aby byla taková síť efektivní, musí mít vetší
+vrstvy sítě je velmi vysoká, a aby byla taková síť efektivní, musí mít větší
 počet skrytých vrstev a neuronů v těchto vrstvách. Ve výsledku má taková síť
 velký počet parametrů, které je třeba natrénovat. Trénování takové sítě je
 možné, je ale velmi nepraktické. Bylo by potřeba velké množství trénovacích
-dat, jinak by s velkou pravděpodobnosti došlo k přetrénování sítě. I kdyby ale
+dat, jinak by s velkou pravděpodobností došlo k přetrénování sítě. I kdyby ale
 bylo k dispozici dostatečné množství trénovacích dat, bylo by jak trénování,
 tak i používání sítě velmi výpočetně i paměťově náročné.
 
@@ -37,7 +37,7 @@ obrazová data.
 V kontextu počítačové grafiky je konvoluce binární operace, kdy pro daný pixel
 sečteme hodnoty pixelů v jeho okolí vynásobené váhami vyjádřenými maskou, která
 se nazývá jádro konvoluce (ang. kernel). Výsledný obraz je taky nazýván
-konvoluce. Z matematického pohledu se jedná o diskrétní dvourozměrné konvoluci
+konvoluce. Z matematického pohledu se jedná o diskrétní dvourozměrnou konvoluci
 - binární operaci diskrétních funkcí, která je definována následovně:
 
 \begin{equation*}
@@ -66,7 +66,7 @@ Pro rozmazání se používá například průměrovací filtr (ang. box blur)
 využívající jádro, které má na všech pozicích hodnotu $1/n$, kde $n$ je počet
 prvků jádra, viz obrázek \ref{fig:blur}. Výsledná hodnota konvoluce daného
 pixelu je tedy rovná průměru hodnot tohoto pixelu a jeho sousedů. Dalším často
-vyžívaným filtrem je Gaussovo rozostření, viz obrázek \ref{fig:blur}. Rozmazáni
+využívaným filtrem je Gaussovo rozostření, viz obrázek \ref{fig:blur}. Rozmazání
 je někdy využíváno v počítačovém vidění jako první krok, za účelem odstranění
 šumu z obrazu.
 
@@ -119,7 +119,7 @@ V případě více kanálů vstupního obrazu musí být připraveno zvlášť j
 každý kanál. Výsledné konvoluce se pak sečtou. Můžeme se na tuto situaci dívat
 i jako na třírozměrné konvoluční jádro s rozměrem třetí dimenze rovným počtu
 kanálů vstupního obrazu. Konvoluce je pak prováděná tak, že na každé pozici
-vstupního obrazu provedeme součet váh jádra vynásobených hodnotami vstupního
+vstupního obrazu provedeme součet vah jádra vynásobených hodnotami vstupního
 obrazu na příslušných pozicích napříč všemi kanály. Výstup takové konvoluce má
 pouze jeden kanál.
 
@@ -127,14 +127,14 @@ Myšlenkou konvolučních neuronových sítí je nahradit plně propojené vrstv
 konvolučními vrstvami. Ruční nastavení všech hodnot jader tak, aby konvoluční
 vrstvy extrahovaly požadované vlastnosti z obrázku, je ale velmi obtížné, v
 případě složitějších či obecnějších problémů téměř nemožné. V 1989 proto Yann
-LeCun et al, navrhli metodu, jak se síť může hodnoty jader naučit sama, a tak
+LeCun et al. navrhli metodu, jak se síť může hodnoty jader naučit sama, a tak
 si efektivně vytvořit i složitější filtry, které by člověk těžko navrhl ručně.
 Zjistili, že váhy konvolučních jader se mohou trénovat pomocí algoritmu
 backpropagation stejně jako váhy neuronů v plně propojených vrstvách.
 
 Takový přístup má mnoho výhod. Konvoluce se dá velmi dobře paralelizovat a
 zajistit tak vysokou efektivitu výpočtů. Oproti plně propojeným vrstvám má vždy
-konvoluce s jedním jádrem počet váh pouze rovný velikosti jádra. I v případě
+konvoluce s jedním jádrem počet vah pouze rovný velikosti jádra. I v případě
 provedení mnoha konvolucí je počet výrazně menší než v případě potřebného počtu
 a velikosti plně propojených vrstev. Zároveň lze pomocí konvolucí efektivně
 extrahovat různé vlastnosti ze vstupního obrazu, ty pak pomocí plně propojených
@@ -179,7 +179,7 @@ aktivační funkce. Namísto plného propojení s neurony následující vrstvy 
 aplikována konvoluce na vstupní data. K výstupní mapě je přičten bias a
 následně může být aplikována aktivační funkce.
 
-Jedná vrstva může mít několik konvolučních jáder, každé s vlastními váhami a
+Jedná vrstva může mít několik konvolučních jader, každé s vlastními váhami a
 biasem. Je třeba zároveň pamatovat, že každé jádro musí mít hloubku rovnou
 počtu vstupních map, resp. počtu kanálu vstupního obrazu v případě vstupní
 vrstvy. Konvoluci pak aplikujeme zvlášť pro každé jádro, počet výstupních map
@@ -203,14 +203,14 @@ V poolovací vrstvě je vstupní mapa rozdělená do stejně velkých čtvercov�
 oblastí velikosti $t \times t$, na základě hodnot v daném čtverci je pak
 vytvořen jeden pixel výstupní mapy. K nejčastěji používaným metodám patří
 max-pooling a average-pooling. Max-pooling vybere z dané oblasti největší
-hodnotu, zatímco average-pooling vyhodnoti z každé oblasti průměr hodnot.
+hodnotu, zatímco average-pooling vyhodnotí z každé oblasti průměr hodnot.
 Velikost výstupní mapy pro vstup velikosti $n \times n$ a poolovací oblasti
 velikosti $t \times t$ je tedy $\left\lfloor \frac{n}{t} \right\rfloor \times
     \left\lfloor \frac{n}{t} \right\rfloor$.
 
 \section{Architektura CNN}
 
-Konvoluční neuronové sítě se skládají z dvou části - konvoluční části a plně
+Konvoluční neuronové sítě se skládají ze dvou částí - konvoluční části a plně
 propojené části.
 
 Konvoluční část se skládá z několika konvolučních vrstev proplétaných s
@@ -219,7 +219,7 @@ je soubor map příznaků, který vyjadřuje různé vlastnosti vstupního obraz
 
 Plně propojená část je pak klasická dopředná neuronová síť, která na základě
 extrahovaných vlastností provádí klasifikační či regresní úlohu. Před vstupem
-do plně propojené části jsou mapy příznaků převedená do jednoho vektoru o
+do plně propojené části jsou mapy příznaků převedené do jednoho vektoru o
 velikosti rovné součtu velikostí všech map příznaků.
 
 \endinput

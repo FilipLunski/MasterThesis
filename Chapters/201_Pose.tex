@@ -1,4 +1,19 @@
-\chapter{Algoritmy pro detekci pozy}
+\chapter{Výběr algoritmu pro detekci pózy}
 \label{sec:Pose}
+
+Jelikož je dnes dostupných mnoho různých algoritmů či modelů pro detekci pózy
+osob v obrázku či videu, nemá smysl pro naše řešení tvořit takovýto algoritmus
+od nuly. Možné by to samozřejmě bylo, i vzhledem k dostupnosti otevřených
+trénovacích dat (např. dataset COCO \cite{coco}), nicméně bychom pravděpodobně
+nedosáhli kvalitních výsledků, jako řešení, která jsou výsledkem mnoholetých
+výzkumů. Hlavně pak bychom těžko dosáhli výkonů těchto řešení, a ten je pro nás
+stěžejní, jelikož potřebujeme video zpracovávat v reálném čase.
+
+V následující kapitole bude popsáno několik populárních algoritmů pro detekci
+pózy se zaměřením na jejich specifika. Následně několik z nich bude otestováno,
+výsledky budou porovnány, a na jejich základě bude zvolen algoritmus použitý v
+konečném řešení detekce pádu.
+
+% openpifpaf, mediapipe(shufflenet, resnet), torchvision, yolo
 
 \endinput

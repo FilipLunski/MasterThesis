@@ -9,7 +9,92 @@ nedosáhli kvalitních výsledků, jako řešení, která jsou výsledkem mnohol
 výzkumů. Hlavně pak bychom těžko dosáhli výkonů těchto řešení, a ten je pro nás
 stěžejní, jelikož potřebujeme video zpracovávat v reálném čase.
 
-V následující kapitole budou popsány obecné principy detekce osob a jejich pózy v obraze. Následně budou popsány některé populární algoritmy pro detekci pózy se zaměřením na jejich specifika. Následně několik z nich bude otestováno, výsledky budou porovnány, a na jejich základě bude zvolen algoritmus použitý v konečném řešení detekce pádu.
+V následující kapitole budou popsány obecné principy detekce osob a jejich pózy
+v obraze. Následně budou popsány některé populární algoritmy pro detekci pózy
+se zaměřením na jejich specifika. Několik z nich pak bude otestováno, výsledky
+budou porovnány, a na jejich základě bude zvolen algoritmus použitý v konečném
+řešení detekce pádu.
+
+\section{Detekce objektů a osob v obraze}
+
+Detekce osob se v podstatě může generalizovat na detekci objektů v obraze.
+Detekci objektů v obraze definujeme jako úlohu, kdy ve vstupním obrázku určíme
+lokaci a třídu všech hledaných objektů.
+
+V kapitole \ref{sec:CNN} jsme si popsali základní architekturu konvolučních
+neuronových sítí, ta se ale většinou v praxi používá pro klasifikaci obrázků,
+nikoliv pro detekci objektů - algoritmus tedy pouze určí, o jakou třídu objektu
+se jedná, a ideálně potřebuje, aby objekt vyplňoval celý vstupní obraz.
+Teoreticky by bylo možné detekci formulovat jako regresní problém a natrénovat
+takovou síť, která by pomoci několika konvolučních vrstev následovaných
+několika plně propojenými vrstvami byla schopna predikovat lokalizaci a třídu
+všech objektů v obraze. \cite{szegedy} Problém detekce je ale velice komplexní
+a taky by vyžadoval velice komplexní síť - více vrstev s mnoha filtry, resp.
+neurony. Jak již ale bylo v zmiňováno, komplexnost sítě zvyšuje její nároky na
+výpočetní výkon a komplikuje nebo úplně znemožňuje její trénování s ohledem na
+pravděpodobnost přetrénování.
+
+Snahou tedy je najít metody, které poupraví funkčnost sítě tak, aby byla
+schopna efektivní detekce objektů. Většina těchto metod se nějakým způsobem
+snaží rozdělit vstupní obrázek na menší části, ty následně jednak klasifikovat,
+a tedy určit, zda se v dané lokalitě vyskytuje objekt, popřípadě pomocí regrese
+určit jeho přesnou lokalizaci. Lokalizace je většinou reprezentována jako
+souřadnice obdélníku ohraničujícího daný objekt, tzv. bounding box. Rozdělení
+může být provedeno přímo na vstupním obrázku nebo na mapě příznaků v rámci
+sítě. Taky můžeme buď rozdělit obrázek na pevně dané oblasti (např. do mřížky)
+- jednofázový přístup, anebo v jedné fázi předpřípravit množinu oblasti a ve
+druhé fázi nad těmito oblastmi provést klasifikaci a regresi - dvoufázový
+přístup.
+
+\subsection{Sliding window}
+
+Jednou z prvních takových metod byl tzv. sliding window (klouzavé okno), který
+aplikuje hrubou sílu. Vstupní obrázek se postupně projíždí oknem o fixní
+velikosti. Vznikne tak množina pokrývající každou možnou lokaci objektů. Na
+tyto oblasti se pak aplikuje klasifikační algoritmus. Postup se opakuje pro
+několik velikostí okna, aby se detekovalo objekty různé velikosti.
+
+Tento postup je ale velice pomalý, jelikož je pro každý obrázek zvolený velký
+počet oblastí, pro které je třeba provést klasifikaci popřípadě regresi. Navíc
+je většina těchto oblastí prázdná, a dochází tak k plýtvání výpočetním výkonem.
+Algoritmus se taky potýká s překrývajícími se objekty.
+
+Další metody se tedy snaží redukovat počet oblastí, na které se aplikuje
+klasifikace, tak, že se vybere pouze oblasti, které pravděpodobně budou
+obsahovat nějaký objekt.
+
+\subsection{Dvoufázový přístup}
+
+Prvním algoritmem, který efektivně zredukoval počet oblastí pro klasifikaci,
+byl algoritmus R-CNN (Region-based Convolutional Network). \cite{r-cnn} Tento
+algoritmus nejprve použil některou z dostupných metod (autoři použili selective
+search) pro vygenerování navržených oblastí (region proposals), které
+pravděpodobně obsahují nějaký objekt. Tyto metody jsou nezávisle na třídě
+objektů. Algoritmus tedy vygeneruje zhruba 2000 oblastí, vzniklé obrázky jsou
+následně upraveny na velikost požadovanou CNN v další fázi. CNN extrahuje s
+dané oblasti mapu příznaků, na její základě plně propojené vrstvy predikují
+třídu objektu popřípadě jeho bounding box.
+
+Problémem R-CNN je, že výběr oblasti a jejich následná klasifikace jsou
+nezávislé úlohy a jsou nezávisle trénovány. Detekce objektu je taky poměrně
+pomalá, protože je extrakce příznaků prováděná pro všechny oblasti zvlášť. Tyto
+problémy se snaží řešit další upravené verze R-CNN.
+
+První z nich je Fast R-CNN \cite{fast-r-cnn}, která je upravená tak, aby bylo
+možné provádět trénování v jednom kroku. Taky extrahuje příznaky pro celý
+vstupní obraz najednou, pomocí selective search pak identifikuje oblasti zájmu
+(RoI - Region of Interest), ktere následně použije pro klasifikaci a regresi.
+Tato metoda je přesnější a asi desetkrát rychlejší než původní R-CNN.
+
+Další algoritmus, Faster R-CNN \cite{faster-r-cnn}, nahrazuje metodu selective
+search vlastní, plně konvoluční síti RPN (region proposal network).
+Zefektivňuje tak proces trénování, výsledná síť je taky rychlejší a přesnější
+než Fast R-CNN.
+
+\subsection{Jednofázový přístup}
+
+
+
 
 % openpifpaf, mediapipe(shufflenet, resnet), torchvision, yolo
 

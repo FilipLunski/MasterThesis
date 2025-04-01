@@ -65,6 +65,7 @@ obsahovat nějaký objekt.
 
 \subsection{Dvoufázový přístup}
 
+\subsubsection{R-CNN}
 Prvním algoritmem, který efektivně zredukoval počet oblastí pro klasifikaci,
 byl algoritmus R-CNN (Region-based Convolutional Network). \cite{r-cnn} Tento
 algoritmus nejprve použil některou z dostupných metod (autoři použili selective
@@ -80,12 +81,14 @@ nezávislé úlohy a jsou nezávisle trénovány. Detekce objektu je taky poměr
 pomalá, protože je extrakce příznaků prováděná pro všechny oblasti zvlášť. Tyto
 problémy se snaží řešit další upravené verze R-CNN.
 
+\subsubsection{Fast R-CNN}
 První z nich je Fast R-CNN \cite{fast-r-cnn}, která je upravená tak, aby bylo
 možné provádět trénování v jednom kroku. Taky extrahuje příznaky pro celý
 vstupní obraz najednou, pomocí selective search pak identifikuje oblasti zájmu
 (RoI - Region of Interest), ktere následně použije pro klasifikaci a regresi.
 Tato metoda je přesnější a asi desetkrát rychlejší než původní R-CNN.
 
+\subsubsection{Faster R-CNN}
 Další algoritmus, Faster R-CNN \cite{faster-r-cnn}, nahrazuje metodu selective
 search vlastní, plně konvoluční síti RPN (region proposal network).
 Zefektivňuje tak proces trénování, výsledná síť je taky rychlejší a přesnější
@@ -93,8 +96,67 @@ než Fast R-CNN.
 
 \subsection{Jednofázový přístup}
 
+Jednofázový přístup se snaží najít řešení, ve kterém není nutné hledat navržené
+oblasti, ale provést klasifikaci a regresi na předem dané množině oblastí,
+obvykle určené mřížkou.
 
+\subsubsection{YOLO}
+Prvním takovým algoritmem byl YOLO (taky YOLOv1, z ang. You Only Look Once)
+\cite{yolo}. Ten, v původní verzi, rozdělí vstupní obraz do pevně dané mřížky
+velikosti $S \times S$ a v každém z těchto polí určí $B$ bounding boxů a jejich
+třídu. V původní verzi bylo zvoleno $S = 7$ a $B = 2$.
 
+Obraz je nejprve zpracován pomocí konvolučních vrstev, které extrahují mapu
+znaků o velikosti $S \times S \times K$, kde $K$ je počet kanálů. Každý pixel
+této mapy představuje jedno pole mřížky. Dále je mapa zpracována plně
+propojenými vrstvami, které provádějí nad každým polem mřížky klasifikaci a
+regresi, viz obrázek \ref{fig:yolo}.
+
+Každý bounding box je reprezentován souřadnicemi středu a velikosti (šířka a
+výška). Dohromady s informací o jistotě detekce bounding boxu (confidence
+score) vrátí model $5$ informací o každém bounding boxu. Pro každé pole mřížky
+pak určí společnou informaci o třídě všech objektu v daném poli. Pokud objekt
+není detekován, třída indikuje pozadí a souřadnice bounding boxu jsou
+ignorovány. Velikost výstupního vektoru je tedy $7 \times 7 \times (2 * 5 +
+    C)$, kde $C$ je počet definovaných tříd - v původní verzi pouze 20.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/yolo}
+    \caption{Architektura původní verze YOLO \cite{yolo}}
+    \label{fig:yolo}
+\end{figure}
+
+Tento algoritmus, navržený v roce 2015 J. Redmonem at al., byl revolučně
+rychlý, zároveň v porovnání s jinými real time detekčními algoritmy dosahoval i
+slušné přesnosti. Nicméně byl velice citlivý na velikost objektu a přesnost
+detekce, zejména u menších objektů, byla horší než u dvoufázových algoritmů.
+
+Další verze algoritmu YOLO přinesly postupná vylepšení ve formě optimalizace
+trénování a architektury. YOLOv2 \cite{yolo9000} zavedl mj. trénování na
+několika měřítkách a byl natrénován s 9000 třídami (proto taky nazýván
+YOLO9000). YOLOv3 \cite{yolov3} přinesl mj. detekci na několika měřítkách.
+Postupně byla taky zvětšována mřížka a měnila se použita architektura CNN sítě
+sloužící pro extrakci příznaků pro jednotlivá pole mřížky. Postupně taky byly
+přidávány další funkce jako je segmentace, detekce pózy či sledování objektů
+(ang. tracking).
+
+V 2020 roce firma Ultralytics poprve implementovala YOLO s využitím populární
+knihovny PyTorch (YOLOv5), což umožnilo snadnější využití YOLO v praxi. Firma
+Ultralytics taky vytvořila framework pro použití různých verzí YOLO (YOLOv3 a
+novější). Taky pracuje na dalších vylepšeních a optimalizacích. Konkrétně
+vytvořila YOLOv5 (2020), YOLOv8 (2023) a YOLOv11 (2024).
+
+\subsubsection{SSD}
+Dalším populárním algoritmem, který používá jednofázový přístup, je SSD (z ang.
+single shot detector). \cite{szegedy:ssd}
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/ssd.png}
+    \caption{Architektura SSD \cite{szegedy:ssd}}
+    \label{fig:ssd}
+\end{figure}
 
 % openpifpaf, mediapipe(shufflenet, resnet), torchvision, yolo
 

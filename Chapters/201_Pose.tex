@@ -15,6 +15,79 @@ se zaměřením na jejich specifika. Několik z nich pak bude otestováno, výsl
 budou porovnány, a na jejich základě bude zvolen algoritmus použitý v konečném
 řešení detekce pádu.
 
+\section{Detekce pózy}
+
+\begin{figure}[]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.5\textwidth]{Figures/keypoints.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.35\textwidth]{Figures/pose1.png}
+    \end{minipage}
+    \caption{(Vlevo) Topologie klíčových bodů použitá např. v COCO-pose.\cite{2dhpe} (Vpravo) Příklad detekce pózy pomocí YOLO.}
+    \label{fig:keypoints}
+\end{figure}
+
+Uloha detekce pózy spočívá v nalezení klíčových bodů postavy v obraze. Může se
+jednat také o zvíře, v našem případě se ale budeme zabývat pouze klíčovými body
+lidské postavy. Klíčové body představují důležité body lidského těla, znalost
+jejich lokalizace nám umožňuje analyzovat pózu dané osoby, popřípadě sledovat
+její pohyb. K základním klíčovým bodům patří hlava, ramena, lokty, zápěstí,
+kyčle, kolena a kotníky, viz \ref{fig:keypoints}. Některé algoritmy dokážou
+rozeznat i orientaci dlaně či stopy, nebo rozpoznat klíčové body na hlavě, jako
+jsou ústa, nos, oči a uši \cite{blazepose}.
+
+Klíčové body jsou většinou reprezentovány jako dvojice souřadnic $(x, y)$
+vzhledem k celému obrazu, některé algoritmy poskytují i souřadnice
+normalizovány vzhledem k bounding boxu osoby. Existují také algoritmy pro 3D
+souřadnice, těmito se ale nebudeme zabývat, i když by mohly stanovit zajímavou
+alternativu, zejména pokud by pro detekci bylo použito více kamer z různých
+pohledů.
+
+V oblasti algoritmů pro detekci pózy existuji dva základní přístupy: zdola
+nahoru a shora dolů. Metoda zdola nahoru se snaží detekovat všechny klíčové
+body v obraze, aniž by rozlišovala jednotlivé osoby, v dalším kroku pak tyto
+body spojuje do jednotlivých osob. Naproti tomu metoda shora dolů nejprve
+detekuje všechny osoby v obraze, v jejich rámci pak detekuje klíčové body.
+
+\section{Detekce klíčových bodů}
+
+U obou výše zmíněných přístupů se nejčastěji provádí vyhledání všech klíčových
+bodů pomocí tzv. heatmap. Je to 2D mapa pravděpodobnosti, že se v daném bodě
+vyskytuje nějaký klíčový bod. Maximální hodnoty v této mapě pak představují
+lokalizaci klíčových bodů.
+
+Pro vygenerování heatmap se používá konvoluční neuronová síť. Pro každý klíčový
+bod, resp. pro každý typ klíčového bodu k (v případě detekce pózy více osob)
+vzniká jedná heatmapa. Jako referenční heatmapy pro trénování se používají
+mapy, kde je klíčový bod reprezentován 2D Gaussianovým rozložením s vrcholem v
+místě daného bodu.
+
+V dalším kroku jsou z heatmap vygenerovány, nejčastěji s pomocí algoritmu
+argmax, souřadnice klíčových bodů. V případě vícero osob je pak třeba tyto body
+spojit do jednotlivých osob.
+
+Využití heatmap je velmi přesné, nicméně z důvodu nutnosti provádění dvou
+sekvenčních výpočtů je taky trochu pomalé. Některé algoritmy se proto snaží
+formulovat úlohu jako regresi vedouci přímo k souřadnicím klíčových bodů. Tento
+přístup je ve své podstatě trochu méně přesný, nicméně je rychlejší.
+
+Vůbec první algoritmus pro detekci pózy využívající hluboké učení, DeepPose \cite{deep-pose}, který byl
+vytvořen v roce 2014 společností Google, používal právě tento přístup. Používal
+také další kaskádní síť, která se pomocí regrese snažila výsledky zpřesnit. 
+
+Také algoritmus YOLO používá regresi pro určení souřadnic klíčových bodů,
+nicméně detekce je prováděná pro detekované objekty, nikoliv nad celým vstupním
+obrazem. \cite{yolo-pose}
+
+% , a je součástí poupraveného modelu pro detekci objektů - v posledních
+% vrstvách sítě je kromě regrese definující bounding box a klasifikace určující
+% třídu prováděna regrese pro určení klíčových bodů.
+
 \section{Detekce objektů a osob v obraze}
 
 Detekce osob se v podstatě může generalizovat na detekci objektů v obraze.
@@ -101,7 +174,7 @@ oblasti, ale provést klasifikaci a regresi na předem dané množině oblastí,
 obvykle určené mřížkou.
 
 \subsubsection{YOLO}
-Prvním takovým algoritmem byl YOLO (taky YOLOv1, z ang. You Only Look Once)
+Prvním takovým algoritmem byl YOLO (taky YOLOv1, z ang. you only look once)
 \cite{yolo}. Ten, v původní verzi, rozdělí vstupní obraz do pevně dané mřížky
 velikosti $S \times S$ a v každém z těchto polí určí $B$ bounding boxů a jejich
 třídu. V původní verzi bylo zvoleno $S = 7$ a $B = 2$.
@@ -112,6 +185,13 @@ této mapy představuje jedno pole mřížky. Dále je mapa zpracována plně
 propojenými vrstvami, které provádějí nad každým polem mřížky klasifikaci a
 regresi, viz obrázek \ref{fig:yolo}.
 
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/yolo}
+    \caption{Architektura původní verze YOLO \cite{yolo}}
+    \label{fig:yolo}
+\end{figure}
+
 Každý bounding box je reprezentován souřadnicemi středu a velikosti (šířka a
 výška). Dohromady s informací o jistotě detekce bounding boxu (confidence
 score) vrátí model $5$ informací o každém bounding boxu. Pro každé pole mřížky
@@ -119,13 +199,6 @@ pak určí společnou informaci o třídě všech objektu v daném poli. Pokud o
 není detekován, třída indikuje pozadí a souřadnice bounding boxu jsou
 ignorovány. Velikost výstupního vektoru je tedy $7 \times 7 \times (2 * 5 +
     C)$, kde $C$ je počet definovaných tříd - v původní verzi pouze 20.
-
-\begin{figure}[]
-    \centering
-    \includegraphics[width=\textwidth]{Figures/yolo}
-    \caption{Architektura původní verze YOLO \cite{yolo}}
-    \label{fig:yolo}
-\end{figure}
 
 Tento algoritmus, navržený v roce 2015 J. Redmonem at al., byl revolučně
 rychlý, zároveň v porovnání s jinými real time detekčními algoritmy dosahoval i
@@ -145,18 +218,34 @@ V 2020 roce firma Ultralytics poprve implementovala YOLO s využitím populárn�
 knihovny PyTorch (YOLOv5), což umožnilo snadnější využití YOLO v praxi. Firma
 Ultralytics taky vytvořila framework pro použití různých verzí YOLO (YOLOv3 a
 novější). Taky pracuje na dalších vylepšeních a optimalizacích. Konkrétně
-vytvořila YOLOv5 (2020), YOLOv8 (2023) a YOLOv11 (2024).
+vytvořila YOLOv5 (2020), YOLOv8 (2023) a YOLOv11 (2024). Algoritmus YOLO je tak
+mimo svoji rychlost a přesnost velice oblíbený právě kvůli jednoduchosti
+použití, široké škále dostupných funkcí a kontinuálnímu vývoji.
 
 \subsubsection{SSD}
 Dalším populárním algoritmem, který používá jednofázový přístup, je SSD (z ang.
-single shot detector). \cite{szegedy:ssd}
-
+single shot detector). \cite{szegedy:ssd} Ten rozdělí vstupní obraz do několika
+mřížek o různé velikosti. Postup je takový, že nejprve projde obraz konvoluční
+síti, konkrétně síti VGG16, která extrahuje mapu příznaků. Tu se postupně
+dalšími konvolučními vrstvami zmenšuje, výstup každého stádia zmenšení,
+reprezentující mřížku dané velikosti, se spolu s původní mapou dále zpracovává
+plně propojenou síti.
 \begin{figure}[]
     \centering
-    \includegraphics[width=\textwidth]{Figures/ssd.png}
+    \includegraphics[width=0.8\textwidth]{Figures/ssd.png}
     \caption{Architektura SSD \cite{szegedy:ssd}}
     \label{fig:ssd}
 \end{figure}
+
+Výstupní bounding boxy nejsou, jako v případě YOLO, pouze výsledkem regrese,
+ale pro každé pole dané mřížky je definováno několik výchozích oblastí (ang.
+default box), ze kterých jsou vybrány ty, které obsahují objekt. K ním je
+predikována třída objektu a posun i změna velikosti výchozí oblasti,
+upřesňující výsledný bounding box.
+
+V době svého vzniku byl SSD rychlejší a přesnější než YOLO, ale novější verze
+YOLO jej už předběhly. Nicméně některé principy SSD, jako výchozí oblasti či
+použití různých měřítek, byly převzaty do novějších verzí YOLO.
 
 % openpifpaf, mediapipe(shufflenet, resnet), torchvision, yolo
 

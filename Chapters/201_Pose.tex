@@ -112,6 +112,13 @@ této mapy představuje jedno pole mřížky. Dále je mapa zpracována plně
 propojenými vrstvami, které provádějí nad každým polem mřížky klasifikaci a
 regresi, viz obrázek \ref{fig:yolo}.
 
+\begin{figure}[]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/yolo}
+    \caption{Architektura původní verze YOLO \cite{yolo}}
+    \label{fig:yolo}
+\end{figure}
+
 Každý bounding box je reprezentován souřadnicemi středu a velikosti (šířka a
 výška). Dohromady s informací o jistotě detekce bounding boxu (confidence
 score) vrátí model $5$ informací o každém bounding boxu. Pro každé pole mřížky
@@ -119,13 +126,6 @@ pak určí společnou informaci o třídě všech objektů v daném poli. Pokud 
 není detekován, třída indikuje pozadí a souřadnice bounding boxu jsou
 ignorovány. Velikost výstupního vektoru je tedy $7 \times 7 \times (2 * 5 +
     C)$, kde $C$ je počet definovaných tříd - v původní verzi pouze 20.
-
-\begin{figure}[]
-    \centering
-    \includegraphics[width=\textwidth]{Figures/yolo}
-    \caption{Architektura původní verze YOLO \cite{yolo}}
-    \label{fig:yolo}
-\end{figure}
 
 Tento algoritmus, navržený v roce 2015 J. Redmonem et al., byl revolučně
 rychlý, zároveň v porovnání s jinými real-time detekčními algoritmy dosahoval i

@@ -115,7 +115,7 @@ určit jeho přesnou lokalizaci. Lokalizace je většinou reprezentována jako
 souřadnice obdélníku ohraničujícího daný objekt, tzv. bounding box. Rozdělení
 může být provedeno přímo na vstupním obrázku nebo na mapě příznaků v rámci
 sítě. Taky můžeme buď rozdělit obrázek na pevně dané oblasti (např. do mřížky)
-- jednofázový přístup, anebo v jedné fázi předpřípravit množinu oblasti a ve
+- jednofázový přístup, anebo v jedné fázi předpřípravit množinu oblastí a ve
 druhé fázi nad těmito oblastmi provést klasifikaci a regresi - dvoufázový
 přístup.
 
@@ -143,9 +143,9 @@ Prvním algoritmem, který efektivně zredukoval počet oblastí pro klasifikaci
 byl algoritmus R-CNN (Region-based Convolutional Network). \cite{r-cnn} Tento
 algoritmus nejprve použil některou z dostupných metod (autoři použili selective
 search) pro vygenerování navržených oblastí (region proposals), které
-pravděpodobně obsahují nějaký objekt. Tyto metody jsou nezávisle na třídě
+pravděpodobně obsahují nějaký objekt. Tyto metody jsou nezávislé na třídě
 objektů. Algoritmus tedy vygeneruje zhruba 2000 oblastí, vzniklé obrázky jsou
-následně upraveny na velikost požadovanou CNN v další fázi. CNN extrahuje s
+následně upraveny na velikost požadovanou CNN v další fázi. CNN extrahuje z  
 dané oblasti mapu příznaků, na její základě plně propojené vrstvy predikují
 třídu objektu popřípadě jeho bounding box.
 
@@ -158,13 +158,13 @@ problémy se snaží řešit další upravené verze R-CNN.
 První z nich je Fast R-CNN \cite{fast-r-cnn}, která je upravená tak, aby bylo
 možné provádět trénování v jednom kroku. Taky extrahuje příznaky pro celý
 vstupní obraz najednou, pomocí selective search pak identifikuje oblasti zájmu
-(RoI - Region of Interest), ktere následně použije pro klasifikaci a regresi.
+(RoI - Region of Interest), které následně použije pro klasifikaci a regresi.
 Tato metoda je přesnější a asi desetkrát rychlejší než původní R-CNN.
 
 \subsubsection{Faster R-CNN}
 Další algoritmus, Faster R-CNN \cite{faster-r-cnn}, nahrazuje metodu selective
-search vlastní, plně konvoluční síti RPN (region proposal network).
-Zefektivňuje tak proces trénování, výsledná síť je taky rychlejší a přesnější
+search vlastní, plně konvoluční sítí RPN (region proposal network).
+Zefektivňuje tak proces trénování, výsledná síť je také rychlejší a přesnější
 než Fast R-CNN.
 
 \subsection{Jednofázový přístup}
@@ -195,10 +195,17 @@ regresi, viz obrázek \ref{fig:yolo}.
 Každý bounding box je reprezentován souřadnicemi středu a velikosti (šířka a
 výška). Dohromady s informací o jistotě detekce bounding boxu (confidence
 score) vrátí model $5$ informací o každém bounding boxu. Pro každé pole mřížky
-pak určí společnou informaci o třídě všech objektu v daném poli. Pokud objekt
+pak určí společnou informaci o třídě všech objektů v daném poli. Pokud objekt
 není detekován, třída indikuje pozadí a souřadnice bounding boxu jsou
 ignorovány. Velikost výstupního vektoru je tedy $7 \times 7 \times (2 * 5 +
     C)$, kde $C$ je počet definovaných tříd - v původní verzi pouze 20.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/yolo}
+    \caption{Architektura původní verze YOLO \cite{yolo}}
+    \label{fig:yolo}
+\end{figure}
 
 Tento algoritmus, navržený v roce 2015 J. Redmonem at al., byl revolučně
 rychlý, zároveň v porovnání s jinými real time detekčními algoritmy dosahoval i
@@ -209,18 +216,16 @@ Další verze algoritmu YOLO přinesly postupná vylepšení ve formě optimaliz
 trénování a architektury. YOLOv2 \cite{yolo9000} zavedl mj. trénování na
 několika měřítkách a byl natrénován s 9000 třídami (proto taky nazýván
 YOLO9000). YOLOv3 \cite{yolov3} přinesl mj. detekci na několika měřítkách.
-Postupně byla taky zvětšována mřížka a měnila se použita architektura CNN sítě
+Postupně byla taky zvětšována mřížka a měnila se použitá architektura CNN sítě
 sloužící pro extrakci příznaků pro jednotlivá pole mřížky. Postupně taky byly
 přidávány další funkce jako je segmentace, detekce pózy či sledování objektů
 (ang. tracking).
 
-V 2020 roce firma Ultralytics poprve implementovala YOLO s využitím populární
+V 2020 roce firma Ultralytics poprvé implementovala YOLO s využitím populární
 knihovny PyTorch (YOLOv5), což umožnilo snadnější využití YOLO v praxi. Firma
 Ultralytics taky vytvořila framework pro použití různých verzí YOLO (YOLOv3 a
 novější). Taky pracuje na dalších vylepšeních a optimalizacích. Konkrétně
-vytvořila YOLOv5 (2020), YOLOv8 (2023) a YOLOv11 (2024). Algoritmus YOLO je tak
-mimo svoji rychlost a přesnost velice oblíbený právě kvůli jednoduchosti
-použití, široké škále dostupných funkcí a kontinuálnímu vývoji.
+vytvořila YOLOv5 (2020), YOLOv8 (2023) a YOLOv11 (2024).
 
 \subsubsection{SSD}
 Dalším populárním algoritmem, který používá jednofázový přístup, je SSD (z ang.

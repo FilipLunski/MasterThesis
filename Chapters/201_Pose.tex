@@ -32,7 +32,7 @@ budou porovnány, a na jejich základě bude zvolen algoritmus použitý v kone�
     \label{fig:keypoints}
 \end{figure}
 
-Uloha detekce pózy spočívá v nalezení klíčových bodů postavy v obraze. Může se
+Úloha detekce pózy spočívá v nalezení klíčových bodů postavy v obraze. Může se
 jednat také o zvíře, v našem případě se ale budeme zabývat pouze klíčovými body
 lidské postavy. Klíčové body představují důležité body lidského těla, znalost
 jejich lokalizace nám umožňuje analyzovat pózu dané osoby, popřípadě sledovat
@@ -43,12 +43,12 @@ jsou ústa, nos, oči a uši \cite{blazepose}.
 
 Klíčové body jsou většinou reprezentovány jako dvojice souřadnic $(x, y)$
 vzhledem k celému obrazu, některé algoritmy poskytují i souřadnice
-normalizovány vzhledem k bounding boxu osoby. Existují také algoritmy pro 3D
+normalizované vzhledem k bounding boxu osoby. Existují také algoritmy pro 3D
 souřadnice, těmito se ale nebudeme zabývat, i když by mohly stanovit zajímavou
 alternativu, zejména pokud by pro detekci bylo použito více kamer z různých
 pohledů.
 
-V oblasti algoritmů pro detekci pózy existuji dva základní přístupy: zdola
+V oblasti algoritmů pro detekci pózy existují dva základní přístupy: zdola
 nahoru a shora dolů. Metoda zdola nahoru se snaží detekovat všechny klíčové
 body v obraze, aniž by rozlišovala jednotlivé osoby, v dalším kroku pak tyto
 body spojuje do jednotlivých osob. Naproti tomu metoda shora dolů nejprve
@@ -63,8 +63,8 @@ lokalizaci klíčových bodů.
 
 Pro vygenerování heatmap se používá konvoluční neuronová síť. Pro každý klíčový
 bod, resp. pro každý typ klíčového bodu k (v případě detekce pózy více osob)
-vzniká jedná heatmapa. Jako referenční heatmapy pro trénování se používají
-mapy, kde je klíčový bod reprezentován 2D Gaussianovým rozložením s vrcholem v
+vzniká jedna heatmapa. Jako referenční heatmapy pro trénování se používají
+mapy, kde je klíčový bod reprezentován 2D Gaussovým rozložením s vrcholem v
 místě daného bodu.
 
 V dalším kroku jsou z heatmap vygenerovány, nejčastěji s pomocí algoritmu
@@ -73,7 +73,7 @@ spojit do jednotlivých osob.
 
 Využití heatmap je velmi přesné, nicméně z důvodu nutnosti provádění dvou
 sekvenčních výpočtů je taky trochu pomalé. Některé algoritmy se proto snaží
-formulovat úlohu jako regresi vedouci přímo k souřadnicím klíčových bodů. Tento
+formulovat úlohu jako regresi vedoucí přímo k souřadnicím klíčových bodů. Tento
 přístup je ve své podstatě trochu méně přesný, nicméně je rychlejší.
 
 Vůbec první algoritmus pro detekci pózy využívající hluboké učení, DeepPose \cite{deep-pose}, který byl
@@ -231,10 +231,10 @@ vytvořila YOLOv5 (2020), YOLOv8 (2023) a YOLOv11 (2024).
 Dalším populárním algoritmem, který používá jednofázový přístup, je SSD (z ang.
 single shot detector). \cite{szegedy:ssd} Ten rozdělí vstupní obraz do několika
 mřížek o různé velikosti. Postup je takový, že nejprve projde obraz konvoluční
-síti, konkrétně síti VGG16, která extrahuje mapu příznaků. Tu se postupně
+síťí, konkrétně síťí VGG16, která extrahuje mapu příznaků. Tu se postupně
 dalšími konvolučními vrstvami zmenšuje, výstup každého stádia zmenšení,
 reprezentující mřížku dané velikosti, se spolu s původní mapou dále zpracovává
-plně propojenou síti.
+plně propojenou sítí.
 \begin{figure}[]
     \centering
     \includegraphics[width=0.8\textwidth]{Figures/ssd.png}

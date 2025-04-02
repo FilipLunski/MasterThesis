@@ -66,9 +66,9 @@ Pro rozmazání se používá například průměrovací filtr (ang. box blur)
 využívající jádro, které má na všech pozicích hodnotu $1/n$, kde $n$ je počet
 prvků jádra, viz obrázek \ref{fig:blur}. Výsledná hodnota konvoluce daného
 pixelu je tedy rovná průměru hodnot tohoto pixelu a jeho sousedů. Dalším často
-využívaným filtrem je Gaussovo rozostření, viz obrázek \ref{fig:blur}. Rozmazání
-je někdy využíváno v počítačovém vidění jako první krok, za účelem odstranění
-šumu z obrazu.
+využívaným filtrem je Gaussovo rozostření, viz obrázek \ref{fig:blur}.
+Rozmazání je někdy využíváno v počítačovém vidění jako první krok, za účelem
+odstranění šumu z obrazu.
 
 Pro detekci hran se často používá Sobelův operátor, který využívá dvě jádra -
 pro vertikální a horizontální hrany. Jádra pro detekci hran jsou zobrazena na
@@ -215,7 +215,8 @@ propojené části.
 
 Konvoluční část se skládá z několika konvolučních vrstev proplétaných s
 poolovacími vrstvami. V této části se pracuje s mapami příznaků. Její výstupem
-je soubor map příznaků, který vyjadřuje různé vlastnosti vstupního obrazu.
+je soubor map příznaků, resp. mapa příznaků s větší hloubkou, která vyjadřuje
+různé vlastnosti vstupního obrazu.
 
 Plně propojená část je pak klasická dopředná neuronová síť, která na základě
 extrahovaných vlastností provádí klasifikační či regresní úlohu. Před vstupem

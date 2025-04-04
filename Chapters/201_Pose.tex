@@ -1,13 +1,14 @@
 \chapter{Výběr algoritmu pro detekci pózy}
 \label{sec:Pose}
 
-Jelikož je dnes dostupných mnoho různých algoritmů či modelů pro detekci pózy
-osob v obrázku či videu, nemá smysl pro naše řešení tvořit takovýto algoritmus
-od nuly. Možné by to samozřejmě bylo, i vzhledem k dostupnosti otevřených
-trénovacích dat (např. dataset COCO \cite{coco}), nicméně bychom pravděpodobně
-nedosáhli kvalitních výsledků, jako řešení, která jsou výsledkem mnoholetých
-výzkumů. Hlavně pak bychom těžko dosáhli výkonů těchto řešení, a ten je pro nás
-stěžejní, jelikož potřebujeme video zpracovávat v reálném čase.
+Jelikož je dnes dostupných mnoho různých algoritmů či natrénovaných modelů pro
+detekci pózy osob v obrázku či videu, nemá smysl pro naše řešení implementovat
+takovýto algoritmus od nuly. Možné by to samozřejmě bylo, i vzhledem k
+dostupnosti otevřených trénovacích dat (např. dataset COCO \cite{coco}),
+nicméně bychom pravděpodobně nedosáhli kvalitních výsledků, jako řešení, která
+jsou výsledkem mnoholetých výzkumů. Hlavně pak bychom těžko dosáhli výkonů
+těchto řešení, a ten je pro nás stěžejní, jelikož potřebujeme video zpracovávat
+v reálném čase.
 
 V následující kapitole budou popsány obecné principy detekce osob a jejich pózy
 v obraze. Následně budou popsány některé populární algoritmy pro detekci pózy
@@ -49,10 +50,11 @@ alternativu, zejména pokud by pro detekci bylo použito více kamer z různých
 pohledů.
 
 V oblasti algoritmů pro detekci pózy existují dva základní přístupy: zdola
-nahoru a shora dolů. Metoda zdola nahoru se snaží detekovat všechny klíčové
-body v obraze, aniž by rozlišovala jednotlivé osoby, v dalším kroku pak tyto
-body spojuje do jednotlivých osob. Naproti tomu metoda shora dolů nejprve
-detekuje všechny osoby v obraze, v jejich rámci pak detekuje klíčové body.
+nahoru a shora dolů. Přístup zdola nahoru se snaží detekovat všechny klíčové
+body v obraze, aniž by rozlišoval jednotlivé osoby, pokud je algoritmus schopen
+detekce pózy pro více osob, pak v dalším kroku tyto body spojuje do
+jednotlivých postav. Naproti tomu přístup shora dolů nejprve detekuje všechny
+osoby v obraze, v jejich rámci pak detekuje klíčové body.
 
 \section{Detekce klíčových bodů}
 
@@ -76,13 +78,11 @@ sekvenčních výpočtů je taky trochu pomalé. Některé algoritmy se proto sn
 formulovat úlohu jako regresi vedoucí přímo k souřadnicím klíčových bodů. Tento
 přístup je ve své podstatě trochu méně přesný, nicméně je rychlejší.
 
-Vůbec první algoritmus pro detekci pózy využívající hluboké učení, DeepPose \cite{deep-pose}, který byl
-vytvořen v roce 2014 společností Google, používal právě tento přístup. Používal
-také další kaskádní síť, která se pomocí regrese snažila výsledky zpřesnit. 
-
-Také algoritmus YOLO používá regresi pro určení souřadnic klíčových bodů,
-nicméně detekce je prováděná pro detekované objekty, nikoliv nad celým vstupním
-obrazem. \cite{yolo-pose}
+Vůbec první algoritmus pro detekci pózy využívající hluboké učení, DeepPose
+\cite{deep-pose}, který byl vytvořen v roce 2014 společností Google, používal
+právě tento přístup. Také algoritmus YOLO používá regresi pro určení souřadnic
+klíčových bodů, nicméně detekce je prováděná pro detekované objekty, nikoliv
+nad celým vstupním obrazem. \cite{yolo-pose}
 
 % , a je součástí poupraveného modelu pro detekci objektů - v posledních
 % vrstvách sítě je kromě regrese definující bounding box a klasifikace určující
@@ -145,7 +145,7 @@ algoritmus nejprve použil některou z dostupných metod (autoři použili selec
 search) pro vygenerování navržených oblastí (region proposals), které
 pravděpodobně obsahují nějaký objekt. Tyto metody jsou nezávislé na třídě
 objektů. Algoritmus tedy vygeneruje zhruba 2000 oblastí, vzniklé obrázky jsou
-následně upraveny na velikost požadovanou CNN v další fázi. CNN extrahuje z  
+následně upraveny na velikost požadovanou CNN v další fázi. CNN extrahuje z
 dané oblasti mapu příznaků, na její základě plně propojené vrstvy predikují
 třídu objektu popřípadě jeho bounding box.
 
@@ -251,6 +251,52 @@ upřesňující výsledný bounding box.
 V době svého vzniku byl SSD rychlejší a přesnější než YOLO, ale novější verze
 YOLO jej už předběhly. Nicméně některé principy SSD, jako výchozí oblasti či
 použití různých měřítek, byly převzaty do novějších verzí YOLO.
+
+\section{Charakteristiky vybraných algoritmů pro detekci pózy}
+
+V této sekci bude popsáno několik populárních algoritmů pro detekci pózy
+zejména se zaměřením na jejich rychlost, přesnost a specifika architektury.
+
+Velká část algoritmů byla zamítnutá a neproběhlo ani jejích testování.
+Nejčastějším důvodem zamítnutí některého z algoritmů je, že schází jeho volně
+dostupná, aktualizovaná implementace. Tvůrci algoritmů většinou investují čas a
+zdroje pro vývoj algoritmu a natrénování modelu (často pro akademické účely),
+pak ale neinvestují do jeho údržby. Zejména v prostředí Pythonu, kde se
+neustále vyvíjejí nové knihovny a zpětná kompatibilita starších verzí není
+zaručena, je pak obtížné použít takovéto řešení ve svém projektu, aniž by bylo
+nutné investovat další čas do pochopení zdrojového kódu a jeho úpravy. Jak již
+bylo zmíněno na počátku kapitoly, implementace algoritmu od nuly by vyžadovala
+velké množství času a zdrojů (zejména výpočetních), hlavně by taky byla
+potřebná hlubší znalost problematiky. Někdy je možné řešení použít za cenu
+kompromisu ve formě použití starších verzí knihoven či Pythonu, může to ale
+představovat bezpečnostní rizika.
+
+\subsection{DeepPose}
+DeepPose je historicky první algoritmus pro detekci pózy využívající hluboké
+učení. Vyvinuli jej Alexander Toshev a Christian Szegedy ze společnosti Google
+v roce 2014. \cite{deep-pose} Algoritmus předpokládá, že se ve vstupním obraze
+nachází pouze jedná osoba. Síť se snaží v jednom kroku pomocí regrese jak
+detekovat osobu, tak i její klíčové body. Jelikož je těžké takto dosáhnout
+velmi přesných výsledků, algoritmus používá další fázi, která pomocí regrese
+provádí posun bodů k přesnějším výsledkům. Táto fáze je aplikována opakovaně,
+kaskádně se tak zvyšuje přesnost detekce.
+
+Při svém vzniku byl DeepPose revoluční, nicméně v porovnání s dnešními řešeními
+je poměrně pomalý a nepřesný. Nicméně položil základ pro využití hlubokého
+učení v oblasti detekce pózy.
+
+\subsection{OpenPose}
+
+OpenPose \cite{openpose} je typicky příklad přístupu zdola nahoru. Jeho výhodou
+je ale možnost vyhledání více osob v jednom snímku. Tento algoritmus nejprve
+pomocí CNN vytvoří heatmapů pro každý typ klíčového bodu. Pro spojení bodů do
+jednotlivých osob využije pole propojení klíčových bodů (ang. part affinity
+field - PAF). PAF je mapa vytvořená pro každou končetinu (myšleno obecně
+spojení dvou klíčových bodů), která v oblasti dané končetiny obsahuje hodnoty
+určující směr z jednoho bodu do druhého. Pokud pak dáme do hromady informace z
+heatmap a z PAF, jsme schopni poměrně jednoznačně zkompletovat jednotlivé
+klíčové body do celých postav. Stejně jako heatmapy, jsou i PAF součásti
+trénovacích dat.
 
 % openpifpaf, mediapipe(shufflenet, resnet), torchvision, yolo
 

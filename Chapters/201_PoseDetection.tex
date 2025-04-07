@@ -74,13 +74,15 @@ argmax, souřadnice klíčových bodů. V případě vícero osob je pak třeba 
 spojit do jednotlivých osob.
 
 Využití heatmap je velmi přesné, nicméně z důvodu nutnosti provádění dvou
-sekvenčních výpočtů je taky trochu pomalé. Některé algoritmy se proto snaží
-formulovat úlohu jako regresi vedoucí přímo k souřadnicím klíčových bodů. Tento
-přístup je ve své podstatě trochu méně přesný, nicméně je rychlejší.
+sekvenčních výpočtů je taky trochu pomalé. Taky komplikují proces trénování,
+jelikož musíme spolu s trénovacími daty dodat modelu i heatmapy. Některé
+algoritmy se proto snaží formulovat úlohu jako regresi vedoucí přímo k
+souřadnicím klíčových bodů. Tento přístup je ve své podstatě trochu méně
+přesný, nicméně je rychlejší.
 
 Vůbec první algoritmus pro detekci pózy využívající hluboké učení, DeepPose
 \cite{deeppose}, který byl vytvořen v roce 2014 společností Google, používal
-právě tento přístup. Také algoritmus YOLO používá regresi pro určení souřadnic
+právě regresi. Také algoritmus YOLO používá regresi pro určení souřadnic
 klíčových bodů, nicméně detekce je prováděná pro detekované objekty, nikoliv
 nad celým vstupním obrazem. \cite{yolo-pose}
 
@@ -89,6 +91,7 @@ nad celým vstupním obrazem. \cite{yolo-pose}
 % třídu prováděna regrese pro určení klíčových bodů.
 
 \section{Detekce objektů a osob v obraze}
+\label{sec:obj_det}
 
 Detekce osob se v podstatě může generalizovat na detekci objektů v obraze.
 Detekci objektů v obraze definujeme jako úlohu, kdy ve vstupním obrázku určíme
@@ -178,12 +181,6 @@ určující, které pixely tuto třídu reprezentují.
 Dále je možné s malou úpravou použit tento algoritmus i pro detekci pózy. Jako
 trénovací data použijeme masky, kdy jedině v místě daného klíčového bodu je
 indikována třída reprezentující tento klíčový bod.
-
-% Mask R-CNN \cite{mask-r-cnn} je rozšířením Faster R-CNN, které přidává
-% nové funkce pro segmentaci objektů, což umožňuje přesnější detekci a lokalizaci
-% objektů v obraze. Tento algoritmus využívá architekturu, která kombinuje
-% region proposal network s plně konvolučními vrstvami, což zvyšuje efektivitu
-% a přesnost detekce.
 
 \subsection{Jednofázový přístup}
 
@@ -393,11 +390,10 @@ měřítka, jejich výstupem jsou bounding boxy a klíčové body, oba tvořené
 V pozdějších verzích je architektura YOLO koncipována universálněji pro různé
 úlohy. Obsahuje tak tři fáze: páteř (ang. backbone), která extrahuje mapu
 příznaků, krk (ang. neck), který přizpůsobuje mapu příznaků pro různá měřítka,
-a hlavy (ang. head), které paralelně zpracovávají výstupy pro různé úlohy, viz obrázek \ref{fig:yolov11}. 
-\cite{yolov11} Bounding box a klíčové body jsou tedy sice generovány paralelně
-a teoreticky nezávisle, nicméně s ohledem na proces trénování a postprocessing
-se v praxi navzájem výrazně ovlivňují.
-
+a hlavy (ang. head), které paralelně zpracovávají výstupy pro různé úlohy, viz
+obrázek \ref{fig:yolov11}. \cite{yolov11} Bounding box a klíčové body jsou tedy
+sice generovány paralelně a teoreticky nezávisle, nicméně s ohledem na proces
+trénování a postprocessing se v praxi navzájem výrazně ovlivňují.
 
 \begin{figure}[]
     \centering

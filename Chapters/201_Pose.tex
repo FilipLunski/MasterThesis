@@ -171,11 +171,11 @@ než Fast R-CNN.
 Mask R-CNN \cite{mask-r-cnn} rozšiřuje Faster R-CNN o segmentaci. Segmentace je
 úloha, kdy je každému pixelu vstupního obrazu přiřazena třída. K tomu ale
 tvůrci museli upravit pooling vrstvu nastupující po RPN tak, aby se výstupy
-algoritmu shodovaly se vstupy s přesnosti pixelu. Dále přidali na konci procesu
+algoritmu shodovaly se vstupy s přesností pixelu. Dále přidali na konci procesu
 CNN určující třídu pro každý proces. Výstupem jsou masky pro každou třídu,
 určující, které pixely tuto třídu reprezentují.
 
-Dále je možné s malou úpravou použit tento algoritmus i pro detekci pózy. Jako
+Dále je možné s malou úpravou použít tento algoritmus i pro detekci pózy. Jako
 trénovací data použijeme masky, kdy jedině v místě daného klíčového bodu je
 indikována třída reprezentující tento klíčový bod.
 
@@ -225,8 +225,8 @@ ignorovány. Velikost výstupního vektoru je tedy $7 \times 7 \times (2 * 5 +
     \label{fig:yolo}
 \end{figure}
 
-Tento algoritmus, navržený v roce 2015 J. Redmonem at al., byl revolučně
-rychlý, zároveň v porovnání s jinými real time detekčními algoritmy dosahoval i
+Tento algoritmus, navržený v roce 2015 J. Redmonem et al., byl revolučně
+rychlý, zároveň v porovnání s jinými real-time detekčními algoritmy dosahoval i
 slušné přesnosti. Nicméně byl velice citlivý na velikost objektu a přesnost
 detekce, zejména u menších objektů, byla horší než u dvoufázových algoritmů.
 
@@ -295,10 +295,10 @@ představovat bezpečnostní rizika.
 DeepPose je historicky první algoritmus pro detekci pózy využívající hluboké
 učení. Vyvinuli jej Alexander Toshev a Christian Szegedy ze společnosti Google
 v roce 2014. \cite{deeppose} Algoritmus předpokládá, že se ve vstupním obraze
-nachází pouze jedná osoba. Síť se snaží v jednom kroku pomocí regrese jak
+nachází pouze jedna osoba. Síť se snaží v jednom kroku pomocí regrese jak
 detekovat osobu, tak i její klíčové body. Jelikož je těžké takto dosáhnout
 velmi přesných výsledků, algoritmus používá další fázi, která pomocí regrese
-provádí posun bodů k přesnějším výsledkům. Táto fáze je aplikována opakovaně,
+provádí posun bodů k přesnějším výsledkům. Tato fáze je aplikována opakovaně,
 kaskádně se tak zvyšuje přesnost detekce.
 
 Při svém vzniku byl DeepPose revoluční, nicméně v porovnání s dnešními řešeními
@@ -309,19 +309,19 @@ učení v oblasti detekce pózy.
 
 OpenPose \cite{openpose} je typicky příklad přístupu zdola nahoru. Jeho výhodou
 je ale možnost vyhledání více osob v jednom snímku. Tento algoritmus, který
-vyvinuli v roce 2019 Zhe Cao et al., nejprve pomocí CNN vytvoří heatmapů pro
+vyvinuli v roce 2019 Zhe Cao et al., nejprve pomocí CNN vytvoří heatmapu pro
 každý typ klíčového bodu. Pro spojení bodů do jednotlivých osob využije pole
 propojení klíčových bodů (ang. part affinity field - PAF). PAF je mapa
 vytvořená pro každou končetinu (myšleno obecně spojení dvou klíčových bodů),
 která v oblasti dané končetiny obsahuje hodnoty určující směr z jednoho bodu do
 druhého. Pokud pak dáme do hromady informace z heatmap a z PAF, jsme schopni
 poměrně jednoznačně zkompletovat jednotlivé klíčové body do celých postav.
-Stejně jako heatmapy, jsou i PAF součásti trénovacích dat.
+Stejně jako heatmapy, jsou i PAF součástí trénovacích dat.
 
 \subsection{OpenPifPaf}
 
 Algoritmus OpenPifPaf \cite{openpifpaf}, vyvinutý v roce 2021 Svenem Kreissem
-et al., je v podstatě vylepšenou verzi OpenPose. Jeho název je odvozen od dvou
+et al., je v podstatě vylepšenou verzí OpenPose. Jeho název je odvozen od dvou
 stavebních kamenů: PIF (Part Intensity Field) - pole intenzity klíčových bodů,
 a PAF (Part Affinity Field) - pole propojení klíčových bodů. PIF je rozšířením
 heatmap, kdy kromě intenzity pravděpodobnosti klíčového bodu obsahuje i jeho
@@ -331,9 +331,9 @@ kromě směru i velikost dané končetiny, což umožňuje lepší prostorové z
 pózy.
 
 Dalším rozšířením oproti OpenPose je možnost sledování osob ve videu. Mapa
-příznaků, která je výsledkem vstupní CNN, je udržovaná v mězipaměti, do další
+příznaků, která je výsledkem vstupní CNN, je udržována v mězipaměti, do další
 části sítě pak vždy vstupují mapy pro aktuální a předchozí snímek. Výstupem pak
-kromě klíčových bodů v každém snímku a jejích propojení tvořící kostru, jsou i
+kromě klíčových bodů v každém snímku a jejich propojení tvořící kostru, jsou i
 propojení mezi klíčovými body z jednotlivých snímků, viz
 \ref{fig:pipaf-tracking}. Algoritmus si pak udržuje ID sledovaných osob, pokud
 k dříve nalezené osobě je nalezena nová pozice, je jí přiřazeno stejné ID.
@@ -349,8 +349,8 @@ Pokud je nalezena nová osoba, je jí přiřazeno nové ID.
 
 \subsection{MediaPipe - BlazePose}
 
-MediaPipe je framework vyvinutý společností Google, umožňujicí jednoduchou
-integrací různých technik strojového učení. Obsahuje různé algoritmy pro řešení
+MediaPipe je framework vyvinutý společností Google, umožňující jednoduchou
+integraci různých technik strojového učení. Obsahuje různé algoritmy pro řešení
 úloh jako detekce objektů, segmentace či detekce klíčových bodů (tváře či
 pózy). MediaPipe je optimalizován pro mobilní zařízení a webové aplikace.
 Detekce pózy v tomto frameworku je postavená na algoritmu BlazePose.
@@ -363,18 +363,18 @@ detekována osoba. Výhodou tohoto algoritmu je, že detekuje 33 bodů v postav�
 což je podstatně více, než většina ostatních algoritmů, umožňuje tak přesnější
 analýzu některých situací, např. podle natočení tváře, dlaní či stop.
 
-Framework MediaPipe implementuje BlazePose spolu z detekcí více osob (použije v
+Framework MediaPipe implementuje BlazePose spolu s detekcí více osob (použije v
 první fáze detektor objektů) i sledování. Výhodou tohoto frameworku je jeho
 kontinuální vývoj a jednoduchost integrace. Nevýhodou ale je, že pro systémy
 Windows není implementována podpora GPU. Jelikož náš výsledný produkt bude
-spouštěn primárně na Windows zařízení, je to pro nás tato vlastnost
+spouštěn primárně na Windows zařízeních, je to pro nás tato vlastnost
 rozhodující.
 
 \subsection{Torchvision}
 
 Torchvision je knihovna, která je součástí frameworku PyTorch. Obsahuje různé
 nástroje pro strojové vidění, jako je detekce objektů či segmentace. Její
-součásti je i předtrénovaný model pro detekci pózy, který je založený na
+součástí je i předtrénovaný model pro detekci pózy, který je založený na
 algoritmu Mask R-CNN.
 
 \subsection{YOLO}

@@ -38,7 +38,7 @@ jednat také o zvíře, v našem případě se ale budeme zabývat pouze klíčo
 lidské postavy. Klíčové body představují důležité body lidského těla, znalost
 jejich lokalizace nám umožňuje analyzovat pózu dané osoby, popřípadě sledovat
 její pohyb. K základním klíčovým bodům patří hlava, ramena, lokty, zápěstí,
-kyčle, kolena a kotníky, viz \ref{fig:keypoints}. Některé algoritmy dokážou
+kyčle, kolena a kotníky, viz obrázek \ref{fig:keypoints}. Některé algoritmy dokážou
 rozeznat i orientaci dlaně či stopy, nebo rozpoznat klíčové body na hlavě, jako
 jsou ústa, nos, oči a uši \cite{blazepose}.
 
@@ -79,7 +79,7 @@ formulovat úlohu jako regresi vedoucí přímo k souřadnicím klíčových bod
 přístup je ve své podstatě trochu méně přesný, nicméně je rychlejší.
 
 Vůbec první algoritmus pro detekci pózy využívající hluboké učení, DeepPose
-\cite{deep-pose}, který byl vytvořen v roce 2014 společností Google, používal
+\cite{deeppose}, který byl vytvořen v roce 2014 společností Google, používal
 právě tento přístup. Také algoritmus YOLO používá regresi pro určení souřadnic
 klíčových bodů, nicméně detekce je prováděná pro detekované objekty, nikoliv
 nad celým vstupním obrazem. \cite{yolo-pose}
@@ -225,7 +225,9 @@ V 2020 roce firma Ultralytics poprvé implementovala YOLO s využitím populárn
 knihovny PyTorch (YOLOv5), což umožnilo snadnější využití YOLO v praxi. Firma
 Ultralytics taky vytvořila framework pro použití různých verzí YOLO (YOLOv3 a
 novější). Taky pracuje na dalších vylepšeních a optimalizacích. Konkrétně
-vytvořila YOLOv5 (2020), YOLOv8 (2023) a YOLOv11 (2024).
+vytvořila YOLOv5 (2020), YOLOv8 (2023) a YOLOv11 (2024). Tyto verze nicméně
+nejsou podloženy odbornými články, někteří je tak považují za neoficiální
+verze.
 
 \subsubsection{SSD}
 Dalším populárním algoritmem, který používá jednofázový přístup, je SSD (z ang.
@@ -274,7 +276,7 @@ představovat bezpečnostní rizika.
 \subsection{DeepPose}
 DeepPose je historicky první algoritmus pro detekci pózy využívající hluboké
 učení. Vyvinuli jej Alexander Toshev a Christian Szegedy ze společnosti Google
-v roce 2014. \cite{deep-pose} Algoritmus předpokládá, že se ve vstupním obraze
+v roce 2014. \cite{deeppose} Algoritmus předpokládá, že se ve vstupním obraze
 nachází pouze jedná osoba. Síť se snaží v jednom kroku pomocí regrese jak
 detekovat osobu, tak i její klíčové body. Jelikož je těžké takto dosáhnout
 velmi přesných výsledků, algoritmus používá další fázi, která pomocí regrese
@@ -288,15 +290,104 @@ učení v oblasti detekce pózy.
 \subsection{OpenPose}
 
 OpenPose \cite{openpose} je typicky příklad přístupu zdola nahoru. Jeho výhodou
-je ale možnost vyhledání více osob v jednom snímku. Tento algoritmus nejprve
-pomocí CNN vytvoří heatmapů pro každý typ klíčového bodu. Pro spojení bodů do
-jednotlivých osob využije pole propojení klíčových bodů (ang. part affinity
-field - PAF). PAF je mapa vytvořená pro každou končetinu (myšleno obecně
-spojení dvou klíčových bodů), která v oblasti dané končetiny obsahuje hodnoty
-určující směr z jednoho bodu do druhého. Pokud pak dáme do hromady informace z
-heatmap a z PAF, jsme schopni poměrně jednoznačně zkompletovat jednotlivé
-klíčové body do celých postav. Stejně jako heatmapy, jsou i PAF součásti
-trénovacích dat.
+je ale možnost vyhledání více osob v jednom snímku. Tento algoritmus, který
+vyvinuli v roce 2019 Zhe Cao et al., nejprve pomocí CNN vytvoří heatmapů pro
+každý typ klíčového bodu. Pro spojení bodů do jednotlivých osob využije pole
+propojení klíčových bodů (ang. part affinity field - PAF). PAF je mapa
+vytvořená pro každou končetinu (myšleno obecně spojení dvou klíčových bodů),
+která v oblasti dané končetiny obsahuje hodnoty určující směr z jednoho bodu do
+druhého. Pokud pak dáme do hromady informace z heatmap a z PAF, jsme schopni
+poměrně jednoznačně zkompletovat jednotlivé klíčové body do celých postav.
+Stejně jako heatmapy, jsou i PAF součásti trénovacích dat.
+
+\subsection{OpenPifPaf}
+
+Algoritmus OpenPifPaf \cite{openpifpaf}, vyvinutý v roce 2021 Svenem Kreissem
+et al., je v podstatě vylepšenou verzi OpenPose. Jeho název je odvozen od dvou
+stavebních kamenů: PIF (Part Intensity Field) - pole intenzity klíčových bodů,
+a PAF (Part Affinity Field) - pole propojení klíčových bodů. PIF je rozšířením
+heatmap, kdy kromě intenzity pravděpodobnosti klíčového bodu obsahuje i jeho
+posun, zaručující přesnější lokalizaci bodu, a odhadovanou velikost dané části
+těla. PAF v OpenPifPaf je taky podobný tomu v OpenPose, navíc ale indikuje
+kromě směru i velikost dané končetiny, což umožňuje lepší prostorové zachycení
+pózy.
+
+Dalším rozšířením oproti OpenPose je možnost sledování osob ve videu. Mapa
+příznaků, která je výsledkem vstupní CNN, je udržovaná v mězipaměti, do další
+části sítě pak vždy vstupují mapy pro aktuální a předchozí snímek. Výstupem pak
+kromě klíčových bodů v každém snímku a jejích propojení tvořící kostru, jsou i
+propojení mezi klíčovými body z jednotlivých snímků, viz
+\ref{fig:pipaf-tracking}. Algoritmus si pak udržuje ID sledovaných osob, pokud
+k dříve nalezené osobě je nalezena nová pozice, je jí přiřazeno stejné ID.
+Pokud je nalezena nová osoba, je jí přiřazeno nové ID.
+
+\begin{figure}[]
+    \centering
+    \centering
+    \includegraphics[height=0.2\textheight]{Figures/skeleton_forward2.png}
+    \caption{vizualizace  sledování osoby mezi dvěma snímky v OpenPifPaf \cite{openpifpaf}}
+    \label{fig:pipaf-tracking}
+\end{figure}
+
+\subsection{MediaPipe - BlazePose}
+
+MediaPipe je framework vyvinutý společností Google, umožňujicí jednoduchou
+integrací různých technik strojového učení. Obsahuje různé algoritmy pro řešení
+úloh jako detekce objektů, segmentace či detekce klíčových bodů (tváře či
+pózy). MediaPipe je optimalizován pro mobilní zařízení a webové aplikace.
+Detekce pózy v tomto frameworku je postavená na algoritmu BlazePose.
+
+BlazePose implementuje přístup shora dolů, detekuje tedy nejprve oblasti zájmu
+(ang. region of interest - RoI), ve kterých detekuje osobu a její pózu. Nativně
+podporuje pouze jednu osobu ve snímku. Ve videu ale v rámci optimalizace
+neprovádí detekci RoI pro každý snímek, pouze pokud v aktuální RoI již není
+detekována osoba. Výhodou tohoto algoritmu je, že detekuje 33 bodů v postavě,
+což je podstatně více, než většina ostatních algoritmů, umožňuje tak přesnější
+analýzu některých situací, např. podle natočení tváře, dlaní či stop.
+
+Framework MediaPipe implementuje BlazePose spolu z detekcí více osob (použije v
+první fáze detektor objektů) i sledování. Výhodou tohoto frameworku je jeho
+kontinuální vývoj a jednoduchost integrace. Nevýhodou ale je, že pro systémy
+Windows není implementována podpora GPU. Jelikož náš výsledný produkt bude
+spouštěn primárně na Windows zařízení, je to pro nás tato vlastnost
+rozhodující.
+
+\subsection{Torchvision}
+
+Torchvision je knihovna, která je součástí frameworku PyTorch. Obsahuje různé
+nástroje pro strojové vidění, jako je detekce objektů či segmentace. Její
+součásti je i předtrénovaný model pro detekci pózy, který je založený na
+algoritmu Mask R-CNN.
+
+\subsection{YOLO}
+
+Od vydání YOLOv7 v roce 2022 integruje framework YOLO i detekci pózy. Oficiální
+článek Chien-Yao Wanga et al. \cite{yolov7} sice neobsahoval tuto funkčnost,
+ale oficiální implementace zahrnula i implementaci YOLO-Pose \cite{yolo-pose}.
+Obecně detekce pózy v YOLO kombinuje přístup shora dolů a zdola nahoru.
+Algoritmus sice vyhledává klíčové body spolu s bounding boxy osob, nicméně vše
+v jednom kroku. Samotná detekce klíčových bodů využívá regresi, což
+zjednodušuje proces trénování, jelikož není třeba tvořit heatmapy.
+
+Architektura použita v YOLO-Pose se ale liší od architektury používané v
+pozdějších verzích. V YOLO-Pose jsou na konci řetězce umístěny hlavy pro různá
+měřítka, jejich výstupem jsou bounding boxy a klíčové body, oba tvořené spolu.
+V pozdějších verzích je architektura YOLO koncipována universálněji pro různé
+úlohy. Obsahuje tak tři fáze: páteř (ang. backbone), která extrahuje mapu
+příznaků, krk (ang. neck), který přizpůsobuje mapu příznaků pro různá měřítka,
+a hlavy (ang. head), které paralelně zpracovávají výstupy pro různé úlohy, viz obrázek \ref{fig:yolov11}. 
+\cite{yolov11} Bounding box a klíčové body jsou tedy sice generovány paralelně
+a teoreticky nezávisle, nicméně s ohledem na proces trénování a postprocessing
+se v praxi navzájem výrazně ovlivňují.
+
+
+\begin{figure}[]
+    \centering
+    \centering
+    \includegraphics[height=0.2\textheight]{Figures/yolo_v11.png}
+    \caption{Architektura YOLOv11 \cite{yolov11}}
+    \label{fig:yolov11}
+\end{figure}
 
 % openpifpaf, mediapipe(shufflenet, resnet), torchvision, yolo
 

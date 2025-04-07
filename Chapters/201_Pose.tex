@@ -158,14 +158,32 @@ problémy se snaží řešit další upravené verze R-CNN.
 První z nich je Fast R-CNN \cite{fast-r-cnn}, která je upravená tak, aby bylo
 možné provádět trénování v jednom kroku. Taky extrahuje příznaky pro celý
 vstupní obraz najednou, pomocí selective search pak identifikuje oblasti zájmu
-(RoI - Region of Interest), které následně použije pro klasifikaci a regresi.
-Tato metoda je přesnější a asi desetkrát rychlejší než původní R-CNN.
+(ang. region of interest - RoI), které následně použije pro klasifikaci a
+regresi. Tato metoda je přesnější a asi desetkrát rychlejší než původní R-CNN.
 
 \subsubsection{Faster R-CNN}
 Další algoritmus, Faster R-CNN \cite{faster-r-cnn}, nahrazuje metodu selective
 search vlastní, plně konvoluční sítí RPN (region proposal network).
 Zefektivňuje tak proces trénování, výsledná síť je také rychlejší a přesnější
 než Fast R-CNN.
+
+\subsubsection{Mask R-CNN}
+Mask R-CNN \cite{mask-r-cnn} rozšiřuje Faster R-CNN o segmentaci. Segmentace je
+úloha, kdy je každému pixelu vstupního obrazu přiřazena třída. K tomu ale
+tvůrci museli upravit pooling vrstvu nastupující po RPN tak, aby se výstupy
+algoritmu shodovaly se vstupy s přesnosti pixelu. Dále přidali na konci procesu
+CNN určující třídu pro každý proces. Výstupem jsou masky pro každou třídu,
+určující, které pixely tuto třídu reprezentují.
+
+Dále je možné s malou úpravou použit tento algoritmus i pro detekci pózy. Jako
+trénovací data použijeme masky, kdy jedině v místě daného klíčového bodu je
+indikována třída reprezentující tento klíčový bod.
+
+% Mask R-CNN \cite{mask-r-cnn} je rozšířením Faster R-CNN, které přidává
+% nové funkce pro segmentaci objektů, což umožňuje přesnější detekci a lokalizaci
+% objektů v obraze. Tento algoritmus využívá architekturu, která kombinuje
+% region proposal network s plně konvolučními vrstvami, což zvyšuje efektivitu
+% a přesnost detekce.
 
 \subsection{Jednofázový přístup}
 

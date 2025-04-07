@@ -41,6 +41,16 @@ klíčových bodů. Další výhodou je, že u takového postupu jsme schopní p
 techniky, kdy sledujeme změny pózy v čase, což by bylo mnohem složitější s
 jednofázovou konvoluční síti.
 
+Další alternativou by mohlo být pouze detekovat osoby jako objekty, a na základě
+jejich bounding boxů určit, zda se jedná o pád. Tento postup by byl jednodušší
+na dvou úrovních. Jednak je detekce objektů méně náročná úloha než detekce
+pózy, jednak bychom ve druhé fázi analyzovali pouze několik parametrů bounding
+boxu (rozměry a velikost) oproti pár desítkám klíčových bodů. Nicméně, pokud se
+nad tím zamyslíme, ne vždy vypovídají parametry bounding boxů o pozici člověka.
+Tento postup by tak pravděpodobně vedl k mnohem méně přesnému výsledku, než
+analýza klíčových bodů, kdy může síť analyzovat takové vzorce jako je např.
+délka končetin v pohledu či úhel mezi nimi. 
+
 V další kapitole rozebraná problematika detekce pózy a bude zvolen algoritmus
 pro detekci klíčových bodů. Dále se pak budeme zabývat vývojem modelu
 detekujícího pád na základě těchto klíčových bodů.

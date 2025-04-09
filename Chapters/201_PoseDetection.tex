@@ -338,7 +338,6 @@ Pokud je nalezena nová osoba, je jí přiřazeno nové ID.
 
 \begin{figure}[]
     \centering
-    \centering
     \includegraphics[height=0.2\textheight]{Figures/skeleton_forward2.png}
     \caption{vizualizace  sledování osoby mezi dvěma snímky v OpenPifPaf \cite{openpifpaf}}
     \label{fig:pipaf-tracking}
@@ -397,11 +396,15 @@ trénování a postprocessing se v praxi navzájem výrazně ovlivňují.
 
 \begin{figure}[]
     \centering
-    \centering
     \includegraphics[height=0.2\textheight]{Figures/yolo_v11.png}
     \caption{Architektura YOLOv11 \cite{yolov11}}
     \label{fig:yolov11}
 \end{figure}
+
+Nejnovější verze YOLO taky podporují kombinaci detekce klíčových bodů a
+sledování osob. Model tedy kromě klíčových bodů vrací ID dané osoby, pomocí
+kterého můžeme spojit danou postavu s předchozími snímky. Můžeme tak efektivně
+analyzovat pohyby jednotlivých osob.
 
 % openpifpaf, mediapipe(shufflenet, resnet), torchvision, yolo
 

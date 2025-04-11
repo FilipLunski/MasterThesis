@@ -129,7 +129,7 @@ iterace. Takto je propojená mezi iteracemi každá skrytá vrstva (na obrázku
 
 \begin{figure}[]
     \centering
-    \includegraphics[width=0.7\textwidth]{Figures/BPTT_deep.png}
+    \includegraphics[width=0.8\textwidth]{Figures/BPTT_weight.png}
     \caption{Unrolling hluboké RNN}
     \label{fig:bptt}
 \end{figure}
@@ -175,8 +175,38 @@ efektivnější proces trénování. Vanilla RNN se v praxi dnes využívají ve
 zřídka.
 
 \section{LSTM}
-Dlouhá krátkodobá paměť (ang. long short-term memory - LSTM ) je typ rekurentní
-neuronové sítě, který byl navržen tak, aby překonal problémy mizejícího a
-explodujícího gradientu.
+Dlouhá krátkodobá paměť (ang. long short-term memory - LSTM ), představena
+Hochreiterem a Schmidhuberem v 1997 roce, je typ rekurentní neuronové sítě,
+který byl navržen tak, aby překonal problémy mizejícího a explodujícího
+gradientu.
+
+Její základem je jednotka, viz obrázek \ref{fig:lstm_unit}, která ve třech
+stádiích aktualizuje krátkodobou a dlouhodobou paměť. Dlouhodobá paměť je
+reprezentovaná pomocí cell state (stav buňky), který je postupně upravován a
+nakonec předán další iteraci. Dokáže uchovávat dlouhodobé závislosti. Na
+obrázku \ref{fig:lstm_unit} je reprezentována proměnnou $c_t$. Krátkodobá paměť
+je reprezentována pomocí skrytého stavu. Je použita pro úpravu dlouhodobé
+paměti, v konečném stadiu je ale vždy v rámci dané iterace vytvořena nová. Je
+tak vhodná pro uchování krátkodobých závislostí. Na obrázku \ref{fig:lstm_unit}
+je znázorněna jako $h_t$.
+
+Jednotka LSTM má tři hlavní komponenty - zapomínací bránu (ang. forget gate),
+vstupní bránu (ang. input gate) a výstupní bránu (ang. output gate). První,
+zapomínací brána určuje, které informace z dlouhodobé paměti se zapomene, resp.
+zapamatuje. Na základě neuronu s sigmoidní aktivační funkcí závislém na
+aktuálním vstupu, dlouhodobé a krátkodobé paměti vynásobí dlouhodobou paměť, a
+tím se určí, které informace budou uchovány nebo zapomenuty. Ve vstupní bráně
+se vytvoří pomocí dvou neuronů, se sigmoidní a tang aktivační funkci, nový
+vstup do dlouhodobé paměti. Ten je přičten do dlouhodobé paměti. Ve výstupní
+bráně se opět pomocí dvou neuronů na základě vstupu, krátkodobé a dlouhodobé
+paměti vytvoří novou krátkodobou paměť, která zároveň tvoří výstup z dané
+jednotky.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Figures/LSTM_unit.png}
+    \caption{Jednotka LSTM}
+    \label{fig:lstm_unit}
+\end{figure}
 
 \endinput

@@ -152,11 +152,11 @@ zapsat takto:
     f(x)= \frac{1}{1+e^{-x}}
 \end{equation*}
 
-Její nevýhodou je hlavně problém mizejícího gradientu, kdy zejména ve
-vícevrstvých sítích se velikost změn váh v počátečních a koncových vrstvách
-významně liší. To pak způsobuje nestabilitu v procesu trénování a může jej
-zpomalit nebo zcela zastavit. Navíc to, že není nulová v počátku souřadnic,
-může způsobit špatnou konvergenci.
+Její nevýhodou je hlavně problém mizejícího gradientu (ang. vanishing
+gradient), kdy zejména ve vícevrstvých sítích se velikost změn váh v
+počátečních a koncových vrstvách významně liší. To pak způsobuje nestabilitu v
+procesu trénování a může jej zpomalit nebo zcela zastavit. Navíc to, že není
+nulová v počátku souřadnic, může způsobit špatnou konvergenci.
 
 Hyperbolický tangens (tanh) je velmi podobný sigmoidě, ale transformuje vstup
 do rozmezí -1 ÷ 1. Řeší tedy poslední zmíněný problém. Nicméně se pořád potýká
@@ -290,7 +290,7 @@ Jak již bylo řečeno, proces trénování NN spočívá v nalezení optimáln�
 parametrů jednotlivých neuronů. Optimální parametry pak vedou k minimální
 chybě. Chybou rozumíme rozdíl mezi skutečným výstupem sítě a očekávaným
 výstupem. K tomu se nejčastěji používá algoritmus backpropagation (taky
-Algoritmus zpětného šíření chyby). Nyní si popíšeme, jak trénování sítě pomocí
+algoritmus zpětného šíření chyby). Nyní si popíšeme, jak trénování sítě pomocí
 tohoto algoritmu funguje.
 
 Nejprve se ze vstupních dat vypočítají pomocí aktuálních parametrů sítě reálně
@@ -312,9 +312,9 @@ Dále je používaná metoda gradientního sestupu, k nalezení minima chybové
 funkce. Za tímto účelem se vypočítají derivace chyby podle jednotlivých
 parametrů sítě. Tyto derivace pak určují, jakým směrem a jak rychle se mají
 dané parametry měnit, aby se chyba minimalizovala. Jelikož se derivace
-parametrů v dané vrstvě vypočítávají pomocí řetězového pravidla derivací podle
-derivací parametrů následující vrstvy, je tento proces nazýván zpětný průchod
-(ang. backward pass).
+parametrů v dané vrstvě vypočítávají pomocí řetězového pravidla derivací (ang.
+chain rule) podle derivací parametrů následující vrstvy, je tento proces
+nazýván zpětný průchod (ang. backward pass).
 
 Jednotlivé parametry se pak podle vypočítaných derivací upraví. Velikost změny
 je určená hyperparametrem rychlostí učení (ang. learning rate, taky krok),

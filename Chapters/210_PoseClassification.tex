@@ -81,6 +81,21 @@ layer nebo context layer), která přijímá hodnoty z výstupu neuronů, uchov�
 mezi iteracemi a předává je spolu se vstupními daty na vstup neuronů. Na
 obrázku \ref{fig:rnn} je tato vrstva reprezentována neurony $c_i$.
 
+\subsection{Jednoduché rekurentní sítě}
+
+Nejjednodušší forma rekurentní neuronové sítě je NN s jednou skrytou vrstvou;
+tato vrstva kromě dat ze vstupní vrstvy, přijímá také výstup předchozí iterace
+buď svých vlastních neuronů, anebo z neuronů výstupní vrstvy, viz obrázek
+\ref{fig:rnn}. Obrázek je zjednodušený, v praxi jsou stavová a skrytá vrstva
+plně propojeny. Tyto architektury se jmenují Elmanova síť \cite{elman}, resp.
+Jordanova síť \cite{jordan}, od jejích tvůrců. Tyto sítě jsou taky známé jako
+jednoduché rekurentní sítě (ang. Simple Recurrent Networks - SRN). I když pojem
+rekurentních sítí byl známy už od začátků neuronových sítí jako takových a byly
+i případy jejích použití, právě tyto sítě patřily k prvním, které používaly pro
+trénování algoritmus backpropagation. Jednoduché rekurentní sítě uchovávají
+pouze krátkodobé vzory a jsou vhodné spíše pro jednoduché úlohy, jako je např.
+predikce časových řad.
+
 \begin{figure}[]
     \centering
     \includegraphics[width=0.8\textwidth]{Figures/rnn.png}
@@ -88,18 +103,7 @@ obrázku \ref{fig:rnn} je tato vrstva reprezentována neurony $c_i$.
     \label{fig:rnn}
 \end{figure}
 
-Nejjednodušší forma rekurentní neuronové sítě je NN s jednou skrytou vrstvou;
-tato vrstva kromě dat ze vstupní vrstvy, přijímá také výstup předchozí iterace
-buď svých vlastních neuronů, anebo z neuronů výstupní vrstvy, viz obrázek
-\ref{fig:rnn}. Obrázek je zjednodušený, v praxi jsou stavová a skrytá vrstva
-plně propojeny. Taky Tyto architektury se jmenují Elmanova síť \cite{elman},
-resp. Jordanova síť \cite{jordan}, od jejích tvůrců. Tyto sítě jsou taky známé
-jako jednoduché rekurentní sítě (ang. Simple Recurrent Networks - SRN). I když
-pojem rekurentních sítí byl známy už od začátků neuronových sítí jako takových
-a byly i případy jejích použití, právě tyto sítě patřily k prvním, které
-používaly pro trénování algoritmus backpropagation. Jednoduché rekurentní sítě
-uchovávají pouze krátkodobé vzory a jsou vhodné spíše pro jednoduché úlohy,
-jako je např. predikce časových řad.
+\subsection{Hluboké rekurentní sítě}
 
 Stejně jako u dopředných neuronových sítí, kde se od jednoduchého perceptronu
 přešlo k hlubokým sítím, se i rekurentní sítě rozšířily na více vrstev. V
@@ -112,14 +116,16 @@ každá vrstva sítě se učí pochopit problém na jiné úrovní abstrakce, zp
 vazba přes několik vrstev by pak mohla narušit stabilitu tohoto procesu a
 omezit kvalitu učení.
 
+\subsection{Trénování rekurentních sítí}
+
 Pro pochopení rekurentních neuronových sítí je třeba si vysvětlit, jak se
 trénují. Pro vizualizaci trénování RNN se tyto sítě takzvaně rozbaluje v čase
 (ang. unrolling). Znamená to, že jednotlivé iterace vizualizujeme jako sekvenci
 stejných sítí (stejné váhy), které v čase $t$ přijímají vstup $x_t$ a vracejí
-výstup $y_t$, viz obrázek \ref{fig:bptt}. Zároveň místo smyček znázorňujících zpětnou vazbu, přijímá skrytá
-vrstva v čase $t$ stav $c_{t-1}$ z předchozí iterace. Takto je propojená mezi
-iteracemi každá skrytá vrstva (na obrázku \ref{fig:bptt} vizualizováno propojení přes
-stavovou vrstvu)
+výstup $y_t$, viz obrázek \ref{fig:bptt}. Zároveň místo smyček znázorňujících
+zpětnou vazbu, přijímá skrytá vrstva v čase $t$ stav $c_{t-1}$ z předchozí
+iterace. Takto je propojená mezi iteracemi každá skrytá vrstva (na obrázku
+\ref{fig:bptt} vizualizováno propojení přes stavovou vrstvu).
 
 \begin{figure}[]
     \centering
@@ -132,9 +138,45 @@ Při trénování se pak používá algoritmus zpětného šíření chyby v ča
 backpropagation through time - BPTT). Algoritmus funguje stejně jako klasický
 backpropagation, šíří se ale nejenom vrstvami ale i iteracemi. Unrolling nám
 pomáhá backpropagation pochopit, jednotlivé iterace totiž jsou naskládáne jako
-vrstvy.
+vrstvy a celou síť řešíme jako klasickou dopřednou NN.
 
-Výše popsané základní rekurentní neuronové sítě, někdy označovány jako vanilla RNN, 
+\subsection{Problémy mizejícího a explodujícího gradientu}
 
+Výše popsané základní rekurentní neuronové sítě, někdy označovány jako vanilla
+RNN, trpí několika zásadními problémy. U dopředných sítí jsme zmiňovali problém
+mizejícího gradienutu (ang. vanishing gradient), vystupující zejména u hlubších
+sítí. Ten se projevuje i u RNN a je zesílený tím, že jsou jednotlivé iterace
+naskládané na sebe, podobně jako vrstvy. Zejména pak u delších sekvencí budou
+mít dřívější vstupy velmi malý vliv na učení sítě.
+
+U RNN se taky projevuje problém opačný - explodující gradient (ang. exploding
+gradient). Ten způsobuje, že v průběhu sekvence se váhy začnou exponenciálně
+zvětšovat a dosáhnou tak nepřiměřeně velkých hodnot.
+
+Podívejme se, co přesně tyto problémy způsobuje. Součástí algoritmu
+backpropagation je počítání parciální derivace ztrátové funkce podle
+jednotlivých váh. V případě BPTT potřebujeme mimo jiné počítat parciální
+derivace skrytého stavu mezi jednotlivými iteracemi $\frac{\partial
+        h_{t-1}}{\partial h_t}$. Tyto derivace následně opakovaně násobíme při použití
+řetězového pravidla. Pokud je tato derivace $\frac{\partial h_{t-1}}{\partial
+        h_t}<1$, jeho vynásobení bude mít za následek postupné zmenšování gradientu.
+Pokud budeme například mít sekvencí $100$ iteraci, pak i kdyby se gradienty v
+každé iteraci zmenšovaly $0,9$ krát, po $100$ iteracích by gradient klesl na
+hodnotu $0,9^{100} \approx 2,7 \times 10^{-5}$, což je prakticky nula. Pokud se
+naopak bude gradient zvětšovat $1,1$ krát, po $100$ iteracích by gradient
+vzrostl na $1,1^{100} \approx 13 780$, což způsobí úplnou destabilizaci sítě a
+nedosáhneme žádného výsledku. Vidíme tedy, že v případě, kdy je $\frac{\partial
+        h_{t-1}}{\partial h_t}>1$, dochází k explodujícímu gradientu.
+
+Z důvodu těchto problémů byly vyvinuté složitější rekurentní struktury. Jejich
+architektura je v podstatě podobná, jednotlivé vrstvy jsou ale zastoupeny
+jinými stavebními bloky, které umožňují zejména širší pochopení kontextu a
+efektivnější proces trénování. Vanilla RNN se v praxi dnes využívají velmi
+zřídka.
+
+\section{LSTM}
+Dlouhá krátkodobá paměť (ang. long short-term memory - LSTM ) je typ rekurentní
+neuronové sítě, který byl navržen tak, aby překonal problémy mizejícího a
+explodujícího gradientu.
 
 \endinput

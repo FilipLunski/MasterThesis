@@ -58,6 +58,8 @@ osoby v obraze, v jejich rámci pak detekuje klíčové body.
 
 \section{Detekce klíčových bodů}
 
+\subsection{Heatmapy}
+
 U obou výše zmíněných přístupů se nejčastěji provádí vyhledání všech klíčových
 bodů pomocí tzv. heatmap. Je to 2D mapa pravděpodobnosti, že se v daném bodě
 vyskytuje nějaký klíčový bod. Maximální hodnoty v této mapě pak představují
@@ -72,6 +74,8 @@ místě daného bodu.
 V dalším kroku jsou z heatmap vygenerovány, nejčastěji s pomocí algoritmu
 argmax, souřadnice klíčových bodů. V případě vícero osob je pak třeba tyto body
 spojit do jednotlivých osob.
+
+\subsection{Regrese}
 
 Využití heatmap je velmi přesné, nicméně z důvodu nutnosti provádění dvou
 sekvenčních výpočtů je taky trochu pomalé. Taky komplikují proces trénování,
@@ -215,13 +219,6 @@ není detekován, třída indikuje pozadí a souřadnice bounding boxu jsou
 ignorovány. Velikost výstupního vektoru je tedy $7 \times 7 \times (2 * 5 +
     C)$, kde $C$ je počet definovaných tříd - v původní verzi pouze 20.
 
-\begin{figure}[]
-    \centering
-    \includegraphics[width=\textwidth]{Figures/yolo}
-    \caption{Architektura původní verze YOLO \cite{yolo}}
-    \label{fig:yolo}
-\end{figure}
-
 Tento algoritmus, navržený v roce 2015 J. Redmonem et al., byl revolučně
 rychlý, zároveň v porovnání s jinými real-time detekčními algoritmy dosahoval i
 slušné přesnosti. Nicméně byl velice citlivý na velikost objektu a přesnost
@@ -351,13 +348,13 @@ integraci různých technik strojového učení. Obsahuje různé algoritmy pro 
 pózy). MediaPipe je optimalizován pro mobilní zařízení a webové aplikace.
 Detekce pózy v tomto frameworku je postavená na algoritmu BlazePose.
 
-BlazePose implementuje přístup shora dolů, detekuje tedy nejprve oblasti zájmu
-(ang. region of interest - RoI), ve kterých detekuje osobu a její pózu. Nativně
-podporuje pouze jednu osobu ve snímku. Ve videu ale v rámci optimalizace
-neprovádí detekci RoI pro každý snímek, pouze pokud v aktuální RoI již není
-detekována osoba. Výhodou tohoto algoritmu je, že detekuje 33 bodů v postavě,
-což je podstatně více, než většina ostatních algoritmů, umožňuje tak přesnější
-analýzu některých situací, např. podle natočení tváře, dlaní či stop.
+BlazePose implementuje přístup shora dolů, detekuje tedy nejprve RoI, ve
+kterých detekuje osobu a její pózu. Nativně podporuje pouze jednu osobu ve
+snímku. Ve videu ale v rámci optimalizace neprovádí detekci RoI pro každý
+snímek, pouze pokud v aktuální RoI již není detekována osoba. Výhodou tohoto
+algoritmu je, že detekuje 33 bodů v postavě, což je podstatně více, než většina
+ostatních algoritmů, umožňuje tak přesnější analýzu některých situací, např.
+podle natočení tváře, dlaní či stop.
 
 Framework MediaPipe implementuje BlazePose spolu s detekcí více osob (použije v
 první fáze detektor objektů) i sledování. Výhodou tohoto frameworku je jeho

@@ -175,12 +175,21 @@ efektivnější proces trénování. Vanilla RNN se v praxi dnes využívají ve
 zřídka.
 
 \section{LSTM}
+
 Dlouhá krátkodobá paměť (ang. long short-term memory - LSTM ), představena
 Hochreiterem a Schmidhuberem v 1997 roce, je typ rekurentní neuronové sítě,
 který byl navržen tak, aby překonal problémy mizejícího a explodujícího
 gradientu.
 
-Její základem je jednotka, viz obrázek \ref{fig:lstm_unit}, která ve třech
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/LSTM_unit.pdf}
+    \includegraphics[width=0.49\textwidth]{Figures/LSTM_deep.pdf}
+    \caption{(1) Jednotka LSTM, (2) Rozvinutá hluboká LSTM síť}
+    \label{fig:lstm_unit}
+\end{figure}
+
+Její základem je jednotka, viz obrázek \ref{fig:lstm_unit}.1, která ve třech
 stádiích aktualizuje krátkodobou a dlouhodobou paměť. Dlouhodobá paměť je
 reprezentovaná pomocí cell state (stav buňky), který je postupně upravován a
 nakonec předán další iteraci. Dokáže uchovávat dlouhodobé závislosti. Na
@@ -200,13 +209,21 @@ se vytvoří pomocí dvou neuronů, se sigmoidní a tang aktivační funkci, nov
 vstup do dlouhodobé paměti. Ten je přičten do dlouhodobé paměti. Ve výstupní
 bráně se opět pomocí dvou neuronů na základě vstupu, krátkodobé a dlouhodobé
 paměti vytvoří novou krátkodobou paměť, která zároveň tvoří výstup z dané
-jednotky.
+jednotky. Všechny vstupy do neuronů jsou vždy vynásobeny váhami, ty ale nejsou
+pro jednoduchost na obrázku \ref{fig:lstm_unit}.1 zobrazeny.
 
-\begin{figure}[]
-    \centering
-    \includegraphics[width=0.9\textwidth]{Figures/LSTM_unit.png}
-    \caption{Jednotka LSTM}
-    \label{fig:lstm_unit}
-\end{figure}
+Na obrázku \ref{fig:lstm_unit}.2 je znázorněna rozvinutá hluboká LSTM síť.
+Jednotlivé vrstvy sítě jsou naskládány vertikálně, jednotlivé iterace pak jsou
+rozvinuty vedle sebe. Jednotlivé vrstvy si předávají skrytý stav - krátkodobou
+paměť, mezi iteracemi si pak daná vrstva předává krátkodobou i dlouhodobou
+paměť.
+
+LSTM sítě vynikají v udržování dlouhodobých závislostí a složitých struktur.
+Jelikož mají tři brány, je síť schopná přesně rozhodnout, které informace chce
+dlouhodobě uchovávat, které naopak mají větší vliv na aktuální výstup a které
+mají být zapomenuty. Je to ale za cenu většího výpočetního nároku a
+složitějšího trénování. Taky je pro tyto sítě vhodné mít větší množství
+trénovacích dat, jinak může dojít k přetrénování. 
+
 
 \endinput

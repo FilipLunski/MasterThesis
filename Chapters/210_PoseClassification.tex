@@ -5,7 +5,7 @@ Problematika vyhodnocování je velmi široká a přináší mnoho problémů. O
 člověk někdy může špatně interpretovat chování druhé osoby. Například pokud
 někdo skáče do postele či jinak prudce lehá, může to vypadat jako nebezpečná
 situace. Stejně se v počítačovém vidění nevyhneme falešným poplachům, nicméně
-se budeme snažit zapojit různě techniky pro zlepšení přesnosti našeho
+se budeme snažit zapojit různé techniky pro zlepšení přesnosti našeho
 detektoru.
 
 Cílem této části práce je vytvořit algoritmus, který pro danou pózu
@@ -16,7 +16,7 @@ osob bude řešená v další části práce.
 
 \section{Trénovací data}
 
-Pro trénování našeho modelu jsme použili více než 150 videi. Pro videa byly
+Pro trénování našeho modelu jsme použili více než 150 videí. Pro videa byly
 vytvořeny anotace aktuální třídy pózy. Tato anotace není pro každý snímek, ale
 pouze při změně definuje časovou značku a následující třídu.
 
@@ -33,7 +33,7 @@ natrénován.
 Pro trénovací data jsme použili 3 třídy, ty odpovídají třem různým třídám pózy,
 které nás zajímají - \textit{normální}, kdy osoba např. chodí, sedí nebo stojí,
 \textit{padá} - přechodný stav padání, definován od započatí pohybu směrem
-dolů, a \textit{upadl} - definován od momentu, kdy se dotkl zemi trupem nebo
+dolů, a \textit{upadl} - definován od momentu, kdy se dotkl země trupem nebo
 všemi končetinami.
 
 Pro náš model obecně potřebujeme jenom dvě třídy - \textit{normální} a
@@ -49,7 +49,7 @@ jejich kontext. Síť bude klasifikovat klíčové body pouze podle aktuální
 lokalizace ve snímku, nikoliv podle pohybu.
 
 Výhodou této architektury je jednoduchost, potažmo rychlost. Síť nepotřebuje
-mnoho parametrů a oproti rekurentním sítím, potřebuje pro evaluaci pouze jeden
+mnoho parametrů a oproti rekurentním sítím potřebuje pro evaluaci pouze jeden
 dopředný průchod vrstvami sítě.
 
 Další výhodou je jednoduchost trénování a používání. V případě více osob pro
@@ -67,7 +67,7 @@ natočení kamery.
 
 Rekurentní neuronové sítě (ang. Recurrent Neural Networks - RNN) je kategorie
 neuronových sítí, které do své architektury zapojují zpětnou vazbu. Na rozdíl
-od dopředných sítí, které spracovávájí jednotlivé vstupy nezávisle, rekurentní
+od dopředných sítí, které spracovávají jednotlivé vstupy nezávisle, rekurentní
 sítě spolu s aktuálním vstupem při evaluaci zohledňují nějakým způsobem i
 výsledek předchozí iterace. Jejich využití tedy je ve dvou oblastech: analýza
 změn pozorovaného objektu v čase (např. sledování pohybu, analýza chování či
@@ -90,7 +90,7 @@ buď svých vlastních neuronů, anebo z neuronů výstupní vrstvy, viz obráze
 plně propojeny. Tyto architektury se jmenují Elmanova síť \cite{elman}, resp.
 Jordanova síť \cite{jordan}, od jejích tvůrců. Tyto sítě jsou taky známé jako
 jednoduché rekurentní sítě (ang. Simple Recurrent Networks - SRN). I když pojem
-rekurentních sítí byl známy už od začátků neuronových sítí jako takových a byly
+rekurentních sítí byl známý už od začátků neuronových sítí jako takových a byly
 i případy jejích použití, právě tyto sítě patřily k prvním, které používaly pro
 trénování algoritmus backpropagation. Jednoduché rekurentní sítě uchovávají
 pouze krátkodobé vzory a jsou vhodné spíše pro jednoduché úlohy, jako je např.
@@ -112,7 +112,7 @@ jednotlivé vrstvy většinou podobné struktuře Elmanovy sítě - zpětná vaz
 předávána pouze v rámci jedné vrstvy, nikoliv mezi vrstvami RNN (například z
 výstupní vrstvy do první skryté vrstvy). Má to několik důvodů. Trénování sítě
 ze zpětnou vazbou mezi vrstvami by bylo velmi složité a obtížné. Taky, obecně
-každá vrstva sítě se učí pochopit problém na jiné úrovní abstrakce, zpětná
+každá vrstva sítě se učí pochopit problém na jiné úrovni abstrakce, zpětná
 vazba přes několik vrstev by pak mohla narušit stabilitu tohoto procesu a
 omezit kvalitu učení.
 
@@ -123,7 +123,7 @@ trénují. Pro vizualizaci trénování RNN se tyto sítě takzvaně rozbaluje v
 (ang. unrolling). Znamená to, že jednotlivé iterace vizualizujeme jako sekvenci
 stejných sítí (stejné váhy), které v čase $t$ přijímají vstup $x_t$ a vracejí
 výstup $y_t$, viz obrázek \ref{fig:bptt}. Zároveň místo smyček znázorňujících
-zpětnou vazbu, přijímá skrytá vrstva v čase $t$ stav $c_{t-1}$ z předchozí
+zpětnou vazbu přijímá skrytá vrstva v čase $t$ stav $c_{t-1}$ z předchozí
 iterace. Takto je propojená mezi iteracemi každá skrytá vrstva (na obrázku
 \ref{fig:bptt} vizualizováno propojení přes stavovou vrstvu).
 
@@ -136,15 +136,15 @@ iterace. Takto je propojená mezi iteracemi každá skrytá vrstva (na obrázku
 
 Při trénování se pak používá algoritmus zpětného šíření chyby v čase (ang.
 backpropagation through time - BPTT). Algoritmus funguje stejně jako klasický
-backpropagation, šíří se ale nejenom vrstvami ale i iteracemi. Unrolling nám
-pomáhá backpropagation pochopit, jednotlivé iterace totiž jsou naskládáne jako
+backpropagation, šíří se ale nejenom vrstvami, ale i iteracemi. Unrolling nám
+pomáhá backpropagation pochopit, jednotlivé iterace totiž jsou naskládány jako
 vrstvy a celou síť řešíme jako klasickou dopřednou NN.
 
 \subsection{Problémy mizejícího a explodujícího gradientu}
 
 Výše popsané základní rekurentní neuronové sítě, někdy označovány jako vanilla
 RNN, trpí několika zásadními problémy. U dopředných sítí jsme zmiňovali problém
-mizejícího gradienutu (ang. vanishing gradient), vystupující zejména u hlubších
+mizejícího gradientu (ang. vanishing gradient), vystupující zejména u hlubších
 sítí. Ten se projevuje i u RNN a je zesílený tím, že jsou jednotlivé iterace
 naskládané na sebe, podobně jako vrstvy. Zejména pak u delších sekvencí budou
 mít dřívější vstupy velmi malý vliv na učení sítě.
@@ -155,7 +155,7 @@ zvětšovat a dosáhnou tak nepřiměřeně velkých hodnot.
 
 Podívejme se, co přesně tyto problémy způsobuje. Součástí algoritmu
 backpropagation je počítání parciální derivace ztrátové funkce podle
-jednotlivých váh. V případě BPTT potřebujeme mimo jiné počítat parciální
+jednotlivých vah. V případě BPTT potřebujeme mimo jiné počítat parciální
 derivace skrytého stavu mezi jednotlivými iteracemi $\frac{\partial
         h_{t-1}}{\partial h_t}$. Tyto derivace následně opakovaně násobíme při použití
 řetězového pravidla. Pokud je tato derivace $\frac{\partial h_{t-1}}{\partial
@@ -168,7 +168,7 @@ vzrostl na $1,1^{100} \approx 13 780$, což způsobí úplnou destabilizaci sít
 nedosáhneme žádného výsledku. Vidíme tedy, že v případě, kdy je $\frac{\partial
         h_{t-1}}{\partial h_t}>1$, dochází k explodujícímu gradientu.
 
-Z důvodu těchto problémů byly vyvinuté složitější rekurentní struktury. Jejich
+Z důvodu těchto problémů byly vyvinuty složitější rekurentní struktury. Jejich
 architektura je v podstatě podobná, jednotlivé vrstvy jsou ale zastoupeny
 jinými stavebními bloky, které umožňují zejména širší pochopení kontextu a
 efektivnější proces trénování. Vanilla RNN se v praxi dnes využívají velmi
@@ -177,7 +177,7 @@ zřídka.
 \section{LSTM}
 
 Dlouhá krátkodobá paměť (ang. long short-term memory - LSTM ), představena
-Hochreiterem a Schmidhuberem v 1997 roce, je typ rekurentní neuronové sítě,
+Hochreiterem a Schmidhuberem v roce 1997, je typ rekurentní neuronové sítě,
 který byl navržen tak, aby překonal problémy mizejícího a explodujícího
 gradientu.
 
@@ -205,7 +205,7 @@ zapomínací brána určuje, které informace z dlouhodobé paměti se zapomene,
 zapamatuje. Na základě neuronu s sigmoidní aktivační funkcí závislém na
 aktuálním vstupu, dlouhodobé a krátkodobé paměti vynásobí dlouhodobou paměť, a
 tím se určí, které informace budou uchovány nebo zapomenuty. Ve vstupní bráně
-se vytvoří pomocí dvou neuronů, se sigmoidní a tang aktivační funkci, nový
+se vytvoří pomocí dvou neuronů, se sigmoidní a tangenciální aktivační funkcí, nový
 vstup do dlouhodobé paměti. Ten je přičten do dlouhodobé paměti. Ve výstupní
 bráně se opět pomocí dvou neuronů na základě vstupu, krátkodobé a dlouhodobé
 paměti vytvoří novou krátkodobou paměť, která zároveň tvoří výstup z dané

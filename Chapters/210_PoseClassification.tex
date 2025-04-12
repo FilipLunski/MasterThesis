@@ -129,7 +129,7 @@ iterace. Takto je propojená mezi iteracemi každá skrytá vrstva (na obrázku
 
 \begin{figure}[]
     \centering
-    \includegraphics[width=0.8\textwidth]{Figures/BPTT_weight.png}
+    \includegraphics[width=0.7\textwidth]{Figures/BPTT.pdf}
     \caption{Unrolling hluboké RNN}
     \label{fig:bptt}
 \end{figure}
@@ -183,40 +183,55 @@ gradientu.
 
 \begin{figure}[]
     \centering
-    \includegraphics[width=0.5\textwidth]{Figures/LSTM_unit.pdf}
-    \includegraphics[width=0.49\textwidth]{Figures/LSTM_deep.pdf}
+    \includegraphics[width=0.6\textwidth]{Figures/LSTM_unit.pdf}
     \caption{(1) Jednotka LSTM, (2) Rozvinutá hluboká LSTM síť}
-    \label{fig:lstm_unit}
+    \label{fig:lstm}
 \end{figure}
 
-Její základem je jednotka, viz obrázek \ref{fig:lstm_unit}.1, která ve třech
+Její základem je jednotka, viz obrázek \ref{fig:lstm}.1, která ve třech
 stádiích aktualizuje krátkodobou a dlouhodobou paměť. Dlouhodobá paměť je
-reprezentovaná pomocí cell state (stav buňky), který je postupně upravován a
-nakonec předán další iteraci. Dokáže uchovávat dlouhodobé závislosti. Na
-obrázku \ref{fig:lstm_unit} je reprezentována proměnnou $c_t$. Krátkodobá paměť
-je reprezentována pomocí skrytého stavu. Je použita pro úpravu dlouhodobé
-paměti, v konečném stadiu je ale vždy v rámci dané iterace vytvořena nová. Je
-tak vhodná pro uchování krátkodobých závislostí. Na obrázku \ref{fig:lstm_unit}
-je znázorněna jako $h_t$.
+reprezentovaná pomocí stavu buňky (ang. cell state, na obrázku \ref{fig:lstm}.1
+$c_t$), který je postupně upravován a nakonec předán další iteraci. Dokáže
+uchovávat dlouhodobé závislosti. Krátkodobá paměť je reprezentována pomocí
+skrytého stavu. Je použita pro úpravu dlouhodobé paměti, v konečném stadiu je
+ale vždy v rámci dané iterace vytvořena nová. Je tak vhodná pro uchování
+krátkodobých závislostí. Na obrázku \ref{fig:lstm} je znázorněna jako $h_t$.
 
 Jednotka LSTM má tři hlavní komponenty - zapomínací bránu (ang. forget gate),
-vstupní bránu (ang. input gate) a výstupní bránu (ang. output gate). První,
-zapomínací brána určuje, které informace z dlouhodobé paměti se zapomene, resp.
-zapamatuje. Na základě neuronu s sigmoidní aktivační funkcí závislém na
-aktuálním vstupu, dlouhodobé a krátkodobé paměti vynásobí dlouhodobou paměť, a
-tím se určí, které informace budou uchovány nebo zapomenuty. Ve vstupní bráně
-se vytvoří pomocí dvou neuronů, se sigmoidní a tangenciální aktivační funkcí, nový
-vstup do dlouhodobé paměti. Ten je přičten do dlouhodobé paměti. Ve výstupní
-bráně se opět pomocí dvou neuronů na základě vstupu, krátkodobé a dlouhodobé
-paměti vytvoří novou krátkodobou paměť, která zároveň tvoří výstup z dané
-jednotky. Všechny vstupy do neuronů jsou vždy vynásobeny váhami, ty ale nejsou
-pro jednoduchost na obrázku \ref{fig:lstm_unit}.1 zobrazeny.
+vstupní bránu (ang. input gate) a výstupní bránu (ang. output gate). Brány
+určují, které informace mají být předány dál.
 
-Na obrázku \ref{fig:lstm_unit}.2 je znázorněna rozvinutá hluboká LSTM síť.
-Jednotlivé vrstvy sítě jsou naskládány vertikálně, jednotlivé iterace pak jsou
-rozvinuty vedle sebe. Jednotlivé vrstvy si předávají skrytý stav - krátkodobou
-paměť, mezi iteracemi si pak daná vrstva předává krátkodobou i dlouhodobou
-paměť.
+První, zapomínací brána určuje, které informace z dlouhodobé paměti $c_{t-1}$
+se dostanou dále - co má jednotka zapomenout, resp. zapamatovat. Ve vstupní
+bráně se nejprve vytvoří kandidátní stav buňky. Ten je výsledkem neuronové
+vrstvy s tangenciální aktivační funkcí, do které vstupuje aktuální vstup $x_t$
+a krátkodobá paměť $h_{t-1}$. Pak se určí, které informace z kandidátního stavu
+buňky se přičtou do stavu buňky a vznikne tak aktuální stav buňky $c_t$. Ve
+výstupní bráně se pomocí tangenciální aktivační funkce vytvoří na základě stavu
+buňky $c_t$ kandidátní skrytý stav. Pak se určí, které z těchto informací budou
+tvořit nový skrytý stav $h_t$.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{Figures/LSTM_deep.pdf}
+    \caption{Rozvinutá hluboká LSTM síť}
+    \label{fig:lstm_deep}
+\end{figure}
+
+V každé bráně tedy máme informace, pro které určujeme, zda je poslat dále či
+nikoliv, nazvěme je propouštěný obsah (předchozí stav buňky, kandidátní stav
+buňky či kandidátní skrytý stav). Toto určení se provádí vždy pomocí neuronové
+vrstvy se sigmoidní aktivační funkcí. Do těchto vrstev vstupuje vždy předchozí
+skrytý stav $h_{t-1}$ a aktuální vstup $x_t$. Výstupem je hodnota mezi $0$ a
+$1$ pro každou informaci. Pak se tento výsledek vynásobí propouštěným obsahem.
+Pokud je výstup této vrstvy $0$, informace se nepředávají dál, pokud je $1$,
+informace se předávají dále. Vstupy do všech neuronových vrstev jsou vždy
+vynásobeny váhami, ty ale nejsou pro jednoduchost na obrázku \ref{fig:lstm}.1
+zobrazeny. Na obrázku \ref{fig:lstm_deep} je znázorněna rozvinutá hluboká LSTM
+síť. Jednotlivé vrstvy sítě jsou naskládány vertikálně, jednotlivé iterace pak
+jsou rozvinuty vedle sebe. Jednotlivé vrstvy si předávají skrytý stav -
+krátkodobou paměť, mezi iteracemi si pak daná vrstva předává krátkodobou i
+dlouhodobou paměť.
 
 LSTM sítě vynikají v udržování dlouhodobých závislostí a složitých struktur.
 Jelikož mají tři brány, je síť schopná přesně rozhodnout, které informace chce

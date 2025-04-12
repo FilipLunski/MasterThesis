@@ -244,4 +244,54 @@ jazyka. Zejména u přirozeného jazyka se LSTM sítě osvědčily jako velmi
 efektivní. Potřebujeme totiž, aby si síť pamatovala dlouhé závislosti, zároveň
 máme většinou k dispozici obrovské množství vzorků.
 
+\section{GRU}
+
+Gated Recurrent Unit (GRU) je novější typ rekurentní neuronové sítě, který
+představil v roce 2014 Cho et al. \cite{gru}. Je postavený na principu brán,
+podobném jako LSTM, nepotřebuje ale zvlášť stav pro dlouhodobou paměť. Místo
+toho kombinuje krátkodobou a dlouhodobou paměť do skrytého stavu $h_t$.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.55\textwidth]{Figures/GRU_unit.pdf}
+    \caption{Jednotka GRU}
+    \label{fig:gru_unit}
+\end{figure}
+
+GRU obsahuje dvě brány: resetovací bránu (ang. reset gate) a aktualizační bránu
+(ang. update gate), viz obrázek \ref{fig:gru_unit}. V resetovací bráně se určuje, které informace z předchozího
+skrytého stavu $h_{t-1}$ budou mít vliv na tvorbu kandidatního skrytého stavu.
+V aktualizační bráně vzniká nový skrytý stav $h_t$ kombinací předchozího
+skrytého stavu a kandidatního skrytého stavu. Ten je vytvořen pomocí neuronové
+vrstvy s tangenciální aktivační funkcí, do které vstupuje výstup resetovací
+brány a aktuální vstup $x_t$. Pak se na základě předchozího skrytého stavu
+$h_{t-1}$ a aktuálního vstupu $x_t$ určí, které informace v novém skrytém stavu
+budou převzaty z předchozího skrytého stavu a které z kandidatního skrytého
+stavu.
+
+Hlavní výhodou GRU je jednoduchost. Oproti LSTM má méně parametrů a provádí
+méně výpočtů. Je tak jednak rychlejší při evaluaci, jednak jednodušší pro
+natrénování. Taky, u GRU sítí je menší pravděpodobnost přetrénování, což je
+výhodné zejména v situacích, kdy máme omezený počet trénovacích dat. GRU sítě
+se často využívají v úlohách, kde je důležité rychlé zpracování a efektivita,
+např. v mobilních aplikacích a zpracování v reálném čase. Je to ale za cenu
+trošku horšího zpracování komplexních a dlouhodobých závislostí. Oproti LSTM
+nemá GRU takovou kontrolu nad tím, které informace dlouhodobě uchovávat. Je
+taky sklonná k rychlejšímu zapomínání. Proto se se až tak nehodí pro složitější
+úlohy, kdy je nutné si pamatovat velmi dlouhé časové závislosti. Nicméně jsou
+dneska první volbou pro mnoho úloh, po LSTM sítích se pak sahá, až když si GRU
+sítě s danou úlohou neporadí.
+
+% Rekurentní neuronové sítě GRU jsou jednodušší než LSTM, mají ale podobné
+% výhody. Vynikají v udržování dlouhodobých závislostí a složitých struktur. Tyto sítě
+% jsou efektivní pro úlohy, kde je důležité zachovat informace z dlouhého časového
+% horizontu. GRU sítě jsou rychlejší než LSTM, protože mají méně parametrů a
+% jednodušší architekturu. To znamená, že se rychleji trénují a vyžadují méně
+% výpočetních prostředků. GRU sítě jsou také méně náchylné k přetrénování, což
+% je výhodné, pokud máme omezený počet trénovacích dat. GRU sítě se často využívají
+% v úlohách, kde je důležité rychlé zpracování a efektivita. Například v
+% přirozeném jazyce, strojovém překladu, analýze sentimentu a dalších úlohách
+% spojených s textem. GRU sítě se také používají v úlohách, kde je důležité uchovávat
+% dlouhodobé závislosti a efektivně zpracovávat sekvenční data.
+
 \endinput

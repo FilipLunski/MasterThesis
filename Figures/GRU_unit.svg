@@ -1,0 +1,1523 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   style="background: transparent; background-color: transparent;"
+   version="1.1"
+   width="683px"
+   height="598px"
+   viewBox="-0.5 -0.5 683 598"
+   content="&lt;mxfile&gt;&lt;diagram id=&quot;cttUkUFFzSHb7aEH2Uw1&quot; name=&quot;Page-1&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;"
+   id="svg90"
+   sodipodi:docname="GRU_unit.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <sodipodi:namedview
+     id="namedview90"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="1.6353322"
+     inkscape:cx="209.74331"
+     inkscape:cy="352.52775"
+     inkscape:window-width="4128"
+     inkscape:window-height="1622"
+     inkscape:window-x="2293"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g89" />
+  <defs
+     id="defs1" />
+  <g
+     id="g89">
+    <g
+       id="g1">
+      <rect
+         x="102"
+         y="77"
+         width="490"
+         height="440"
+         rx="44"
+         ry="44"
+         fill="#e1d5e7"
+         stroke="#9673a6"
+         pointer-events="all"
+         style="fill: light-dark(rgb(225, 213, 231), rgb(57, 47, 63)); stroke: light-dark(rgb(150, 115, 166), rgb(149, 119, 163));"
+         id="rect1" />
+    </g>
+    <g
+       id="g2">
+      <rect
+         x="322"
+         y="37"
+         width="250"
+         height="420"
+         rx="37.5"
+         ry="37.5"
+         fill="none"
+         stroke="#000000"
+         stroke-dasharray="1 2"
+         pointer-events="all"
+         style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="rect2" />
+    </g>
+    <g
+       id="g3">
+      <rect
+         x="122"
+         y="37"
+         width="170"
+         height="420"
+         rx="25.5"
+         ry="25.5"
+         fill="none"
+         stroke="#000000"
+         stroke-dasharray="1 2"
+         pointer-events="all"
+         style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="rect3" />
+    </g>
+    <g
+       id="g4">
+      <path
+         d="M 392 116 L 451.9 116"
+         fill="none"
+         stroke="#82b366"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(130, 179, 102), rgb(68, 110, 44));"
+         id="path3" />
+      <path
+         d="M 458.65 116 L 449.65 120.5 L 451.9 116 L 449.65 111.5 Z"
+         fill="#82b366"
+         stroke="#82b366"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(130, 179, 102), rgb(68, 110, 44)); stroke: light-dark(rgb(130, 179, 102), rgb(68, 110, 44));"
+         id="path4" />
+    </g>
+    <g
+       id="g6">
+      <path
+         d="M 60 116 L 192 116 Q 202 116 202 126 L 202 151.9"
+         fill="none"
+         stroke="#82b366"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(130, 179, 102), rgb(68, 110, 44));"
+         id="path5" />
+      <path
+         d="M 202 158.65 L 197.5 149.65 L 202 151.9 L 206.5 149.65 Z"
+         fill="#82b366"
+         stroke="#82b366"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(130, 179, 102), rgb(68, 110, 44)); stroke: light-dark(rgb(130, 179, 102), rgb(68, 110, 44));"
+         id="path6" />
+    </g>
+    <g
+       id="g8">
+      <path
+         d="M 60 116 L 132 116 Q 142 116 142 126 L 142 467 Q 142 477 152 477 L 172 477 Q 182 477 182 467 L 182 387.1"
+         fill="none"
+         stroke="#82b366"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(130, 179, 102), rgb(68, 110, 44));"
+         id="path7" />
+      <path
+         d="M 182 380.35 L 186.5 389.35 L 182 387.1 L 177.5 389.35 Z"
+         fill="#82b366"
+         stroke="#82b366"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(130, 179, 102), rgb(68, 110, 44)); stroke: light-dark(rgb(130, 179, 102), rgb(68, 110, 44));"
+         id="path8" />
+    </g>
+    <g
+       id="g10">
+      <path
+         d="M 60 116 L 132 116 Q 142 116 142 126 L 142 467 Q 142 477 152 477 L 342 477 Q 352 477 352 467 L 352 387.1"
+         fill="none"
+         stroke="#82b366"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(130, 179, 102), rgb(68, 110, 44));"
+         id="path9" />
+      <path
+         d="M 352 380.35 L 356.5 389.35 L 352 387.1 L 347.5 389.35 Z"
+         fill="#82b366"
+         stroke="#82b366"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(130, 179, 102), rgb(68, 110, 44)); stroke: light-dark(rgb(130, 179, 102), rgb(68, 110, 44));"
+         id="path10" />
+    </g>
+    <g
+       id="g11">
+      <ellipse
+         cx="30"
+         cy="116"
+         rx="30"
+         ry="30"
+         fill="#d5e8d4"
+         stroke="#82b366"
+         pointer-events="all"
+         style="fill: light-dark(rgb(213, 232, 212), rgb(31, 47, 30)); stroke: light-dark(rgb(130, 179, 102), rgb(68, 110, 44));"
+         id="ellipse10" />
+    </g>
+    <g
+       id="g13">
+      <g
+         transform="translate(-0.5 -0.5)"
+         id="g12">
+        <switch
+           id="switch11">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 58px; height: 1px; padding-top: 116px; margin-left: 1px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 28px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                  <xhtml:span
+                     style="color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237));">h</xhtml:span>
+                  <xhtml:sub>t-1</xhtml:sub>
+                </xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="30"
+             y="124"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="28px"
+             text-anchor="middle"
+             id="text11">h<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan90">t-1</tspan></text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g14">
+      <ellipse
+         cx="202"
+         cy="182"
+         rx="20"
+         ry="20"
+         fill="#ffffff"
+         stroke="#000000"
+         pointer-events="all"
+         style="fill: light-dark(#ffffff, var(--ge-dark-color, #121212)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="ellipse13" />
+    </g>
+    <g
+       id="g16"
+       transform="translate(0,12)">
+      <g
+         transform="translate(-0.5,-0.5)"
+         id="g15">
+        <switch
+           id="switch14">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 38px; height: 1px; padding-top: 182px; margin-left: 183px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 12px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                  <xhtml:font
+                     style="font-size: 36px;">×</xhtml:font>
+                </xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="202"
+             y="186"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="12px"
+             text-anchor="middle"
+             id="text14"
+             style="font-size:42.6667px">×</text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g17">
+      <path
+         d="M 202 347 L 202 307.1"
+         fill="none"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path16" />
+      <path
+         d="M 202 300.35 L 206.5 309.35 L 202 307.1 L 197.5 309.35 Z"
+         fill="#000000"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path17" />
+    </g>
+    <g
+       id="g18">
+      <rect
+         x="162"
+         y="347"
+         width="80"
+         height="30"
+         rx="4.5"
+         ry="4.5"
+         fill="#ffffff"
+         stroke="#000000"
+         pointer-events="all"
+         style="fill: light-dark(#ffffff, var(--ge-dark-color, #121212)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="rect17" />
+    </g>
+    <g
+       id="g20"
+       transform="translate(0,12)">
+      <g
+         transform="translate(-0.5,-0.5)"
+         id="g19">
+        <switch
+           id="switch18">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 78px; height: 1px; padding-top: 362px; margin-left: 163px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 12px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                  <xhtml:font
+                     style="font-size: 36px;">+</xhtml:font>
+                </xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="202"
+             y="366"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="12px"
+             text-anchor="middle"
+             id="text18"
+             style="font-size:42.6667px">+</text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g21">
+      <path
+         d="M 542 116 L 611.9 116"
+         fill="none"
+         stroke="#82b366"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(130, 179, 102), rgb(68, 110, 44));"
+         id="path20" />
+      <path
+         d="M 618.65 116 L 609.65 120.5 L 611.9 116 L 609.65 111.5 Z"
+         fill="#82b366"
+         stroke="#82b366"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(130, 179, 102), rgb(68, 110, 44)); stroke: light-dark(rgb(130, 179, 102), rgb(68, 110, 44));"
+         id="path21" />
+    </g>
+    <g
+       id="g22">
+      <rect
+         x="462"
+         y="101"
+         width="80"
+         height="30"
+         rx="4.5"
+         ry="4.5"
+         fill="#ffffff"
+         stroke="#000000"
+         pointer-events="all"
+         style="fill: light-dark(#ffffff, var(--ge-dark-color, #121212)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="rect21" />
+    </g>
+    <g
+       id="g24"
+       transform="translate(0,12)">
+      <g
+         transform="translate(-0.5,-0.5)"
+         id="g23">
+        <switch
+           id="switch22">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 78px; height: 1px; padding-top: 116px; margin-left: 463px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 12px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                  <xhtml:font
+                     style="font-size: 36px;">+</xhtml:font>
+                </xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="502"
+             y="120"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="12px"
+             text-anchor="middle"
+             id="text22"
+             style="font-size:42.6667px">+</text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g25">
+      <path
+         d="M 202 537 L 202 387.1"
+         fill="none"
+         stroke="#d6b656"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(214, 182, 86), rgb(109, 81, 0));"
+         id="path24" />
+      <path
+         d="M 202 380.35 L 206.5 389.35 L 202 387.1 L 197.5 389.35 Z"
+         fill="#d6b656"
+         stroke="#d6b656"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(214, 182, 86), rgb(109, 81, 0)); stroke: light-dark(rgb(214, 182, 86), rgb(109, 81, 0));"
+         id="path25" />
+    </g>
+    <g
+       id="g26">
+      <ellipse
+         cx="202"
+         cy="567"
+         rx="30"
+         ry="30"
+         fill="#ffe6cc"
+         stroke="#d79b00"
+         pointer-events="all"
+         style="fill: light-dark(rgb(255, 230, 204), rgb(54, 33, 10)); stroke: light-dark(rgb(215, 155, 0), rgb(153, 101, 0));"
+         id="ellipse25" />
+    </g>
+    <g
+       id="g28">
+      <g
+         transform="translate(-0.5 -0.5)"
+         id="g27">
+        <switch
+           id="switch26">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 58px; height: 1px; padding-top: 567px; margin-left: 173px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 28px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">x<xhtml:sub>t</xhtml:sub>
+</xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="202"
+             y="575"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="28px"
+             text-anchor="middle"
+             id="text26">x<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan92">t</tspan></text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g29">
+      <path
+         d="M 202 247 L 202 227 Q 202 217 202 214.55 L 202 212.1"
+         fill="none"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path28" />
+      <path
+         d="M 202 205.35 L 206.5 214.35 L 202 212.1 L 197.5 214.35 Z"
+         fill="#000000"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path29" />
+    </g>
+    <g
+       id="g30">
+      <path
+         d="M 182 247 L 222 247 L 232 272 L 222 297 L 182 297 L 172 272 Z"
+         fill="#ffffff"
+         stroke="#000000"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(#ffffff, var(--ge-dark-color, #121212)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path30" />
+    </g>
+    <g
+       id="g32"
+       transform="translate(0,8)">
+      <g
+         transform="translate(-0.5,-0.5)"
+         id="g31">
+        <switch
+           id="switch30">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 58px; height: 1px; padding-top: 272px; margin-left: 173px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 12px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                  <xhtml:span
+                     style="color: light-dark(rgb(32, 33, 34), rgb(208, 209, 210)); font-family: &quot;Times New Roman&quot;, serif; background-color: light-dark(rgb(248, 249, 250), rgb(22, 23, 24));">
+                    <xhtml:font
+                       style="font-size: 36px;">σ</xhtml:font>
+                  </xhtml:span>
+                </xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="202"
+             y="276"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="12px"
+             text-anchor="middle"
+             id="text30"
+             style="font-size:42.6667px">σ</text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g33">
+      <path
+         d="M 372 347 L 372 307.1"
+         fill="none"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path32" />
+      <path
+         d="M 372 300.35 L 376.5 309.35 L 372 307.1 L 367.5 309.35 Z"
+         fill="#000000"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path33" />
+    </g>
+    <g
+       id="g34">
+      <rect
+         x="332"
+         y="347"
+         width="80"
+         height="30"
+         rx="4.5"
+         ry="4.5"
+         fill="#ffffff"
+         stroke="#000000"
+         pointer-events="all"
+         style="fill: light-dark(#ffffff, var(--ge-dark-color, #121212)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="rect33" />
+    </g>
+    <g
+       id="g36"
+       transform="translate(0,12)">
+      <g
+         transform="translate(-0.5,-0.5)"
+         id="g35">
+        <switch
+           id="switch34">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 78px; height: 1px; padding-top: 362px; margin-left: 333px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 12px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                  <xhtml:font
+                     style="font-size: 36px;">+</xhtml:font>
+                </xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="372"
+             y="366"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="12px"
+             text-anchor="middle"
+             id="text34"
+             style="font-size:42.6667px">+</text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g37">
+      <path
+         d="M 202 537 L 202 507 Q 202 497 212 497 L 362 497 Q 372 497 372 487 L 372 387.1"
+         fill="none"
+         stroke="#d6b656"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(214, 182, 86), rgb(109, 81, 0));"
+         id="path36" />
+      <path
+         d="M 372 380.35 L 376.5 389.35 L 372 387.1 L 367.5 389.35 Z"
+         fill="#d6b656"
+         stroke="#d6b656"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(214, 182, 86), rgb(109, 81, 0)); stroke: light-dark(rgb(214, 182, 86), rgb(109, 81, 0));"
+         id="path37" />
+    </g>
+    <g
+       id="g39">
+      <path
+         d="M 447 187 L 471.9 187"
+         fill="none"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path38" />
+      <path
+         d="M 478.65 187 L 469.65 191.5 L 471.9 187 L 469.65 182.5 Z"
+         fill="#000000"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path39" />
+    </g>
+    <g
+       id="g41">
+      <path
+         d="M 372 247 L 372 146.1"
+         fill="none"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path40" />
+      <path
+         d="M 372 139.35 L 376.5 148.35 L 372 146.1 L 367.5 148.35 Z"
+         fill="#000000"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path41" />
+    </g>
+    <g
+       id="g42">
+      <path
+         d="M 352 247 L 392 247 L 402 272 L 392 297 L 352 297 L 342 272 Z"
+         fill="#ffffff"
+         stroke="#000000"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(#ffffff, var(--ge-dark-color, #121212)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path42" />
+    </g>
+    <g
+       id="g44"
+       transform="translate(0,8)">
+      <g
+         transform="translate(-0.5,-0.5)"
+         id="g43">
+        <switch
+           id="switch42">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 58px; height: 1px; padding-top: 272px; margin-left: 343px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 12px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                  <xhtml:span
+                     style="color: light-dark(rgb(32, 33, 34), rgb(208, 209, 210)); font-family: &quot;Times New Roman&quot;, serif; background-color: light-dark(rgb(248, 249, 250), rgb(22, 23, 24));">
+                    <xhtml:font
+                       style="font-size: 36px;">σ</xhtml:font>
+                  </xhtml:span>
+                </xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="372"
+             y="276"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="12px"
+             text-anchor="middle"
+             id="text42"
+             style="font-size:42.6667px">σ</text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g45">
+      <path
+         d="M 502 347 L 502 307.1"
+         fill="none"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path44" />
+      <path
+         d="M 502 300.35 L 506.5 309.35 L 502 307.1 L 497.5 309.35 Z"
+         fill="#000000"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path45" />
+    </g>
+    <g
+       id="g46">
+      <rect
+         x="462"
+         y="347"
+         width="80"
+         height="30"
+         rx="4.5"
+         ry="4.5"
+         fill="#ffffff"
+         stroke="#000000"
+         pointer-events="all"
+         style="fill: light-dark(#ffffff, var(--ge-dark-color, #121212)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="rect45" />
+    </g>
+    <g
+       id="g48"
+       transform="translate(0,12)">
+      <g
+         transform="translate(-0.5,-0.5)"
+         id="g47">
+        <switch
+           id="switch46">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 78px; height: 1px; padding-top: 362px; margin-left: 463px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 12px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                  <xhtml:font
+                     style="font-size: 36px;">+</xhtml:font>
+                </xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="502"
+             y="366"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="12px"
+             text-anchor="middle"
+             id="text46"
+             style="font-size:42.6667px">+</text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g49">
+      <path
+         d="M 202 537 L 202 507 Q 202 497 212 497 L 492 497 Q 502 497 502 487 L 502 387.1"
+         fill="none"
+         stroke="#d6b656"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(214, 182, 86), rgb(109, 81, 0));"
+         id="path48" />
+      <path
+         d="M 502 380.35 L 506.5 389.35 L 502 387.1 L 497.5 389.35 Z"
+         fill="#d6b656"
+         stroke="#d6b656"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(214, 182, 86), rgb(109, 81, 0)); stroke: light-dark(rgb(214, 182, 86), rgb(109, 81, 0));"
+         id="path49" />
+    </g>
+    <g
+       id="g51">
+      <path
+         d="M 502 247 L 502 217.1"
+         fill="none"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path50" />
+      <path
+         d="M 502 210.35 L 506.5 219.35 L 502 217.1 L 497.5 219.35 Z"
+         fill="#000000"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path51" />
+    </g>
+    <g
+       id="g52">
+      <path
+         d="M 482 247 L 522 247 L 532 272 L 522 297 L 482 297 L 472 272 Z"
+         fill="#ffffff"
+         stroke="#000000"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(#ffffff, var(--ge-dark-color, #121212)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path52" />
+    </g>
+    <g
+       id="g54">
+      <g
+         transform="translate(-0.5 -0.5)"
+         id="g53">
+        <switch
+           id="switch52">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 58px; height: 1px; padding-top: 272px; margin-left: 473px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 19px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                  <xhtml:span
+                     style="color: light-dark(rgb(32, 33, 34), rgb(208, 209, 210)); font-family: &quot;Times New Roman&quot;, serif; background-color: light-dark(rgb(248, 249, 250), rgb(22, 23, 24));">
+                    <xhtml:font>tanh</xhtml:font>
+                  </xhtml:span>
+                </xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="502"
+             y="278"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="&quot;Helvetica&quot;"
+             font-size="19px"
+             text-anchor="middle"
+             id="text52">tanh</text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g55">
+      <path
+         d="M 502 167 L 502 141.1"
+         fill="none"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path54" />
+      <path
+         d="M 502 134.35 L 506.5 143.35 L 502 141.1 L 497.5 143.35 Z"
+         fill="#000000"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path55" />
+    </g>
+    <g
+       id="g56">
+      <ellipse
+         cx="502"
+         cy="187"
+         rx="20"
+         ry="20"
+         fill="#ffffff"
+         stroke="#000000"
+         pointer-events="all"
+         style="fill: light-dark(#ffffff, var(--ge-dark-color, #121212)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="ellipse55" />
+    </g>
+    <g
+       id="g58"
+       transform="translate(0,12)">
+      <g
+         transform="translate(-0.5,-0.5)"
+         id="g57">
+        <switch
+           id="switch56">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 38px; height: 1px; padding-top: 187px; margin-left: 483px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 12px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                  <xhtml:font
+                     style="font-size: 36px;">×</xhtml:font>
+                </xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="502"
+             y="191"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="12px"
+             text-anchor="middle"
+             id="text56"
+             style="font-size:42.6667px">×</text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g59">
+      <ellipse
+         cx="652"
+         cy="116"
+         rx="30"
+         ry="30"
+         fill="#d5e8d4"
+         stroke="#82b366"
+         pointer-events="all"
+         style="fill: light-dark(rgb(213, 232, 212), rgb(31, 47, 30)); stroke: light-dark(rgb(130, 179, 102), rgb(68, 110, 44));"
+         id="ellipse58" />
+    </g>
+    <g
+       id="g61">
+      <g
+         transform="translate(-0.5 -0.5)"
+         id="g60">
+        <switch
+           id="switch59">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 58px; height: 1px; padding-top: 116px; margin-left: 623px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 28px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                  <xhtml:span
+                     style="color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237));">h</xhtml:span>
+                  <xhtml:sub>t</xhtml:sub>
+                </xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="652"
+             y="124"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="28px"
+             text-anchor="middle"
+             id="text59">h<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan91">t</tspan></text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g62">
+      <path
+         d="M 231.53 402.03 L 225.6 386.44"
+         fill="none"
+         stroke="#6c8ebf"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(108, 142, 191), rgb(92, 121, 163));"
+         id="path61" />
+      <path
+         d="M 223.19 380.13 L 230.6 386.94 L 225.6 386.44 L 222.19 390.15 Z"
+         fill="#6c8ebf"
+         stroke="#6c8ebf"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(108, 142, 191), rgb(92, 121, 163)); stroke: light-dark(rgb(108, 142, 191), rgb(92, 121, 163));"
+         id="path62" />
+    </g>
+    <g
+       id="g63">
+      <ellipse
+         cx="237"
+         cy="416"
+         rx="15"
+         ry="15"
+         fill="#dae8fc"
+         stroke="#6c8ebf"
+         pointer-events="all"
+         style="fill: light-dark(rgb(218, 232, 252), rgb(29, 41, 59)); stroke: light-dark(rgb(108, 142, 191), rgb(92, 121, 163));"
+         id="ellipse62" />
+    </g>
+    <g
+       id="g65">
+      <g
+         transform="translate(-0.5 -0.5)"
+         id="g64">
+        <switch
+           id="switch63">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 28px; height: 1px; padding-top: 416px; margin-left: 223px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 18px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">b<xhtml:sub>0</xhtml:sub>
+</xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="237"
+             y="421"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="18px"
+             text-anchor="middle"
+             id="text63">b<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan93">0</tspan></text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g66">
+      <path
+         d="M 401.53 402.03 L 395.6 386.44"
+         fill="none"
+         stroke="#6c8ebf"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(108, 142, 191), rgb(92, 121, 163));"
+         id="path65" />
+      <path
+         d="M 393.19 380.13 L 400.6 386.94 L 395.6 386.44 L 392.19 390.15 Z"
+         fill="#6c8ebf"
+         stroke="#6c8ebf"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(108, 142, 191), rgb(92, 121, 163)); stroke: light-dark(rgb(108, 142, 191), rgb(92, 121, 163));"
+         id="path66" />
+    </g>
+    <g
+       id="g67">
+      <ellipse
+         cx="407"
+         cy="416"
+         rx="15"
+         ry="15"
+         fill="#dae8fc"
+         stroke="#6c8ebf"
+         pointer-events="all"
+         style="fill: light-dark(rgb(218, 232, 252), rgb(29, 41, 59)); stroke: light-dark(rgb(108, 142, 191), rgb(92, 121, 163));"
+         id="ellipse66" />
+    </g>
+    <g
+       id="g69">
+      <g
+         transform="translate(-0.5 -0.5)"
+         id="g68">
+        <switch
+           id="switch67">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 28px; height: 1px; padding-top: 416px; margin-left: 393px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 18px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">b<xhtml:sub>1</xhtml:sub>
+</xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="407"
+             y="421"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="18px"
+             text-anchor="middle"
+             id="text67">b<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan94">1</tspan></text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g70">
+      <path
+         d="M 531.53 402.03 L 525.6 386.44"
+         fill="none"
+         stroke="#6c8ebf"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(108, 142, 191), rgb(92, 121, 163));"
+         id="path69" />
+      <path
+         d="M 523.19 380.13 L 530.6 386.94 L 525.6 386.44 L 522.19 390.15 Z"
+         fill="#6c8ebf"
+         stroke="#6c8ebf"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(108, 142, 191), rgb(92, 121, 163)); stroke: light-dark(rgb(108, 142, 191), rgb(92, 121, 163));"
+         id="path70" />
+    </g>
+    <g
+       id="g71">
+      <ellipse
+         cx="537"
+         cy="416"
+         rx="15"
+         ry="15"
+         fill="#dae8fc"
+         stroke="#6c8ebf"
+         pointer-events="all"
+         style="fill: light-dark(rgb(218, 232, 252), rgb(29, 41, 59)); stroke: light-dark(rgb(108, 142, 191), rgb(92, 121, 163));"
+         id="ellipse70" />
+    </g>
+    <g
+       id="g73">
+      <g
+         transform="translate(-0.5 -0.5)"
+         id="g72">
+        <switch
+           id="switch71">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 28px; height: 1px; padding-top: 416px; margin-left: 523px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 18px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">b<xhtml:sub>2</xhtml:sub>
+</xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="537"
+             y="421"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="18px"
+             text-anchor="middle"
+             id="text71">b<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan95">2</tspan></text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g74">
+      <rect
+         x="107"
+         y="0"
+         width="200"
+         height="40"
+         fill="none"
+         stroke="none"
+         pointer-events="all"
+         id="rect73" />
+    </g>
+    <g
+       id="g76">
+      <g
+         transform="translate(-0.5 -0.5)"
+         id="g75">
+        <switch
+           id="switch74">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 20px; margin-left: 207px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 23px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: nowrap; ">Resetovací brána</xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="207"
+             y="27"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="&quot;Helvetica&quot;"
+             font-size="23px"
+             text-anchor="middle"
+             id="text74">Resetovací brána</text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g77">
+      <rect
+         x="342"
+         y="0"
+         width="210"
+         height="40"
+         fill="none"
+         stroke="none"
+         pointer-events="all"
+         id="rect76" />
+    </g>
+    <g
+       id="g79">
+      <g
+         transform="translate(-0.5 -0.5)"
+         id="g78">
+        <switch
+           id="switch77">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 20px; margin-left: 447px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 23px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: nowrap; ">Aktualizační brána</xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="447"
+             y="27"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="&quot;Helvetica&quot;"
+             font-size="23px"
+             text-anchor="middle"
+             id="text77">Aktualizační brána</text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g80">
+      <path
+         d="M 60 116 L 341.9 116"
+         fill="none"
+         stroke="#82b366"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(130, 179, 102), rgb(68, 110, 44));"
+         id="path79" />
+      <path
+         d="M 348.65 116 L 339.65 120.5 L 341.9 116 L 339.65 111.5 Z"
+         fill="#82b366"
+         stroke="#82b366"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(130, 179, 102), rgb(68, 110, 44)); stroke: light-dark(rgb(130, 179, 102), rgb(68, 110, 44));"
+         id="path80" />
+    </g>
+    <g
+       id="g81">
+      <ellipse
+         cx="372"
+         cy="116"
+         rx="20"
+         ry="20"
+         fill="#ffffff"
+         stroke="#000000"
+         pointer-events="all"
+         style="fill: light-dark(#ffffff, var(--ge-dark-color, #121212)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="ellipse80" />
+    </g>
+    <g
+       id="g83"
+       transform="translate(0,12)">
+      <g
+         transform="translate(-0.5,-0.5)"
+         id="g82">
+        <switch
+           id="switch81">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 38px; height: 1px; padding-top: 116px; margin-left: 353px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 12px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                  <xhtml:font
+                     style="font-size: 36px;">×</xhtml:font>
+                </xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="372"
+             y="120"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="Helvetica"
+             font-size="12px"
+             text-anchor="middle"
+             id="text81"
+             style="font-size:42.6667px">×</text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g84">
+      <path
+         d="M 372 247 L 372 197 Q 372 187 382 187 L 406.9 187"
+         fill="none"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path83" />
+      <path
+         d="M 413.65 187 L 404.65 191.5 L 406.9 187 L 404.65 182.5 Z"
+         fill="#000000"
+         stroke="#000000"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="path84" />
+    </g>
+    <g
+       id="g85">
+      <rect
+         x="417"
+         y="172"
+         width="30"
+         height="30"
+         fill="#ffffff"
+         stroke="#000000"
+         pointer-events="all"
+         style="fill: light-dark(#ffffff, var(--ge-dark-color, #121212)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"
+         id="rect84" />
+    </g>
+    <g
+       id="g87">
+      <g
+         transform="translate(-0.5 -0.5)"
+         id="g86">
+        <switch
+           id="switch85">
+          <foreignObject
+             style="overflow: visible; text-align: left;"
+             pointer-events="none"
+             width="100%"
+             height="100%"
+             requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <xhtml:div
+               style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 28px; height: 1px; padding-top: 187px; margin-left: 418px;">
+              <xhtml:div
+                 style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                <xhtml:div
+                   style="display: inline-block; font-size: 18px; font-family: &quot;Helvetica&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">1-x</xhtml:div>
+              </xhtml:div>
+            </xhtml:div>
+          </foreignObject>
+          <text
+             x="432"
+             y="192"
+             fill="light-dark(#000000, #ffffff)"
+             font-family="&quot;Helvetica&quot;"
+             font-size="18px"
+             text-anchor="middle"
+             id="text85">1-x</text>
+        </switch>
+      </g>
+    </g>
+    <g
+       id="g88">
+      <path
+         d="M 222 182 L 262 182 Q 272 182 272 192 L 272 437 Q 272 447 282 447 L 472 447 Q 482 447 482 437 L 482 387.1"
+         fill="none"
+         stroke="#b85450"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="stroke"
+         style="stroke: light-dark(rgb(184, 84, 80), rgb(215, 129, 126));"
+         id="path87" />
+      <path
+         d="M 482 380.35 L 486.5 389.35 L 482 387.1 L 477.5 389.35 Z"
+         fill="#b85450"
+         stroke="#b85450"
+         stroke-width="3"
+         stroke-miterlimit="10"
+         pointer-events="all"
+         style="fill: light-dark(rgb(184, 84, 80), rgb(215, 129, 126)); stroke: light-dark(rgb(184, 84, 80), rgb(215, 129, 126));"
+         id="path88" />
+    </g>
+  </g>
+  <switch
+     id="switch90">
+    <g
+       requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+       id="g90" />
+    <a
+       transform="translate(0,-5)"
+       xlink:href="https://www.drawio.com/doc/faq/svg-export-text-problems"
+       target="_blank"
+       id="a90">
+      <text
+         text-anchor="middle"
+         font-size="10px"
+         x="50%"
+         y="100%"
+         id="text90">Text is not SVG - cannot display</text>
+    </a>
+  </switch>
+</svg>

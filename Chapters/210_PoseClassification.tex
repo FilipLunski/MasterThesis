@@ -22,12 +22,12 @@ pouze při změně definuje časovou značku a následující třídu.
 
 Dále byl vytvořen skript, který prošel každé video a vytvořil trénovací data
 pro další fázi. Ty obsahují pro každý snímek detekované klíčové body (jako
-vstup) a aktuální třídu (jako požadovaný výstup). Pro detekci byl použit dříve
-vybraný algoritmus pro detekci pózy. Na použitém algoritmu by teoreticky
-nemuselo záležet (pokud detekuje stejné typy klíčových bodů), je ale lepší
-použít stejný algoritmus jak pro trénovací data, tak ve výsledném programu.
-Algoritmy se totiž můžou v některých situacích chovat trochu jinak (např.
-okluze) a náš model by tak dostával v praxi jiná data, než pro jaké byl
+vstup) a aktuální třídu (jako požadovaný výstup). Pro detekci klíčových bodů
+byl použit dříve vybraný algoritmus pro detekci pózy. Na použitém algoritmu by
+teoreticky nemuselo záležet (pokud detekuje stejné typy klíčových bodů), je ale
+lepší použít stejný algoritmus jak pro trénovací data, tak ve výsledném
+programu. Algoritmy se totiž můžou v některých situacích chovat trochu jinak
+(např. okluze) a náš model by tak dostával v praxi jiná data, než pro jaké byl
 natrénován.
 
 Pro trénovací data jsme použili 3 třídy, ty odpovídají třem různým třídám pózy,
@@ -259,15 +259,15 @@ toho kombinuje krátkodobou a dlouhodobou paměť do skrytého stavu $h_t$.
 \end{figure}
 
 GRU obsahuje dvě brány: resetovací bránu (ang. reset gate) a aktualizační bránu
-(ang. update gate), viz obrázek \ref{fig:gru_unit}. V resetovací bráně se určuje, které informace z předchozího
-skrytého stavu $h_{t-1}$ budou mít vliv na tvorbu kandidatního skrytého stavu.
-V aktualizační bráně vzniká nový skrytý stav $h_t$ kombinací předchozího
-skrytého stavu a kandidatního skrytého stavu. Ten je vytvořen pomocí neuronové
-vrstvy s tangenciální aktivační funkcí, do které vstupuje výstup resetovací
-brány a aktuální vstup $x_t$. Pak se na základě předchozího skrytého stavu
-$h_{t-1}$ a aktuálního vstupu $x_t$ určí, které informace v novém skrytém stavu
-budou převzaty z předchozího skrytého stavu a které z kandidatního skrytého
-stavu.
+(ang. update gate), viz obrázek \ref{fig:gru_unit}. V resetovací bráně se
+určuje, které informace z předchozího skrytého stavu $h_{t-1}$ budou mít vliv
+na tvorbu kandidátního skrytého stavu. V aktualizační bráně vzniká nový skrytý
+stav $h_t$ kombinací předchozího skrytého stavu a kandidátního skrytého stavu.
+Ten je vytvořen pomocí neuronové vrstvy s tangenciální aktivační funkcí, do
+které vstupuje výstup resetovací brány a aktuální vstup $x_t$. Pak se na
+základě předchozího skrytého stavu $h_{t-1}$ a aktuálního vstupu $x_t$ určí,
+které informace v novém skrytém stavu budou převzaty z předchozího skrytého
+stavu a které z kandidátního skrytého stavu.
 
 Hlavní výhodou GRU je jednoduchost. Oproti LSTM má méně parametrů a provádí
 méně výpočtů. Je tak jednak rychlejší při evaluaci, jednak jednodušší pro
@@ -276,9 +276,9 @@ výhodné zejména v situacích, kdy máme omezený počet trénovacích dat. GR
 se často využívají v úlohách, kde je důležité rychlé zpracování a efektivita,
 např. v mobilních aplikacích a zpracování v reálném čase. Je to ale za cenu
 trošku horšího zpracování komplexních a dlouhodobých závislostí. Oproti LSTM
-nemá GRU takovou kontrolu nad tím, které informace dlouhodobě uchovávat. Je
-taky sklonná k rychlejšímu zapomínání. Proto se se až tak nehodí pro složitější
-úlohy a situace, kdy je nutné si pamatovat velmi dlouhé časové závislosti. Nicméně jsou
+nemá GRU takovou kontrolu nad tím, které informace dlouhodobě uchovávat a má
+sklon k rychlejšímu zapomínání. Proto se až tak nehodí pro složitější úlohy a
+situace, kdy je nutné si pamatovat velmi dlouhé časové závislosti. Nicméně jsou
 dneska první volbou pro mnoho úloh, po LSTM sítích se pak sahá, až když si GRU
 sítě s danou úlohou neporadí.
 

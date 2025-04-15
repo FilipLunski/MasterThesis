@@ -4,8 +4,8 @@
 V této kapitole se zaměříme na implementaci klasifikačního algoritmu pro
 analýzu pózy. Nejdříve se podíváme na použité technologie a knihovny, které nám
 pomohou s vývojem. Poté se zaměříme na návrh různých architektur a možné
-hyperparametry, kterých vliv na výkon modelu bychom mohli otestovat. V další
-kapitole se pak zaměříme na experimenty z těmito architekturami a
+hyperparametry, jejichž vliv na výkon modelu bychom mohli otestovat. V další
+kapitole se pak zaměříme na experimenty s těmito architekturami a
 hyperparametry a zhodnotíme získané výsledky.
 
 \section{Použité technologie}
@@ -20,16 +20,16 @@ podobnými jako v NumPy, ale s podporou silné akcelerace s využitím GPU, a v�
 neuronových sítí postavený na vysokoúrovňových stavebních blocích s podporou
 automatické derivace pro počítaní gradientů.
 
-Implementace neuronových sítí v PyTorch je velice jednoduché a díky vysoké míře
+Implementace neuronových sítí v PyTorch je velice jednoduchá a díky vysoké míře  
 abstrakce umožňuje se při vývoji soustředit na samotnou architekturu a design
 sítě, nikoliv na detaily implementace. Pro vytvoření nové neuronové sítě stačí
 vytvořit třídu, která bude dědit od základní třídy $nn.Module$, v konstruktoru
-definiovat jednotlivé vrstvy včetně různých regularizačních hyperparametrů. V
+definovat jednotlivé vrstvy včetně různých regularizačních hyperparametrů. V
 metodě $forward$ pak definujeme dopředný průchod sítě. Dále máme možnost
 kontrolovat např. výpočet ztrátové funkce či metriky přesnosti.
 
-PyTorch obsahuje také předpřípravené moduly pro GRU či LSTM sítě, včetně
-vícervrstvých architektur. Pro tyto moduly definujeme velikost vstupu a
+PyTorch obsahuje také předpřipravené moduly pro GRU či LSTM sítě, včetně
+vícevrstvých architektur. Pro tyto moduly definujeme velikost vstupu a
 velikost skrytého stavu, dále můžeme definovat počet vrstev či dropout. Výstup
 z těchto modulů je pak skrytý stav, který můžeme dále zpracovávat pomocí
 jednoduché dopředné sítě pro predikci třídy.
@@ -83,7 +83,7 @@ class KeypointClassifier(lightning.LightningModule):
 
 \subsection{Dopředná neuronová síť}
 
-Nejprve jsme implementovali jednoduchou dopřednou neuronovou síť. Její hlavní
+Nejprve budeme implementovat jednoduchou dopřednou neuronovou síť. Její hlavní
 výhodou je rychlost, je to ale za cenu menší přesnosti. Jako vstupní data jsou
 použity klíčové body jedné osoby z daného jednoho snímku. Trénovací data tedy
 pouze přečteme z trénovacího souboru a překonvertujeme je do formy tenzoru,
@@ -101,7 +101,7 @@ za třídu \textit{normální}, zatímco čísla od $0.5$ do $1$ za třídu
 Dále jsme implementovali GRU síť, viz kód \ref{src:pytorch}. V tomto příkladu
 je definována GRU jednotka s jednou vrstvou, velikosti vstupního vektoru $34$ a
 skrytým stavem velikosti $128$, následována dvouvrstvou dopřednou plně
-propojenou sítí ze $128$ neurony v první vrstvě a s jedním neuroném ve druhé
+propojenou sítí ze $128$ neurony v první vrstvě a s jedním neuronem ve druhé
 vrstvě.
 
 Cást těchto hyperparametrů jsme parametrizovali, abychom mohli postupně
@@ -117,7 +117,7 @@ class KeypointClassifierGRULightning(L.LightningModule):
     def __init__(self, input_size=34, rnn_hidden_size=128, rnn_layers_count=2, fc_size=128, output_size=1, rnn_dropout=0.3, fc_dropout=0.3, device=None):
 \end{lstlisting}
 
-Stejně jako u předchozí architektury, jako ztrátová funkce byla použita Binární
+Stejně jako u předchozí architektury, jako ztrátová funkce byla použita binární
 křížová entropie, tedy $nn.BCEWithLogitsLoss()$, která je vhodná pro binární
 klasifikaci.
 
@@ -128,5 +128,12 @@ pouze použitím modulu $nn.LSTM$ místo $nn.GRU$. Tento modul se v použití li
 od GRU pouze tím, že kromě skrytého stavu vrací také stav buňky (dlouhodobou
 paměť), ten ale stejně nevyužijeme. Pro síť LSTM budeme ladit stejnou množinu
 hyperparametrů, jako pro GRU síť, abychom mohli porovnat jejich výkonnost.
+
+\subsection{Vícetřídní klasifikace}
+
+Jak již bylo zmíněno (\ref{sec:TrainingData}), pro naše řešení potřebujeme detekovat pouze třídy \textit{normální} a \textit{upadl}, vyzkoušíme ale natrénovat i modely se třemi třídami - přidáme třídu \textit{padá}. Nemá smysl v našem případě implementovat takovou dopřednou neuronovou síť, jelikož klasifikuje snímky bez kontextu předchozích snímků. 
+
+Budeme tedy navíc implementovat sítě GRU a LSTM, s velice podobnou topologií jako sítě s binární klasifikací. Hlavním rozdílem bude velikost 
+výstupní vrstvy, jež bude rovna počtu tříd a použitá ztrátová funkce - nyní použijeme křížovou entropii. Výstup vícetřídní klasifikační sítě pak představuje pole pravděpodobností, že se jedná o danou třídu.
 
 \endinput

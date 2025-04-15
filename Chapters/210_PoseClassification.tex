@@ -1,4 +1,4 @@
-\chapter{Klasifikace pózy}
+\chapter{Možnosti analýzy klíčových bodů}
 \label{sec:PoseClassification}
 
 Problematika vyhodnocování je velmi široká a přináší mnoho problémů. Ostatně i
@@ -8,11 +8,17 @@ situace. Stejně se v počítačovém vidění nevyhneme falešným poplachům, 
 se budeme snažit zapojit různé techniky pro zlepšení přesnosti našeho
 detektoru.
 
-Cílem této části práce je vytvořit algoritmus, který pro danou pózu
-(reprezentovanou klíčovými body), resp. sekvenci takových póz (získané pro
-jednu osobu ze sekvence snímků), určí, zda se jedná o situaci pádu, či nikoliv.
-Tento algoritmus bude přijímat vždy pózu jedné osoby, funkcionalita pro více
-osob bude řešená v další části práce.
+Naším úkolem je nyní vytvořit algoritmus, který pro danou pózu (reprezentovanou
+klíčovými body), resp. sekvenci takových póz (získané pro jednu osobu ze
+sekvence snímků), určí, zda se jedná o situaci pádu, či nikoliv. Tento
+algoritmus bude přijímat vždy pózu jedné osoby, funkcionalita pro více osob
+bude řešená později.
+
+Za tímto účelem navrhneme a natrénujeme neuronovou síť, jejíž vstupem bude 17
+2D klíčových bodů (34 čísel) a výstupem bude klasifikace třídy pózy -
+\textit{normální} a \textit{upadl}. Cílem této části práce je rozebrat různé
+možností architektury této neuronové sítě. V další části některé z těchto
+architektur naimplementujeme a otestujeme.
 
 \section{Trénovací data}
 
@@ -23,12 +29,11 @@ pouze při změně definuje časovou značku a následující třídu.
 Dále byl vytvořen skript, který prošel každé video a vytvořil trénovací data
 pro další fázi. Ty obsahují pro každý snímek detekované klíčové body (jako
 vstup) a aktuální třídu (jako požadovaný výstup). Pro detekci klíčových bodů
-byl použit dříve vybraný algoritmus pro detekci pózy. Na použitém algoritmu by
+byl použit dříve vybraný model pro detekci pózy. Na použitém modelu by
 teoreticky nemuselo záležet (pokud detekuje stejné typy klíčových bodů), je ale
-lepší použít stejný algoritmus jak pro trénovací data, tak ve výsledném
-programu. Algoritmy se totiž můžou v některých situacích chovat trochu jinak
-(např. okluze) a náš model by tak dostával v praxi jiná data, než pro jaké byl
-natrénován.
+lepší použít stejný model jak pro trénovací data, tak ve výsledném programu.
+Modely se totiž můžou v některých situacích chovat trochu jinak (např. okluze)
+a náš model by tak dostával v praxi jiná data, než pro jaké byl natrénován.
 
 Pro trénovací data jsme použili 3 třídy, ty odpovídají třem různým třídám pózy,
 které nás zajímají - \textit{normální}, kdy osoba např. chodí, sedí nebo stojí,
@@ -111,10 +116,10 @@ hlubokých rekurentních neuronových sítích (ang. deep RNN - DRNN) jsou pak
 jednotlivé vrstvy většinou podobné struktuře Elmanovy sítě - zpětná vazba je
 předávána pouze v rámci jedné vrstvy, nikoliv mezi vrstvami RNN (například z
 výstupní vrstvy do první skryté vrstvy). Má to několik důvodů. Trénování sítě
-ze zpětnou vazbou mezi vrstvami by bylo velmi složité a obtížné. Taky, obecně
-každá vrstva sítě se učí pochopit problém na jiné úrovni abstrakce, zpětná
-vazba přes několik vrstev by pak mohla narušit stabilitu tohoto procesu a
-omezit kvalitu učení.
+ze zpětnou vazbou mezi vrstvami by bylo velmi složité a obtížné. Taky, u
+neuronových sítí obecně platí, že každá vrstva sítě se učí pochopit problém na
+jiné úrovni abstrakce, zpětná vazba přes několik vrstev by pak mohla narušit
+stabilitu tohoto procesu a omezit kvalitu učení.
 
 \subsection{Trénování rekurentních sítí}
 
@@ -244,6 +249,13 @@ jazyka. Zejména u přirozeného jazyka se LSTM sítě osvědčily jako velmi
 efektivní. Potřebujeme totiž, aby si síť pamatovala dlouhé závislosti, zároveň
 máme většinou k dispozici obrovské množství vzorků.
 
+Síť LSTM by mohla být vhodná pro klasifikaci pózy zejména pokud bychom
+potřebovali analyzovat pohyb v delších časových úsecích. Událost pádu se naopak
+obvykle odehrává v krátkém čase, nicméně můžeme otestovat, jakých výsledků bude
+tato architektura dosahovat oproti jiným rekurentním sítím, zejména v případě,
+kdy bychom modelu nepředávali pouze pózu z $n$ posledních snímku, ale celou
+sekvenci detekovanou pro danou osobu.
+
 \section{GRU}
 
 Gated Recurrent Unit (GRU) je novější typ rekurentní neuronové sítě, který
@@ -282,16 +294,12 @@ situace, kdy je nutné si pamatovat velmi dlouhé časové závislosti. Nicmén�
 dneska první volbou pro mnoho úloh, po LSTM sítích se pak sahá, až když si GRU
 sítě s danou úlohou neporadí.
 
-% Rekurentní neuronové sítě GRU jsou jednodušší než LSTM, mají ale podobné
-% výhody. Vynikají v udržování dlouhodobých závislostí a složitých struktur. Tyto sítě
-% jsou efektivní pro úlohy, kde je důležité zachovat informace z dlouhého časového
-% horizontu. GRU sítě jsou rychlejší než LSTM, protože mají méně parametrů a
-% jednodušší architekturu. To znamená, že se rychleji trénují a vyžadují méně
-% výpočetních prostředků. GRU sítě jsou také méně náchylné k přetrénování, což
-% je výhodné, pokud máme omezený počet trénovacích dat. GRU sítě se často využívají
-% v úlohách, kde je důležité rychlé zpracování a efektivita. Například v
-% přirozeném jazyce, strojovém překladu, analýze sentimentu a dalších úlohách
-% spojených s textem. GRU sítě se také používají v úlohách, kde je důležité uchovávat
-% dlouhodobé závislosti a efektivně zpracovávat sekvenční data.
+Stejnou taktiku zvolíme i my. Nejdříve otestujeme GRU sítě, a to pro několik
+možností délky analyzované sekvence. To znamená, že pro každý snímek předáme
+síti očekávanou třídu a sekvenci póz dané osoby z $n$ posledních snímků. Pak
+vyzkoušíme síti předávat celou sekvenci póz dané osoby. Nakonec otestujeme i
+LSTM architekturu, abychom porovnali, pro jaké situace by byla vhodnější.
+Nicméně s ohledem na nevelký počet testovacích dat předpokladáme, že
+stabilnějších výsledků dosáhneme pomocí GRU sítě.
 
 \endinput

@@ -1,4 +1,4 @@
-\chapter{Možnosti analýzy klíčových bodů}
+\chapter{Architektura klasifikační sítě}
 \label{chap:ClassificationArchitectures}
 
 Problematika vyhodnocování je velmi široká a přináší mnoho problémů. Ostatně i
@@ -17,36 +17,8 @@ bude řešená později.
 Za tímto účelem navrhneme a natrénujeme neuronovou síť, jejíž vstupem bude 17
 2D klíčových bodů (34 čísel) a výstupem bude klasifikace třídy pózy -
 \textit{normální} a \textit{upadl}. Cílem této části práce je rozebrat různé
-možností architektury této neuronové sítě. V další části některé z těchto
-architektur naimplementujeme a otestujeme.
-
-\section{Trénovací data}
-\label{sec:TrainingData}
-
-Pro trénování našeho modelu jsme použili více než 150 videí. Pro videa byly
-vytvořeny anotace aktuální třídy pózy. Tato anotace není pro každý snímek, ale
-pouze při změně definuje časovou značku a následující třídu.
-
-Dále byl vytvořen skript, který prošel každé video a vytvořil trénovací data
-pro další fázi. Ty obsahují pro každý snímek detekované klíčové body (jako
-vstup) a aktuální třídu (jako požadovaný výstup). Pro detekci klíčových bodů
-byl použit dříve vybraný model pro detekci pózy. Na použitém modelu by
-teoreticky nemuselo záležet (pokud detekuje stejné typy klíčových bodů), je ale
-lepší použít stejný model jak pro trénovací data, tak ve výsledném programu.
-Modely se totiž můžou v některých situacích chovat trochu jinak (např. okluze)
-a náš model by tak dostával v praxi jiná data, než pro jaké byl natrénován.
-
-Pro trénovací data jsme použili 3 třídy, ty odpovídají třem různým třídám pózy,
-které nás zajímají - \textit{normální}, kdy osoba např. chodí, sedí nebo stojí,
-\textit{padá} - přechodný stav padání, definován od započatí pohybu směrem
-dolů, a \textit{upadl} - definován od momentu, kdy se dotkl země trupem nebo
-všemi končetinami.
-
-Pro náš model obecně potřebujeme jenom dvě třídy - \textit{normální} a
-\textit{upadl}. Nicméně budeme pro náš model experimentovat i s třetí třídou -
-\textit{padá}, která pomůže síti hlouběji pochopit problematiku a přesněji
-rozeznat některé situace, zejména pak v případě využití rekurentních
-neuronových sítí.
+možné architektury této neuronové sítě. Později některé z těchto architektur
+naimplementujeme a otestujeme.
 
 \section{Dopředná neuronová síť}
 Nejjednodušší architekturou, kterou můžeme pro náš model použít, je dopředná
@@ -135,7 +107,7 @@ iterace. Takto je propojená mezi iteracemi každá skrytá vrstva (na obrázku
 
 \begin{figure}[]
     \centering
-    \includegraphics[width=0.7\textwidth]{Figures/BPTT.pdf}
+    \includegraphics[width=0.75\textwidth]{Figures/BPTT.pdf}
     \caption{Unrolling hluboké RNN}
     \label{fig:bptt}
 \end{figure}
@@ -189,7 +161,7 @@ gradientu.
 
 \begin{figure}[]
     \centering
-    \includegraphics[width=0.6\textwidth]{Figures/LSTM_unit.pdf}
+    \includegraphics[width=0.7\textwidth]{Figures/LSTM_unit.pdf}
     \caption{Jednotka LSTM}
     \label{fig:lstm}
 \end{figure}
@@ -217,13 +189,6 @@ výstupní bráně se pomocí tangenciální aktivační funkce vytvoří na zá
 buňky $c_t$ kandidátní skrytý stav. Pak se určí, které z těchto informací budou
 tvořit nový skrytý stav $h_t$.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.7\textwidth]{Figures/LSTM_deep.pdf}
-    \caption{Rozvinutá hluboká LSTM síť}
-    \label{fig:lstm_deep}
-\end{figure}
-
 V každé bráně tedy máme informace, pro které určujeme, zda je poslat dále či
 nikoliv, nazvěme je propouštěný obsah (předchozí stav buňky, kandidátní stav
 buňky či kandidátní skrytý stav). Toto určení se provádí vždy pomocí neuronové
@@ -238,6 +203,13 @@ síť. Jednotlivé vrstvy sítě jsou naskládány vertikálně, jednotlivé ite
 jsou rozvinuty vedle sebe. Jednotlivé vrstvy si předávají skrytý stav -
 krátkodobou paměť, mezi iteracemi si pak daná vrstva předává krátkodobou i
 dlouhodobou paměť.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.85\textwidth]{Figures/LSTM_deep.pdf}
+    \caption{Rozvinutá hluboká LSTM síť}
+    \label{fig:lstm_deep}
+\end{figure}
 
 LSTM sítě vynikají v udržování dlouhodobých závislostí a složitých struktur.
 Jelikož mají tři brány, je síť schopná přesně rozhodnout, které informace chce
@@ -266,7 +238,7 @@ toho kombinuje krátkodobou a dlouhodobou paměť do skrytého stavu $h_t$.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.55\textwidth]{Figures/GRU_unit.pdf}
+    \includegraphics[width=0.6\textwidth]{Figures/GRU_unit.pdf}
     \caption{Jednotka GRU}
     \label{fig:gru_unit}
 \end{figure}

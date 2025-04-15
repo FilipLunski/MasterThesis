@@ -17,11 +17,13 @@ vlivem vnějších faktorů (např. zakopnutí, převrácení těžkým předmě
 pády v důsledku akutních události vlivem zdravotních problémů, jako jsou např.
 mrtvice, záchvaty, mdloby či jiné důvody ztráty vědomí.
 
+\section{Návrh řešení}
+
 Cílem této práce je navrhnout algoritmus, který bude detekovat, zda je ve
 vstupní sekvenci snímku některá osoba, jejíž pozice je klasifikována jako pád.
 Hlavním cílem výsledného programu bude alarmovat příslušného pracovníka, pokud
 osoba upadne a zůstane v ležící pozici. To nám dá možnost odfiltrovat falešné
-alarmy v případě sehnutí čí pokud bude osoba špatně viditelná a algoritmus tak
+alarmy v případě sehnutí či pokud bude osoba špatně viditelná a algoritmus tak
 špatně vyhodnotí její pohyb. Tímto postprocesingem se ale teď nebudeme zabývat,
 spíše se zaměříme na samotnou klasifikaci pozice.
 
@@ -34,24 +36,59 @@ trénovacích dat. Nicméně, pokud by se podařilo takovouto síť natrénovat,
 by lépe detekovat některé situace např. podle výrazu tváře.
 
 V našem případě tedy budeme v prvním kroku pomocí vhodné neuronové sítě
-detekovat pozici osoby ve formě klíčových bodů, na jejich základě pak další
-neuronová síť vyhodnotí, zda se jedná o pád. To úlohu velice zjednoduší,
-jelikož místo analyzování tisíců pixelů, budeme analyzovat pár desítek
-klíčových bodů. Další výhodou je, že u takového postupu jsme schopní použít
-techniky, kdy sledujeme změny pózy v čase, což by bylo mnohem složitější s
-jednofázovou konvoluční síti.
+detekovat pozici osoby ve formě klíčových bodů, tuto síť nazvěme
+\textit{detekční algoritmus}. Na základě těchto bodů pak další neuronová síť
+vyhodnotí, zda se jedná o pád, tuto část nazvěme \textit{klasifikační
+    algoritmus}. To úlohu velice zjednoduší, jelikož místo analyzování tisíců
+pixelů, budeme analyzovat pár desítek klíčových bodů. Další výhodou je, že u
+takového postupu jsme schopní použít techniky, kdy sledujeme změny pózy v čase,
+což by bylo mnohem složitější s jednofázovou konvoluční síti.
 
-Další alternativou by mohlo být pouze detekovat osoby jako objekty, a na základě
-jejich bounding boxů určit, zda se jedná o pád. Tento postup by byl jednodušší
-na dvou úrovních. Jednak je detekce objektů méně náročná úloha než detekce
-pózy, jednak bychom ve druhé fázi analyzovali pouze několik parametrů bounding
-boxu (rozměry a velikost) oproti pár desítkám klíčových bodů. Nicméně, pokud se
-nad tím zamyslíme, ne vždy vypovídají parametry bounding boxů o pozici člověka.
-Tento postup by tak pravděpodobně vedl k mnohem méně přesnému výsledku, než
-analýza klíčových bodů, kdy může síť analyzovat takové vzorce jako je např.
-délka končetin v pohledu či úhel mezi nimi. 
+Detekční algoritmus dostane na vstup celý snímek a může detekovat několik osob.
+Klasifikační algoritmus ale bude zpracovávat každou osobu, resp. její pózu,
+zvlášť.
 
-V další kapitole rozebraná problematika detekce pózy a bude zvolen algoritmus
+Další alternativou by mohlo být pouze detekovat osoby jako objekty, a na
+základě jejich bounding boxů určit, zda se jedná o pád. Tento postup by byl
+jednodušší na dvou úrovních. Jednak je detekce objektů méně náročná úloha než
+detekce pózy, jednak bychom ve druhé fázi analyzovali pouze několik parametrů
+bounding boxu (rozměry a velikost) oproti pár desítkám klíčových bodů. Nicméně,
+pokud se nad tím zamyslíme, ne vždy vypovídají parametry bounding boxů o pozici
+člověka. Tento postup by tak pravděpodobně vedl k mnohem méně přesnému
+výsledku, než analýza klíčových bodů, kdy může síť analyzovat takové vzorce
+jako je např. délka končetin v pohledu či úhel mezi nimi.
+
+Nyní se podíváme, jak budeme pracovat s daty, zejména při trénování, v další
+kapitole pak bude rozebraná problematika detekce pózy a bude zvolen algoritmus
 pro detekci klíčových bodů. Dále se pak budeme zabývat vývojem modelu
 detekujícího pád na základě těchto klíčových bodů.
 
+\section{Trénovací data}
+\label{sec:TrainingData}
+
+Pro trénování našeho modelu jsme použili více než 150 videí. Pro videa byly
+vytvořeny anotace aktuální třídy pózy. Tato anotace není pro každý snímek, ale
+pouze při změně definuje časovou značku a následující třídu.
+
+Dále byl vytvořen skript, který prošel každé video a vytvořil trénovací data
+pro další fázi. Ty obsahují pro každý snímek detekované klíčové body (jako
+vstup) a aktuální třídu (jako požadovaný výstup). Pro detekci klíčových bodů
+byl použit vybraný model pro detekci pózy. Výběr modelu je popsán v následující
+kapitole. Na použitém modelu by teoreticky nemuselo záležet (pokud detekuje
+stejné typy klíčových bodů), je ale lepší použít stejný model jak pro trénovací
+data, tak ve výsledném programu. Modely se totiž můžou v některých situacích
+chovat trochu jinak (např. okluze) a náš model by tak dostával v praxi jiná
+data, než pro jaké byl natrénován.
+
+V anotacích jsme použili 3 třídy, ty odpovídají třem různým třídám pózy, které
+nás zajímají - \textit{normální}, kdy osoba např. chodí, sedí nebo stojí,
+\textit{padá} - přechodný stav padání, definován od započatí pohybu směrem
+dolů, a \textit{upadl} - definován od momentu, kdy se dotkl země trupem nebo
+všemi končetinami.
+
+Pro náš model obecně potřebujeme jenom dvě třídy - \textit{normální} a
+\textit{upadl}. Skript tvořící trénovací data proto považuje třídu
+\textit{padá} za třídu \textit{normální}. Nicméně později budeme pro náš model
+experimentovat i se třídou \textit{padá}, která může síti pomoct hlouběji
+pochopit problematiku a přesněji rozeznat některé situace, zejména pak v
+případě využití rekurentních neuronových sítí.

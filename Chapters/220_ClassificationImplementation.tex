@@ -1,0 +1,132 @@
+\chapter{Implementace klasifikačního algoritmu}
+\label{chap:ClassificationImplementation}
+
+V této kapitole se zaměříme na implementaci klasifikačního algoritmu pro
+analýzu pózy. Nejdříve se podíváme na použité technologie a knihovny, které nám
+pomohou s vývojem. Poté se zaměříme na návrh různých architektur a možné
+hyperparametry, kterých vliv na výkon modelu bychom mohli otestovat. V další
+kapitole se pak zaměříme na experimenty z těmito architekturami a
+hyperparametry a zhodnotíme získané výsledky.
+
+\section{Použité technologie}
+
+\subsection{PyTorch}
+
+Celý projekt byl vyvíjen v prostředí skriptovacího jazyka Python. Samotný vývoj
+neuronových sítí probíhal ve frameworku PyTorch. PyTorch je open-source
+knihovna pro strojové učení, široce používaná například pro počítačové vidění
+či zpracování přirozeného jazyka. Jeho hlavními funkcemi je práce s tenzory
+podobnými jako v NumPy, ale s podporou silné akcelerace s využitím GPU, a vývoj
+neuronových sítí postavený na vysokoúrovňových stavebních blocích s podporou
+automatické derivace pro počítaní gradientů.
+
+Implementace neuronových sítí v PyTorch je velice jednoduché a díky vysoké míře
+abstrakce umožňuje se při vývoji soustředit na samotnou architekturu a design
+sítě, nikoliv na detaily implementace. Pro vytvoření nové neuronové sítě stačí
+vytvořit třídu, která bude dědit od základní třídy $nn.Module$, v konstruktoru
+definiovat jednotlivé vrstvy včetně různých regularizačních hyperparametrů. V
+metodě $forward$ pak definujeme dopředný průchod sítě. Dále máme možnost
+kontrolovat např. výpočet ztrátové funkce či metriky přesnosti.
+
+PyTorch obsahuje také předpřípravené moduly pro GRU či LSTM sítě, včetně
+vícervrstvých architektur. Pro tyto moduly definujeme velikost vstupu a
+velikost skrytého stavu, dále můžeme definovat počet vrstev či dropout. Výstup
+z těchto modulů je pak skrytý stav, který můžeme dále zpracovávat pomocí
+jednoduché dopředné sítě pro predikci třídy.
+
+\subsection{Lightning}
+\label{sec:Lightning}
+
+PyTorch Lightning je wrapper pro PyTorch, který dále usnadňuje vývoj
+neuronových sítí. Stará se za nás o detaily procesu trénování, jako je správa
+epoch, logování či optimalizace kroku učení (ang. learning rate). Podporuje
+taky nativně práci s TensorBoard, což je logovací nástroj umožňující přehledné
+sledování metrik během trénování, včetně grafického zobrazení ve webovém
+prostředí.
+
+\begin{lstlisting}[language=Python, label=src:pytorch, caption={Ukázka implementace GRU sítě v PyTorch Lightning}]
+class KeypointClassifier(lightning.LightningModule):
+    def __init__():
+        super(KeypointClassifierGRULightning, self).__init__()
+        self.gru = nn.GRU(34, 128)              # GRU vrstvy
+        self.classifier = nn.Sequential(        # Plně propojené vrstvy
+            nn.Linear(128, 128),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(128, 1) )
+        self.criterion = nn.BCEWithLogitsLoss ()    # Ztrátová funkce
+        self.accuracy = BinaryAccuracy()            # Metrika přesnosti
+    def forward(self, x):
+        _, x = self.gru(x)
+        x = x[-1]                               # Poslední skrytý stav
+        x = self.classifier(x)
+        return x
+    def training_step(self, batch, batch_idx):
+        input, target = batch
+        output = self(input)
+        loss = self.criterion(output, target)
+        self.log("train_loss", loss)
+        return loss
+    def validation_step(self, batch, batch_idx):
+        input, target = batch
+        output = self(input)
+        loss = self.criterion(output, target)
+        self.log('val_loss', loss)
+        accuracy = self.accuracy(output, target.int())
+        self.log('val_accuracy', accuracy)
+        return loss
+
+\end{lstlisting}
+
+\section{Implementace vybraných architektur}
+\label{sec:SelectedArchitectures}
+
+\subsection{Dopředná neuronová síť}
+
+Nejprve jsme implementovali jednoduchou dopřednou neuronovou síť. Její hlavní
+výhodou je rychlost, je to ale za cenu menší přesnosti. Jako vstupní data jsou
+použity klíčové body jedné osoby z daného jednoho snímku. Trénovací data tedy
+pouze přečteme z trénovacího souboru a překonvertujeme je do formy tenzoru,
+konkrétně je zabalíme do instance třídy $DataLoader$. Při použití ve výsledném
+programu předáme modelu klíčové body detekované v daném snímku.
+
+% TODO: doplnit testované topologie a hyperparametry
+
+Výstupem sítě je hodnota od $0$ do $1$, čísla od $0$ do $0.5$ jsou považována
+za třídu \textit{normální}, zatímco čísla od $0.5$ do $1$ za třídu
+\textit{upadl}.
+
+\subsection{GRU síť}
+
+Dále jsme implementovali GRU síť, viz kód \ref{src:pytorch}. V tomto příkladu
+je definována GRU jednotka s jednou vrstvou, velikosti vstupního vektoru $34$ a
+skrytým stavem velikosti $128$, následována dvouvrstvou dopřednou plně
+propojenou sítí ze $128$ neurony v první vrstvě a s jedním neuroném ve druhé
+vrstvě.
+
+Cást těchto hyperparametrů jsme parametrizovali, abychom mohli postupně
+otestovat různé jejich kombinace a vyhodnotit jejich vliv na výkon modelu, viz
+kód \ref{src:params}. Jedná se o velikost vstupního vektoru, velikost skrytého
+stavu sítě GRU, počet vrstev GRU, velikost první plně propojené vrstvy,
+velikost výstupní vrstvy (pro binární klasifikaci vždy $1$, potřebné pro
+pozdější optimalizace) a dropout pro GRU i plně propojené vrstvy. Všechny tyto
+hyperparametry budeme ladit v rámci následujících experimentů.
+
+\begin{lstlisting}[language=Python, label=src:params, caption={Parametry konstruktoru třídy $KeypointClassifierGRU$ definující hyperparametry sítě}]
+class KeypointClassifierGRULightning(L.LightningModule):
+    def __init__(self, input_size=34, rnn_hidden_size=128, rnn_layers_count=2, fc_size=128, output_size=1, rnn_dropout=0.3, fc_dropout=0.3, device=None):
+\end{lstlisting}
+
+Stejně jako u předchozí architektury, jako ztrátová funkce byla použita Binární
+křížová entropie, tedy $nn.BCEWithLogitsLoss()$, která je vhodná pro binární
+klasifikaci.
+
+\subsection{LSTM síť}
+
+Podobně jako GRU síť jsme implementovali i LSTM síť. V implementaci se odlišuje
+pouze použitím modulu $nn.LSTM$ místo $nn.GRU$. Tento modul se v použití liší
+od GRU pouze tím, že kromě skrytého stavu vrací také stav buňky (dlouhodobou
+paměť), ten ale stejně nevyužijeme. Pro síť LSTM budeme ladit stejnou množinu
+hyperparametrů, jako pro GRU síť, abychom mohli porovnat jejich výkonnost.
+
+\endinput

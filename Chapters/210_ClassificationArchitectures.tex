@@ -1,5 +1,5 @@
 \chapter{Možnosti analýzy klíčových bodů}
-\label{sec:PoseClassification}
+\label{chap:ClassificationArchitectures}
 
 Problematika vyhodnocování je velmi široká a přináší mnoho problémů. Ostatně i
 člověk někdy může špatně interpretovat chování druhé osoby. Například pokud
@@ -21,6 +21,7 @@ možností architektury této neuronové sítě. V další části některé z t
 architektur naimplementujeme a otestujeme.
 
 \section{Trénovací data}
+\label{sec:TrainingData}
 
 Pro trénování našeho modelu jsme použili více než 150 videí. Pro videa byly
 vytvořeny anotace aktuální třídy pózy. Tato anotace není pro každý snímek, ale
@@ -189,7 +190,7 @@ gradientu.
 \begin{figure}[]
     \centering
     \includegraphics[width=0.6\textwidth]{Figures/LSTM_unit.pdf}
-    \caption{(1) Jednotka LSTM, (2) Rozvinutá hluboká LSTM síť}
+    \caption{Jednotka LSTM}
     \label{fig:lstm}
 \end{figure}
 

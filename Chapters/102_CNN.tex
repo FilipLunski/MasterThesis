@@ -1,5 +1,5 @@
 \chapter{Konvoluční neuronové sítě}
-\label{sec:CNN}
+\label{chap:CNN}
 
 I když byly jedny z prvních NN použity ke zpracování obrazu, brzy se ukázalo,
 že pro zpracování obrazu s větším rozlišením a větším množstvím kanálů je
@@ -35,10 +35,10 @@ obrazová data.
 \section{Konvoluce}
 
 V kontextu počítačové grafiky je konvoluce binární operace, kdy pro daný pixel
-sečteme hodnoty pixelů v jeho okolí vynásobené váhami vyjádřenými maskou, která
-se nazývá jádro konvoluce (ang. kernel). Výsledný obraz je taky nazýván
-konvoluce. Z matematického pohledu se jedná o diskrétní dvourozměrnou konvoluci
-- binární operaci diskrétních funkcí, která je definována následovně:
+v obrazu sečteme hodnoty pixelů v jeho okolí vynásobené váhami vyjádřenými
+maskou, která se nazývá jádro konvoluce (ang. kernel). Výsledný obraz je taky
+nazýván konvoluce. Z matematického pohledu se jedná o diskrétní dvourozměrnou
+konvoluci - binární operaci diskrétních funkcí, která je definována následovně:
 
 \begin{equation*}
     (h*f)(x,y)=\sum _{i=-k}^{k}\sum _{j=-k}^{k}h(x-i,y-j)\cdot f(i,j)

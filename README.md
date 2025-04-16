@@ -6,3 +6,5 @@
 ### Ostrava, 2025
 
 Zkompilovaný text práce v souboru [2025_LUN0024_DP.pdf](2025_LUN0024_DP.pdf)
+
+[Zdrojový kód](https://github.com/FilipLunski/SafetyVideoDetection)

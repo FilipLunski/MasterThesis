@@ -1,4 +1,4 @@
-\chapter{Implementace klasifikačního algoritmu}
+\chapter{Implementace klasifikační neuronové sítě}
 \label{chap:ClassificationImplementation}
 
 V této kapitole se zaměříme na implementaci klasifikačního algoritmu pro
@@ -20,7 +20,7 @@ podobnými jako v NumPy, ale s podporou silné akcelerace s využitím GPU, a v�
 neuronových sítí postavený na vysokoúrovňových stavebních blocích s podporou
 automatické derivace pro počítaní gradientů.
 
-Implementace neuronových sítí v PyTorch je velice jednoduchá a díky vysoké míře  
+Implementace neuronových sítí v PyTorch je velice jednoduchá a díky vysoké míře
 abstrakce umožňuje se při vývoji soustředit na samotnou architekturu a design
 sítě, nikoliv na detaily implementace. Pro vytvoření nové neuronové sítě stačí
 vytvořit třídu, která bude dědit od základní třídy $nn.Module$, v konstruktoru
@@ -29,10 +29,10 @@ metodě $forward$ pak definujeme dopředný průchod sítě. Dále máme možnos
 kontrolovat např. výpočet ztrátové funkce či metriky přesnosti.
 
 PyTorch obsahuje také předpřipravené moduly pro GRU či LSTM sítě, včetně
-vícevrstvých architektur. Pro tyto moduly definujeme velikost vstupu a
-velikost skrytého stavu, dále můžeme definovat počet vrstev či dropout. Výstup
-z těchto modulů je pak skrytý stav, který můžeme dále zpracovávat pomocí
-jednoduché dopředné sítě pro predikci třídy.
+vícevrstvých architektur. Pro tyto moduly definujeme velikost vstupu a velikost
+skrytého stavu, dále můžeme definovat počet vrstev či dropout. Výstup z těchto
+modulů je pak skrytý stav, který můžeme dále zpracovávat pomocí jednoduché
+dopředné sítě pro predikci třídy.
 
 \subsection{Lightning}
 \label{sec:Lightning}
@@ -131,9 +131,17 @@ hyperparametrů, jako pro GRU síť, abychom mohli porovnat jejich výkonnost.
 
 \subsection{Vícetřídní klasifikace}
 
-Jak již bylo zmíněno (\ref{sec:TrainingData}), pro naše řešení potřebujeme detekovat pouze třídy \textit{normální} a \textit{upadl}, vyzkoušíme ale natrénovat i modely se třemi třídami - přidáme třídu \textit{padá}. Nemá smysl v našem případě implementovat takovou dopřednou neuronovou síť, jelikož klasifikuje snímky bez kontextu předchozích snímků. 
+Jak již bylo zmíněno (\ref{sec:TrainingData}), pro naše řešení potřebujeme
+detekovat pouze třídy \textit{normální} a \textit{upadl}, vyzkoušíme ale
+natrénovat i modely se třemi třídami - přidáme třídu \textit{padá}. Nemá smysl
+v našem případě implementovat takovou dopřednou neuronovou síť, jelikož
+klasifikuje snímky bez kontextu předchozích snímků.
 
-Budeme tedy navíc implementovat sítě GRU a LSTM, s velice podobnou topologií jako sítě s binární klasifikací. Hlavním rozdílem bude velikost 
-výstupní vrstvy, jež bude rovna počtu tříd a použitá ztrátová funkce - nyní použijeme křížovou entropii. Výstup vícetřídní klasifikační sítě pak představuje pole pravděpodobností, že se jedná o danou třídu.
+Budeme tedy navíc implementovat sítě GRU a LSTM, s velice podobnou topologií
+jako sítě s binární klasifikací. Hlavním rozdílem bude velikost výstupní
+vrstvy, jež bude rovna počtu tříd a použitá ztrátová funkce - nyní použijeme
+křížovou entropii. Výstup vícetřídní klasifikační sítě pak představuje pole
+pravděpodobností, že se jedná o danou třídu. Při inferenci pak použijeme jednotku 
+softmax pro převod výstupu na číslo třídy.
 
 \endinput

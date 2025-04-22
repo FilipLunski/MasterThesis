@@ -1,8 +1,8 @@
 \chapter{Analýza problematiky detekce pádu}
 \label{chap:Goal}
 
-V této kapitole stanovíme, co je přesně naším cílem, a zamyslíme se, jak k našemu
-problému přistoupit.
+V této kapitole stanovíme, co je přesně naším cílem, a zamyslíme se, jak k
+našemu problému přistoupit.
 
 Naším úkolem bude v reálném čase z videostreamu detekovat pád osoby. Pád osoby
 definujeme jako náhle, neúmyslné klesnutí těla z výškové pozice (např. stání,
@@ -22,10 +22,13 @@ mrtvice, záchvaty, mdloby či jiné důvody ztráty vědomí.
 Cílem této práce je navrhnout algoritmus, který bude detekovat, zda je ve
 vstupní sekvenci snímku některá osoba, jejíž pozice je klasifikována jako pád.
 Hlavním cílem výsledného programu bude alarmovat příslušného pracovníka, pokud
-osoba upadne a zůstane v ležící pozici. To nám dá možnost odfiltrovat falešné
-alarmy v případě sehnutí či pokud bude osoba špatně viditelná a algoritmus tak
-špatně vyhodnotí její pohyb. Tímto postprocesingem se ale teď nebudeme zabývat,
-spíše se zaměříme na samotnou klasifikaci pozice.
+osoba upadne.
+
+Alarmovat budeme až, pokud osoba zůstane v ležící pozici. To nám dá možnost
+odfiltrovat falešné alarmy v případě sehnutí či pokud bude osoba špatně
+viditelná a algoritmus tak na okamžik špatně vyhodnotí její pohyb. Tímto
+postprocesingem se ale teď nebudeme zabývat, spíše se zaměříme na samotnou
+klasifikaci pozice.
 
 Stejně jako u detekce objektů, viz \ref{sec:obj_det}, bychom mohli i pro
 detekci pádu vytvořit vhodnou konvoluční síť, která by přímo z obrázku

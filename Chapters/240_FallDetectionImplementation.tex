@@ -1,0 +1,25 @@
+\chapter{Implementace detekčního algoritmu}
+\label{chap:detectionAlgorithm}
+
+V této kapitole se zaměříme na implementaci samotného detekčního algoritmu,
+který na základě postupně předáváné sekvence snímku bude detekovat, zda došlo k
+pádu.
+
+\section{Sledování s YOLO}
+
+V YOLO verze 11 máme kromě již zmíněné detekce objektů i klíčových bodů k
+dispozici také další funkce. To, které funkce chceme využít, definujeme
+vybraným modelem. V závislosti na něm pak pak při interferenci model vrací
+patřičné hodnoty. Dostupné jsou tyto modely:
+\begin{itemize}
+    \item \textit{YOLO11<v>-seg }- detekce objektů - bounding boxů
+    \item \textit{YOLO11<v>-cls }- detekce objektů, klíčových bodů a segmentace
+    \item \textit{YOLO11<v>-pose} - detekce klíčových bodů
+    \item \textit{YOLO11<v>-obb }- orientovaná detekce objektů - bounding boxy natočené dle natočení objektu
+\end{itemize}
+
+kde $<v>$ označuje velikost modelu - můžeme vybrat menší modely pro větší
+výkon ale horší přesnost, anebo větší modely, které jsou sice velmi přesné,
+musíme ale počítat s vysokými nároky na výkon. V našem případě jsme zvolili model $yolo11m-pose$
+
+\endinput

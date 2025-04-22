@@ -2,14 +2,14 @@
 \label{chap:detectionAlgorithm}
 
 V této kapitole se zaměříme na implementaci samotného detekčního algoritmu,
-který na základě postupně předáváné sekvence snímku bude detekovat, zda došlo k
+který na základě postupně předávané sekvence snímků bude detekovat, zda došlo k
 pádu.
 
 \section{Sledování pózy s YOLO11}
 
 V YOLO verze 11 máme kromě již zmíněné detekce objektů i klíčových bodů k
 dispozici také další volitelné funkce. To, které funkce chceme využít,
-definujeme vybraným modelem. V závislosti na něm pak pak při interferenci model
+definujeme vybraným modelem. V závislosti na něm pak při interferenci model
 vrací patřičné hodnoty. Dostupné jsou tyto modely:
 \begin{itemize}
     \item \textit{YOLO11<v>-seg }- detekce objektů - bounding boxů
@@ -60,7 +60,7 @@ konzoly vypisovat ladící informace)
 \section{Struktura třídy FallDetector}
 
 Třída $FallDetector$ slouží pro detekci pádu v sekvenci postupně předávaných
-snímku. Můžeme jí tak použít jak pro analýzu uloženého videa, tak pro detekci
+snímků. Můžeme jí tak použít jak pro analýzu uloženého videa, tak pro detekci
 pádu v živém přenosu v reálném čase. Mezi jednotlivými snímky uchovává pro
 každou osobu klíčové body z $x$ posledních snímků pro predikci na základě
 sekvence snímků. Dále dle nastavení uchovává $n$ posledních snímků, popřípadě i
@@ -69,10 +69,10 @@ ukládání těchto informací používáme kolekci typu $deque$, která umožň
 specifikovat její maximální délku, nerelevantní informace ze starších snímků
 tedy budou automaticky odstraňovány.
 
-V konstruktoru obdrží tato třída cestu k modelu YOLO (musí byt inicializován
-pro každou instancí zvlášť), model pro detekci pádu na základě klíčových bodů,
-informaci o délce sekvence předávané tomuto modelu, a informace tykající se
-ukládání videí s pády jako jsou cesty k souborům a délka videa před a po pádu.
+V konstruktoru obdrží tato třída cestu k modelu YOLO (musí být inicializován
+pro každou instanci zvlášť), model pro detekci pádu na základě klíčových bodů,
+informaci o délce sekvence předávané tomuto modelu, a informace týkající se
+ukládání videí s pády, jako jsou cesty k souborům a délka videa před a po pádu.
 
 Pro práci s jednotlivými osobami používáme třídu $Person$, která uchovává
 hlavně klíčové body z posledních snímku a $id$, dále také bounding boxy,
@@ -84,14 +84,14 @@ scéně, ale algoritmus ji i na několik snímku ztratí, zejména v případě 
 či špatných světelných podmínek.
 
 V metodě $process_frame$ třídy $FallDetector$ je zpracován vždy jeden snímek.
-Nejprve se detekuje všechny osoby a jejich klíčové body pomocí vybraného
+Nejprve se detekují všechny osoby a jejich klíčové body pomocí vybraného
 modelu. Pokud je požadováno uložení anotovaného videa, převezmeme zde anotovaný
 snímek přímo od modelu YOLO, později pouze dopíšeme třídu detekce pádu. Dále
-jsou na základě detekovaných informaci vytvořeny, popřípadě aktualizovány
-instance třídy $Person$. Pro každou osobu je taky provedená analýza sekvence
+jsou na základě detekovaných informací vytvořeny, popřípadě aktualizovány
+instance třídy $Person$. Pro každou osobu je taky provedena analýza sekvence
 klíčových bodů pro detekci pádu a popřípadě je patřičně anotována ve snímku.
 Pokud je detekován pád a je nastaveno ukládání videa, vytvoří se nový soubor a
-zapíše se do uchované předešlé snímky, zapisuje se pak do něj dokud je
-detekován pád a nevyprší požadovaný počet snímku po pádu.
+zapíše se do uchované předešlé snímky, zapisuje se pak do něj, dokud je  
+detekován pád a nevyprší požadovaný počet snímků po pádu.
 
 \endinput

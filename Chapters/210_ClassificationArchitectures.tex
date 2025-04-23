@@ -45,7 +45,7 @@ natočení kamery.
 
 Rekurentní neuronové sítě (ang. Recurrent Neural Networks - RNN) je kategorie
 neuronových sítí, které do své architektury zapojují zpětnou vazbu. Na rozdíl
-od dopředných sítí, které spracovávají jednotlivé vstupy nezávisle, rekurentní
+od dopředných sítí, které zpracovávají jednotlivé vstupy nezávisle, rekurentní
 sítě spolu s aktuálním vstupem při evaluaci zohledňují nějakým způsobem i
 výsledek předchozí iterace. Jejich využití tedy je ve dvou oblastech: analýza
 změn pozorovaného objektu v čase (např. sledování pohybu, analýza chování či
@@ -62,7 +62,7 @@ obrázku \ref{fig:rnn} je tato vrstva reprezentována neurony $c_i$.
 \subsection{Jednoduché rekurentní sítě}
 
 Nejjednodušší forma rekurentní neuronové sítě je NN s jednou skrytou vrstvou;
-tato vrstva kromě dat ze vstupní vrstvy, přijímá také výstup předchozí iterace
+tato vrstva kromě dat ze vstupní vrstvy přijímá také výstup předchozí iterace
 buď svých vlastních neuronů, anebo z neuronů výstupní vrstvy, viz obrázek
 \ref{fig:rnn}. Obrázek je zjednodušený, v praxi jsou stavová a skrytá vrstva
 plně propojeny. Tyto architektury se jmenují Elmanova síť \cite{elman}, resp.
@@ -89,7 +89,7 @@ hlubokých rekurentních neuronových sítích (ang. deep RNN - DRNN) jsou pak
 jednotlivé vrstvy většinou podobné struktuře Elmanovy sítě - zpětná vazba je
 předávána pouze v rámci jedné vrstvy, nikoliv mezi vrstvami RNN (například z
 výstupní vrstvy do první skryté vrstvy). Má to několik důvodů. Trénování sítě
-ze zpětnou vazbou mezi vrstvami by bylo velmi složité a obtížné. Taky, u
+se zpětnou vazbou mezi vrstvami by bylo velmi složité a obtížné. Taky, u
 neuronových sítí obecně platí, že každá vrstva sítě se učí pochopit problém na
 jiné úrovni abstrakce, zpětná vazba přes několik vrstev by pak mohla narušit
 stabilitu tohoto procesu a omezit kvalitu učení.
@@ -226,7 +226,7 @@ Síť LSTM by mohla být vhodná pro klasifikaci pózy zejména pokud bychom
 potřebovali analyzovat pohyb v delších časových úsecích. Událost pádu se naopak
 obvykle odehrává v krátkém čase, nicméně můžeme otestovat, jakých výsledků bude
 tato architektura dosahovat oproti jiným rekurentním sítím, zejména v případě,
-kdy bychom modelu nepředávali pouze pózu z $n$ posledních snímku, ale celou
+kdy bychom modelu nepředávali pouze pózu z $n$ posledních snímků, ale celou  
 sekvenci detekovanou pro danou osobu.
 
 \section{GRU}
@@ -272,7 +272,7 @@ možností délky analyzované sekvence. To znamená, že pro každý snímek p�
 síti očekávanou třídu a sekvenci póz dané osoby z $n$ posledních snímků. Pak
 vyzkoušíme síti předávat celou sekvenci póz dané osoby. Nakonec otestujeme i
 LSTM architekturu, abychom porovnali, pro jaké situace by byla vhodnější.
-Nicméně s ohledem na nevelký počet testovacích dat předpokladáme, že
+Nicméně s ohledem na nevelký počet testovacích dat předpokládáme, že
 stabilnějších výsledků dosáhneme pomocí GRU sítě.
 
 \endinput

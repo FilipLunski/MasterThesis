@@ -101,16 +101,16 @@ Detekce osob se v podstatě může generalizovat na detekci objektů v obraze.
 Detekci objektů v obraze definujeme jako úlohu, kdy ve vstupním obrázku určíme
 lokaci a třídu všech hledaných objektů.
 
-V kapitole \ref{sec:CNN} jsme si popsali základní architekturu konvolučních
+V kapitole \ref{chap:CNN} jsme si popsali základní architekturu konvolučních
 neuronových sítí, ta se ale většinou v praxi používá pro klasifikaci obrázků,
 nikoliv pro detekci objektů - algoritmus tedy pouze určí, o jakou třídu objektu
 se jedná, a ideálně potřebuje, aby objekt vyplňoval celý vstupní obraz.
 Teoreticky by bylo možné detekci formulovat jako regresní problém a natrénovat
-takovou síť, která by pomoci několika konvolučních vrstev následovaných
+takovou síť, která by pomocí několika konvolučních vrstev následovaných
 několika plně propojenými vrstvami byla schopna predikovat lokalizaci a třídu
 všech objektů v obraze. \cite{szegedy} Problém detekce je ale velice komplexní
 a taky by vyžadoval velice komplexní síť - více vrstev s mnoha filtry, resp.
-neurony. Jak již ale bylo v zmiňováno, komplexnost sítě zvyšuje její nároky na
+neurony. Jak již ale bylo zmiňováno, komplexnost sítě zvyšuje její nároky na
 výpočetní výkon a komplikuje nebo úplně znemožňuje její trénování s ohledem na
 pravděpodobnost přetrénování.
 
@@ -132,7 +132,7 @@ Jednou z prvních takových metod byl tzv. sliding window (klouzavé okno), kter
 aplikuje hrubou sílu. Vstupní obrázek se postupně projíždí oknem o fixní
 velikosti. Vznikne tak množina pokrývající každou možnou lokaci objektů. Na
 tyto oblasti se pak aplikuje klasifikační algoritmus. Postup se opakuje pro
-několik velikostí okna, aby se detekovalo objekty různé velikosti.
+několik velikostí okna, aby se detekovaly objekty různé velikosti.
 
 Tento postup je ale velice pomalý, jelikož je pro každý obrázek zvolený velký
 počet oblastí, pro které je třeba provést klasifikaci popřípadě regresi. Navíc

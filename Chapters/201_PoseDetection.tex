@@ -360,8 +360,7 @@ Framework MediaPipe implementuje BlazePose spolu s detekcí více osob (použije
 první fáze detektor objektů) i sledování. Výhodou tohoto frameworku je jeho
 kontinuální vývoj a jednoduchost integrace. Nevýhodou ale je, že pro systémy
 Windows není implementována podpora GPU. Jelikož náš výsledný produkt bude
-spouštěn primárně na Windows zařízeních, je to pro nás tato vlastnost
-rozhodující.
+spouštěn primárně na Windows zařízeních, je pro nás tato vlastnost rozhodující.
 
 \subsection{Torchvision}
 
@@ -404,7 +403,22 @@ kterého můžeme spojit danou postavu s předchozími snímky. Můžeme tak efe
 analyzovat pohyby jednotlivých osob.
 
 \section{Testování a porovnání vybraných algoritmů pro detekci pózy}
-% TODO: 
+
+Pro testování jsme vybrali čtyři algoritmy pro detekci pózy, zejména na základě
+jejich jednoduchosti implementace, aktualizované podpory a požadovaných funkcí.
+Budeme tedy testovat algoritmy Torchvision, OpenPifPaf, MediaPipe BlazePose a
+YOLO v nejnovější verzi 11. Testy byly provedeny na 25 videích ze stejného
+datasetu jako byl použit později pro trénování algoritmu pro analýzu klíčových
+bodů. Testování probíhalo na počítači s procesorem Intel Core i7, 32 GB RAM a
+grafickou kartou NVIDIA GeForce RTX 3080 s 10 GB VRAM.
+
+Algoritmy Torchvision a OpenPifPaf byly testovány s použitím GPU, MediaPipe
+pouze s využitím CPU, jelikož nemá podporu GPU v prostředí Windows. Algoritmus
+YOLO jsme testovali na GPU a CPU, abychom porovnali jeho výkon v různých
+podmínkách. Algoritmus YOLO jsme taky vyzkoušeli na GPU s využitím funkce
+sledování.
+
+
 
 % openpifpaf, mediapipe(shufflenet, resnet), torchvision, yolo
 

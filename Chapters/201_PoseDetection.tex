@@ -88,7 +88,7 @@ Vůbec první algoritmus pro detekci pózy využívající hluboké učení, Dee
 \cite{deeppose}, který byl vytvořen v roce 2014 společností Google, používal
 právě regresi. Také algoritmus YOLO používá regresi pro určení souřadnic
 klíčových bodů, nicméně detekce je prováděná pro detekované objekty, nikoliv
-nad celým vstupním obrazem. \cite{yolo-pose}
+nad celým vstupním obrazem \cite{yolo-pose}.
 
 % , a je součástí poupraveného modelu pro detekci objektů - v posledních
 % vrstvách sítě je kromě regrese definující bounding box a klasifikace určující
@@ -108,7 +108,7 @@ se jedná, a ideálně potřebuje, aby objekt vyplňoval celý vstupní obraz.
 Teoreticky by bylo možné detekci formulovat jako regresní problém a natrénovat
 takovou síť, která by pomocí několika konvolučních vrstev následovaných
 několika plně propojenými vrstvami byla schopna predikovat lokalizaci a třídu
-všech objektů v obraze. \cite{szegedy} Problém detekce je ale velice komplexní
+všech objektů v obraze \cite{szegedy}. Problém detekce je ale velice komplexní
 a taky by vyžadoval velice komplexní síť - více vrstev s mnoha filtry, resp.
 neurony. Jak již ale bylo zmiňováno, komplexnost sítě zvyšuje její nároky na
 výpočetní výkon a komplikuje nebo úplně znemožňuje její trénování s ohledem na
@@ -145,9 +145,9 @@ obsahovat nějaký objekt.
 
 \subsection{Dvoufázový přístup}
 
-\subsubsection{R-CNN}
+\subsubsection*{R-CNN}
 Prvním algoritmem, který efektivně zredukoval počet oblastí pro klasifikaci,
-byl algoritmus R-CNN (Region-based Convolutional Network). \cite{r-cnn} Tento
+byl algoritmus R-CNN (Region-based Convolutional Network) \cite{r-cnn}. Tento
 algoritmus nejprve použil některou z dostupných metod (autoři použili selective
 search) pro vygenerování navržených oblastí (region proposals), které
 pravděpodobně obsahují nějaký objekt. Tyto metody jsou nezávislé na třídě
@@ -161,30 +161,18 @@ nezávislé úlohy a jsou nezávisle trénovány. Detekce objektu je taky poměr
 pomalá, protože je extrakce příznaků prováděná pro všechny oblasti zvlášť. Tyto
 problémy se snaží řešit další upravené verze R-CNN.
 
-\subsubsection{Fast R-CNN}
+\subsubsection*{Fast R-CNN}
 První z nich je Fast R-CNN \cite{fast-r-cnn}, která je upravená tak, aby bylo
 možné provádět trénování v jednom kroku. Taky extrahuje příznaky pro celý
 vstupní obraz najednou, pomocí selective search pak identifikuje oblasti zájmu
 (ang. region of interest - RoI), které následně použije pro klasifikaci a
 regresi. Tato metoda je přesnější a asi desetkrát rychlejší než původní R-CNN.
 
-\subsubsection{Faster R-CNN}
+\subsubsection*{Faster R-CNN}
 Další algoritmus, Faster R-CNN \cite{faster-r-cnn}, nahrazuje metodu selective
 search vlastní, plně konvoluční sítí RPN (region proposal network).
 Zefektivňuje tak proces trénování, výsledná síť je také rychlejší a přesnější
 než Fast R-CNN.
-
-\subsubsection{Mask R-CNN}
-Mask R-CNN \cite{mask-r-cnn} rozšiřuje Faster R-CNN o segmentaci. Segmentace je
-úloha, kdy je každému pixelu vstupního obrazu přiřazena třída. K tomu ale
-tvůrci museli upravit pooling vrstvu nastupující po RPN tak, aby se výstupy
-algoritmu shodovaly se vstupy s přesností pixelu. Dále přidali na konci procesu
-CNN určující třídu pro každý proces. Výstupem jsou masky pro každou třídu,
-určující, které pixely tuto třídu reprezentují.
-
-Dále je možné s malou úpravou použít tento algoritmus i pro detekci pózy. Jako
-trénovací data použijeme masky, kdy jedině v místě daného klíčového bodu je
-indikována třída reprezentující tento klíčový bod.
 
 \subsection{Jednofázový přístup}
 
@@ -192,7 +180,7 @@ Jednofázový přístup se snaží najít řešení, ve kterém není nutné hle
 oblasti, ale provést klasifikaci a regresi na předem dané množině oblastí,
 obvykle určené mřížkou.
 
-\subsubsection{YOLO}
+\subsubsection*{YOLO}
 Prvním takovým algoritmem byl YOLO (taky YOLOv1, z ang. you only look once)
 \cite{yolo}. Ten, v původní verzi, rozdělí vstupní obraz do pevně dané mřížky
 velikosti $S \times S$ a v každém z těchto polí určí $B$ bounding boxů a jejich
@@ -241,9 +229,9 @@ vytvořila YOLOv5 (2020), YOLOv8 (2023) a YOLOv11 (2024). Tyto verze nicméně
 nejsou podloženy odbornými články, někteří je tak považují za neoficiální
 verze.
 
-\subsubsection{SSD}
+\subsubsection*{SSD}
 Dalším populárním algoritmem, který používá jednofázový přístup, je SSD (z ang.
-single shot detector). \cite{szegedy:ssd} Ten rozdělí vstupní obraz do několika
+single shot detector) \cite{szegedy:ssd}. Ten rozdělí vstupní obraz do několika
 mřížek o různé velikosti. Postup je takový, že nejprve projde obraz konvoluční
 síťí, konkrétně síťí VGG16, která extrahuje mapu příznaků. Tu se postupně
 dalšími konvolučními vrstvami zmenšuje, výstup každého stádia zmenšení,
@@ -266,10 +254,11 @@ V době svého vzniku byl SSD rychlejší a přesnější než YOLO, ale nověj�
 YOLO jej už předběhly. Nicméně některé principy SSD, jako výchozí oblasti či
 použití různých měřítek, byly převzaty do novějších verzí YOLO.
 
-\section{Charakteristiky vybraných algoritmů pro detekci pózy}
+\section{Charakteristiky vybraných implementací pro detekci pózy}
 
-V této sekci bude popsáno několik populárních algoritmů pro detekci pózy
-zejména se zaměřením na jejich rychlost, přesnost a specifika architektury.
+V této sekci bude popsáno několik populárních algoritmů (a jejích implementací)
+pro detekci pózy zejména se zaměřením na jejich rychlost, přesnost a specifika
+architektury.
 
 Velká část algoritmů byla zamítnutá a neproběhlo ani jejích testování.
 Nejčastějším důvodem zamítnutí některého z algoritmů je, že schází jeho volně
@@ -283,12 +272,13 @@ bylo zmíněno na počátku kapitoly, implementace algoritmu od nuly by vyžadov
 velké množství času a zdrojů (zejména výpočetních), hlavně by taky byla
 potřebná hlubší znalost problematiky. Někdy je možné řešení použít za cenu
 kompromisu ve formě použití starších verzí knihoven či Pythonu, může to ale
-představovat bezpečnostní rizika.
+představovat bezpečnostní rizika. Taky některé algoritmy jsou sice volně
+dostupné, ale jejich implementace jsou součástí komerčních produktů. %todo citace
 
 \subsection{DeepPose}
 DeepPose je historicky první algoritmus pro detekci pózy využívající hluboké
 učení. Vyvinuli jej Alexander Toshev a Christian Szegedy ze společnosti Google
-v roce 2014. \cite{deeppose} Algoritmus předpokládá, že se ve vstupním obraze
+v roce 2014 \cite{deeppose}. Algoritmus předpokládá, že se ve vstupním obraze
 nachází pouze jedna osoba. Síť se snaží v jednom kroku pomocí regrese jak
 detekovat osobu, tak i její klíčové body. Jelikož je těžké takto dosáhnout
 velmi přesných výsledků, algoritmus používá další fázi, která pomocí regrese
@@ -340,6 +330,11 @@ Pokud je nalezena nová osoba, je jí přiřazeno nové ID.
     \label{fig:pipaf-tracking}
 \end{figure}
 
+U OpenPifPaf je k dispozici výběr několika páteřních modelů jako je ResNet50 či
+ShuffleNet v různých variantách a velikostech. Můžeme tak zvolit model, který
+je kompromisem mezi výkonem a přesností, v závislosti na konkrétních
+požadavcích aplikace.
+
 \subsection{MediaPipe - BlazePose}
 
 MediaPipe je framework vyvinutý společností Google, umožňující jednoduchou
@@ -361,18 +356,12 @@ první fáze detektor objektů) i sledování. Výhodou tohoto frameworku je jeh
 kontinuální vývoj a jednoduchost integrace. Nevýhodou ale je, že pro systémy
 Windows není implementována podpora GPU. Jelikož náš výsledný produkt bude
 spouštěn primárně na Windows zařízeních, je pro nás tato vlastnost rozhodující.
-
-\subsection{Torchvision}
-
-Torchvision je knihovna, která je součástí frameworku PyTorch. Obsahuje různé
-nástroje pro strojové vidění, jako je detekce objektů či segmentace. Její
-součástí je i předtrénovaný model pro detekci pózy, který je založený na
-algoritmu Mask R-CNN.
+Model je dostupný v třech velikostních variantách: $Lite$, $Full$ a $Heavy$.
 
 \subsection{YOLO}
 
 Od vydání YOLOv7 v roce 2022 integruje framework YOLO i detekci pózy. Oficiální
-článek Chien-Yao Wanga et al. \cite{yolov7} sice neobsahoval tuto funkčnost,
+článek Chien-Yao Wanga et al. \cite{yolov7}. sice neobsahoval tuto funkčnost,
 ale oficiální implementace zahrnula i implementaci YOLO-Pose \cite{yolo-pose}.
 Obecně detekce pózy v YOLO kombinuje přístup shora dolů a zdola nahoru.
 Algoritmus sice vyhledává klíčové body spolu s bounding boxy osob, nicméně vše
@@ -383,12 +372,12 @@ Architektura použita v YOLO-Pose se ale liší od architektury používané v
 pozdějších verzích. V YOLO-Pose jsou na konci řetězce umístěny hlavy pro různá
 měřítka, jejich výstupem jsou bounding boxy a klíčové body, oba tvořené spolu.
 V pozdějších verzích je architektura YOLO koncipována universálněji pro různé
-úlohy. Obsahuje tak tři fáze: páteř (ang. backbone), která extrahuje mapu
-příznaků, krk (ang. neck), který přizpůsobuje mapu příznaků pro různá měřítka,
-a hlavy (ang. head), které paralelně zpracovávají výstupy pro různé úlohy, viz
-obrázek \ref{fig:yolov11}. \cite{yolov11} Bounding box a klíčové body jsou tedy
-sice generovány paralelně a teoreticky nezávisle, nicméně s ohledem na proces
-trénování a postprocessing se v praxi navzájem výrazně ovlivňují.
+úlohy. Obsahuje tak tři fáze\cite{yolov11}: páteř (ang. backbone), která
+extrahuje mapu příznaků, krk (ang. neck), který přizpůsobuje mapu příznaků pro
+různá měřítka, a hlavy (ang. head), které paralelně zpracovávají výstupy pro
+různé úlohy, viz obrázek \ref{fig:yolov11} . Bounding box a klíčové body jsou
+tedy sice generovány paralelně a teoreticky nezávisle, nicméně s ohledem na
+proces trénování a postprocessing se v praxi navzájem výrazně ovlivňují.
 
 \begin{figure}[]
     \centering
@@ -401,6 +390,28 @@ Nejnovější verze YOLO taky podporují kombinaci detekce klíčových bodů a
 sledování osob. Model tedy kromě klíčových bodů vrací ID dané osoby, pomocí
 kterého můžeme spojit danou postavu s předchozími snímky. Můžeme tak efektivně
 analyzovat pohyby jednotlivých osob.
+
+Jednou z výhod framevorku YOLO, zejména verzí vyvíjených firmou Ultralytics, je
+široká škála velikosti modelů. Každý model je dostupný v pěti variantach:
+$Nano$, $Small$, $Medium$, $Large$, $Xlarge$.
+
+\subsection{Torchvision}
+
+Torchvision je knihovna, která je součástí frameworku PyTorch. Obsahuje různé
+nástroje pro strojové vidění, jako je detekce objektů či segmentace. Její
+součástí je i předtrénovaný model pro detekci pózy, který implementuje
+algoritmus Keypoint R-CNN \cite{keypoint-rcnn}.
+
+Algoritmus Keypoint R-CNN je založen na stejné myšlence jako Mask R-CNN
+\cite{mask-r-cnn}, a tedy rozšíření Faster R-CNN o další hlavu, která v případě
+Mask R-CNN provádí segmentaci, v případě Keypoint R-CNN detekuje klíčové body.
+V algoritmu je taky upravená pooling vrstva, která zajišťuje, že se výstupy
+algoritmu shodují se vstupy s přesností pixelu.
+
+Tuto implementaci budeme testovat zejména z důvodu její jednoduchosti použití a
+integrace do frameworku PyTorch, který budeme používat i v další části řešení.
+Na druhou stranu máme oproti jiným framevorkům, jako je YOLO či MediaPipe, k
+dispozici pouze jeden model, nikoliv více více velikostních variant.
 
 \section{Testování a porovnání vybraných algoritmů pro detekci pózy}
 
@@ -418,7 +429,152 @@ YOLO jsme testovali na GPU a CPU, abychom porovnali jeho výkon v různých
 podmínkách. Algoritmus YOLO jsme taky vyzkoušeli na GPU s využitím funkce
 sledování.
 
+Výstupem testování pro daný algoritmus a jeho variantu je průměrná doba
+zpracování jednoho snímku a videa s vykreslením klíčových bodů. Tyto videa nám
+dovolují ověřit schopnost detekce klíčových bodů v různých situacích a její
+přesnost.
 
+Podíváme se nyní na výsledky testování jednotlivých algoritmů. Jelikož všechny
+algoritmy kromě Torchvision Keypoint R-CNN mají několik variant, porovnáme
+jednotlivé varianty s ohledem na rychlost a přesnost. Pro každý algoritmus pak
+vybereme variantu optimální pro naše využití. Nakonec porovnáme mezi sebou
+algoritmy ve vybraných variantách a zvolíme model, který použijeme v další
+části vývoje.
+
+\subsection{Výkonové požadavky}
+Při výběru algoritmu musíme s ohledem na práci v reálném čase brát v úvahu
+zejména výkon detekčního algoritmu. Bezpečnostní kamery mají obvykle snímkovou
+frekvenci od 15 do 30 snímku za sekundu (FPS), ideální by tedy bylo, aby
+konečný program byl schopen pracovat s frekvencí alespoň 30 FPS. Zároveň se
+předpokládá, že v prostředí, kde bude program nasazen, bude dostupná grafická
+karta.
+
+V této fázi jsme již zkoušeli trénování neuronové sítě pro klasifikaci pózy, a
+ověřili jsme, že i v případě hlubších a komplexnějších sítích dosahujeme doby
+interference v řádu nižších jednotek milisekund. Hlavní vliv na výslednou
+rychlost programu tedy bude mít hlavně detekční algoritmus, který musí
+zpracovávat mnohem větší objem dat - stovky tisíc až miliony pixelů oproti
+např. 17 klíčovým bodům v případě klasifikačního algoritmu.
+
+\subsection{OpenPifPaf}
+
+Algoritmus OpenPifPaf jsme zkoušeli v několika variantách, postavených na síti
+\textit{ResNet 50} a \textit{ShuffleNet V2} \cite{shufflenetv2}. V tabulce
+\ref{tab:openpifpaf_performance} vidíme, že většina variant ani zdaleka
+nedosahuje požadovaného výkonu. Taky tento algoritmus dosahuje nejhorších
+kvalitativních výsledků ze všech testovaných algoritmů. Kromě nedetekování
+části těla, které nejsou vidět, totiž často nedetekuje člověka vůbec,
+nejčastěji pak když člověk padá nebo leží, což jsou situace pro nás stěžejní.
+Hlavně tento problém vystupuje ve variantě $resnet50$ a $shufflenetv2k16$, jsou
+tak pro nás nepoužitelné. Varianty $shufflenetv2k30$ a $tshufflenetv2k30$ by
+sice s ohledem na kvalitu výsledků použitelné byly, nicméně je jejich výkon
+příliš nízký.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Porovnání výkonu modelu OpenPifPaf}
+    \label{tab:openpifpaf_performance}
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{Verze}   & \textbf{Interference [ms]} & \textbf{Frekvence [FPS]} \\
+        resnet50         & 49,2                       & 20.32393576103568        \\ \hline
+        shufflenetv2k16  & 31,3                       & 31.910143270071657       \\ \hline
+        shufflenetv2k30  & 58,6                       & 17.069978743147114       \\ \hline
+        tshufflenetv2k30 & 70,0                       & 14.280550155929461       \\ \hline
+    \end{tabular}
+\end{table}
+
+\subsection{MediaPipe BlazePose}
+
+Algoritmus BlazePose z knihovny MediaPipe jsme testovali ve třech variantách:
+$Lite$, $Full$ a $Heavy$. Ve všech variantách tento algoritmus dosahoval velmi
+kvalitních výsledku, asi nejlepších ze všech testovaných algoritmů. Taky s
+ohledem na to, že nemáme k dispozici grafickou akceleraci, je jeho výkon velmi
+dobrý, viz tabulka \ref{tab:mediapipe_performance}. Verze $Lite$ a $Full$ by
+tak mohla být v našem řešení použitelná, což by nám taky dávalo možnost
+nasazovat výsledný program v mobilních zařízeních či jiných systémech bez
+grafické karty.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Porovnání výkonu modelu MediaPipe BlazePose}
+    \label{tab:mediapipe_performance}
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{Verze} & \textbf{Interference [ms]} & \textbf{Frekvence [FPS]} \\
+        \hline
+        lite           & 25.5                       & 39.23930953748518        \\ \hline
+        full           & 30.9                       & 32.40481233370272        \\ \hline
+        heavy          & 68.2                       & 14.654971132094836       \\ \hline
+    \end{tabular}
+\end{table}
+
+\subsection{Torchvision Keypoint R-CNN}
+
+Torchvision Keypoint R-CNN nedosáhla ani dostatečného výkonu, viz tabulka
+\ref{tab:torchvision_performance}, ani kvalitních výsledků. Podobně jako
+\textit{OpenPifPaf} má totiž problém, když osoba padá anebo leží. V tomto
+případě osobu často detekuje, ale naprosto ztrácí přesnost detekovaných klíčových
+bodů, nejčastěji záměnou jednotlivých bodů, viz obrázek \ref{fig:torchvision_bad}. 
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.2\textwidth]{Figures/torchvision_bad.png}
+    \caption{Příklad nepřesné detekce bodů v modelu Torchvision Keypoint R-CNN}
+    \label{fig:torchvision_bad}
+\end{figure}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Výkon modelu Torchvision Keypoint R-CNN}
+    \label{tab:torchvision_performance}
+    \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Interference [ms]} & \textbf{Frekvence [FPS]} \\
+        \hline
+        50.3                       & 19.897253813962013       \\ \hline
+    \end{tabular}
+\end{table}
+
+% \begin{table}[htbp]
+%     \centering
+%     \caption{}
+%     \label{}
+%     \begin{tabular}{|l|l|l|l|}
+%         \hline
+%         \textbf{Model} & \textbf{Verze}            & \textbf{Interference [ms]} & \textbf{Frekvence [FPS]} \\
+%         \hline
+%         mediapipe      & lite                      & 25.5                     & 39.23930953748518        \\ \hline
+%         mediapipe      & full                      & 30.9                     & 32.40481233370272        \\ \hline
+%         mediapipe      & heavy                     & 68.2                     & 14.654971132094836       \\ \hline
+%         openpifpaf     & resnet50                  & 49.2                     & 20.32393576103568        \\ \hline
+%         openpifpaf     & shufflenetv2k16           & 31.3                     & 31.910143270071657       \\ \hline
+%         openpifpaf     & shufflenetv2k16-apollo-24 & 32.0                      & 31.293453481612836       \\ \hline
+%         openpifpaf     & shufflenetv2k16-apollo-66 & 38.4                     & 26.046095149101856       \\ \hline
+%         openpifpaf     & shufflenetv2k16-wholebody & 51.5                     & 19.405343193400522       \\ \hline
+%         openpifpaf     & shufflenetv2k16-withdense & 31.9                     & 31.3077395791324         \\ \hline
+%         openpifpaf     & shufflenetv2k30           & 58.6                     & 17.069978743147114       \\ \hline
+%         openpifpaf     & shufflenetv2k30-apollo-66 & 66.1                     & 15.122976213182007       \\ \hline
+%         openpifpaf     & shufflenetv2k30-wholebody & 80.1                     & 12.481867012174858       \\ \hline
+%         openpifpaf     & tshufflenetv2k30          & 70.0                       & 14.280550155929461       \\ \hline
+%         yolo           & cpu nano                  & 32.5                     & 30.74898266318138        \\ \hline
+%         yolo           & cpu small                 & 53.9                     & 18.563280918148752       \\ \hline
+%         yolo           & cpu medium                & 114.1                     & 8.763492212102856        \\ \hline
+%         yolo           & cpu large                 & 143.4                     & 6.973250908805735        \\ \hline
+%         yolo           & cpu xlarge                & 833.2                     & 1.2002117851080778       \\ \hline
+%         yolo           & gpu nano                  & 15.1                     & 66.32336074356859        \\ \hline
+%         yolo           & gpu small                 & 15.2                     & 65.9717806367005         \\ \hline
+%         yolo           & gpu medium                & 17.4                     & 57.5001504688788         \\ \hline
+%         yolo           & gpu large                 & 24.4                     & 41.025916403472124       \\ \hline
+%         yolo           & gpu xlarge                & 24.4                     & 41.00455404907248        \\ \hline
+%         yolo           & gpu track nano            & 27.4                     & 36.49993432946052        \\ \hline
+%         yolo           & gpu track small           & 27.7                     & 36.14849744520849        \\ \hline
+%         yolo           & gpu track medium          & 29.5                     & 33.88226705742545        \\ \hline
+%         yolo           & gpu track large           & 37.5                     & 26.663753062433376       \\ \hline
+%         yolo           & gpu track xlarge          & 40.5                     & 24.69518323409046        \\ \hline
+%         torchvision    & -                         & 50.3                     & 19.897253813962013       \\ \hline
+%     \end{tabular}
+% \end{table}
 
 % openpifpaf, mediapipe(shufflenet, resnet), torchvision, yolo
 

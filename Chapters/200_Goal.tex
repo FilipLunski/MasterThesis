@@ -38,14 +38,15 @@ který vyžaduje rozsáhlou optimalizaci, pokročilou architekturu a velké mno�
 trénovacích dat. Nicméně, pokud by se podařilo takovouto síť natrénovat, mohla
 by lépe detekovat některé situace např. podle výrazu tváře.
 
-V našem případě tedy budeme v prvním kroku pomocí vhodné neuronové sítě
-detekovat pozici osoby ve formě klíčových bodů, tuto síť nazvěme
-\textit{detekční algoritmus}. Na základě těchto bodů pak další neuronová síť
-vyhodnotí, zda se jedná o pád, tuto část nazvěme \textit{klasifikační
-    algoritmus}. To úlohu velice zjednoduší, jelikož místo analyzování tisíců
-pixelů, budeme analyzovat pár desítek klíčových bodů. Další výhodou je, že u
-takového postupu jsme schopní použít techniky, kdy sledujeme změny pózy v čase,
-což by bylo mnohem složitější s jednofázovou konvoluční síti.
+V našem případě tedy budeme v prvním kroku pomocí vhodné předtrénované
+neuronové sítě detekovat pozici osoby ve formě klíčových bodů, tuto část
+nazvěme \textit{detekční algoritmus}. Na základě těchto bodů pak další
+neuronová síť vyhodnotí, zda se jedná o pád, tuto část nazvěme
+\textit{klasifikační algoritmus}. To úlohu velice zjednoduší, jelikož místo
+analyzování tisíců pixelů, budeme analyzovat pár desítek klíčových bodů. Další
+výhodou je, že u takového postupu jsme schopní použít techniky, kdy sledujeme
+změny pózy v čase, což by bylo mnohem složitější s jednofázovou konvoluční
+síti.
 
 Detekční algoritmus dostane na vstup celý snímek a může detekovat několik osob.
 Klasifikační algoritmus ale bude zpracovávat každou osobu, resp. její pózu,
@@ -66,25 +67,46 @@ kapitole pak bude rozebraná problematika detekce pózy a bude zvolen algoritmus
 pro detekci klíčových bodů. Dále se pak budeme zabývat vývojem modelu
 detekujícího pád na základě těchto klíčových bodů.
 
-\section{Trénovací data}
+\section{Trénovací datasety}
 \label{sec:TrainingData}
 
-Pro trénování našeho modelu jsme použili více než 150 videí. Pro videa byly
-vytvořeny anotace aktuální třídy pózy. Tato anotace není pro každý snímek, ale
-pouze při změně definuje časovou značku a následující třídu.
+Pro trénování našeho modelu jsme použili necelých 150 krátkých (1 až 15 sekund)
+videí ze dvou zdrojů. Prvním je dataset CAUCAFall vytvořený právě pro práci s
+pády osob \cite{caucafall}. Tento dataset obsahuje 100 nahrávek simulovaných
+pádu v různých světelných podmínkách, s různými osobami. Zahrnují širokou škálu
+scénářů, jednak pro různé druhy pádů (v různých směrech či z židle), jednak pro
+situace podobné pádu, jako je kleknutí či, sehnutí se, jednak běžné činnosti
+jako chůze či sednutí.
 
-Dále byl vytvořen skript, který prošel každé video a vytvořil trénovací data
-pro další fázi. Ty obsahují pro každý snímek detekované klíčové body (jako
-vstup) a aktuální třídu (jako požadovaný výstup). Pro detekci klíčových bodů
-byl použit vybraný model pro detekci pózy. Výběr modelu je popsán v následující
-kapitole. Na použitém modelu by teoreticky nemuselo záležet (pokud detekuje
-stejné typy klíčových bodů), je ale lepší použít stejný model jak pro trénovací
-data, tak ve výsledném programu. Modely se totiž můžou v některých situacích
-chovat trochu jinak (např. okluze) a náš model by tak dostával v praxi jiná
-data, než pro jaké byl natrénován.
+Dalším zdrojem pro trénovací data je YouTube video tvůrce Kevina Parryho
+\textit{50 Ways to Fall}. Ve videu autor pády v různých scénářích, jako je
+zakopnutí, omdlení či poražení elektrickým proudem. Vzhledem k zabavné povaze
+videa jsme některé scénáře vypustili, nakonec jsme použili 45 videí.
+
+
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.45\textwidth]{Figures/datasets_examples/cauca1.png}
+    \includegraphics[width=0.45\textwidth]{Figures/datasets_examples/cauca2.png}
+    \includegraphics[width=0.45\textwidth]{Figures/datasets_examples/fifty1.png}
+    \includegraphics[width=0.45\textwidth]{Figures/datasets_examples/fifty2.png}
+\caption{Příkladové snímky z datasetů CAUCAFall (nahoře) a 50 Ways to Fall (dole).}
+\label{fig:datasets_examples}
+\end{figure}
+
+V obou případech se jedná o videa vždy jedné osoby. To proto, že použijeme
+detekční algoritmus již natrénovaný na videích s více osobami, a náš
+klasifikační algoritmus bude zpracovávat každou osobu zvlášť. Práce s více
+osobami tak bude úlohou výsledného detektoru, nikoliv trénované klasifikační
+sítě.
+
+\section{Třídy a jejich anotace}
+Pro videa byly vytvořeny anotace aktuální třídy pózy. Tato anotace není pro
+každý snímek, ale pouze při změně definuje časovou značku a následující třídu.
 
 V anotacích jsme použili 3 třídy, ty odpovídají třem různým třídám pózy, které
-nás zajímají - \textit{normální}, kdy osoba např. chodí, sedí nebo stojí,
+nás mohou zajímat - \textit{normální}, kdy osoba např. chodí, sedí nebo stojí,
 \textit{padá} - přechodný stav padání, definován od započatí pohybu směrem
 dolů, a \textit{upadl} - definován od momentu, kdy se dotkl země trupem nebo
 všemi končetinami.
@@ -95,3 +117,24 @@ Pro náš model obecně potřebujeme jenom dvě třídy - \textit{normální} a
 experimentovat i se třídou \textit{padá}, která může síti pomoct hlouběji
 pochopit problematiku a přesněji rozeznat některé situace, zejména pak v
 případě využití rekurentních neuronových sítí.
+
+\section{Příprava trénovacích dat pro klasifikační algoritmus}
+
+Dále byl vytvořen skript, který prošel každé video z trénovacích datasetů a
+vytvořil trénovací data pro naši klasifikační síť. Ty obsahují pro každý snímek
+detekované klíčové body (jako vstup) a aktuální třídu (jako požadovaný výstup).
+Pro detekci klíčových bodů byl použit vybraný model pro detekci pózy. Výběr
+modelu je popsán v následující kapitole. Na použitém modelu by teoreticky
+nemuselo záležet (pokud detekuje stejné typy klíčových bodů), je ale lepší
+použít ve výsledném programu stejný model jako pro trénovací data. Modely se
+totiž můžou v některých situacích chovat trochu jinak (např. okluze) a náš
+model by tak dostával v praxi jiná data, než pro jaké byl natrénován.
+
+Jelikož pro rekurentní neuronové sítě potřebujeme sekvenci snímků, musí být
+trénovací data ještě zpracována. To ale bude již součastí samotného trénovacího
+skriptu, jelikož se konečná podoba dat může lišit hlavně délkou sekvencí, dále
+ale taky dodatečným rozšířením o sekvence vynechávající určité množství snímků,
+což simuluje menší snímkovou frekvenci (FPS). 
+
+
+\endinput

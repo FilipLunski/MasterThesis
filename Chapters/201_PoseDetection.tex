@@ -434,14 +434,13 @@ zpracování jednoho snímku a videa s vykreslením klíčových bodů. Tyto vid
 dovolují ověřit schopnost detekce klíčových bodů v různých situacích a její
 přesnost.
 
-Podíváme se nyní na výsledky testování jednotlivých algoritmů. Jelikož všechny
-algoritmy kromě Torchvision Keypoint R-CNN mají několik variant, porovnáme
-jednotlivé varianty s ohledem na rychlost a přesnost. Pro každý algoritmus pak
-vybereme variantu optimální pro naše využití. Nakonec porovnáme mezi sebou
-algoritmy ve vybraných variantách a zvolíme model, který použijeme v další
-části vývoje.
+Podíváme se nyní na výsledky testování jednotlivých algoritmů. Pro každý
+algoritmus porovnáme jednotlivé varianty s ohledem na rychlost a přesnost a
+vyhodnotíme jeho výhody či nevýhody oproti ostatním algoritmům. Nakonec zvolíme
+model, který použijeme v další části vývoje.
 
 \subsection{Výkonové požadavky}
+
 Při výběru algoritmu musíme s ohledem na práci v reálném čase brát v úvahu
 zejména výkon detekčního algoritmu. Bezpečnostní kamery mají obvykle snímkovou
 frekvenci od 15 do 30 snímku za sekundu (FPS), ideální by tedy bylo, aby
@@ -461,14 +460,16 @@ např. 17 klíčovým bodům v případě klasifikačního algoritmu.
 Algoritmus OpenPifPaf jsme zkoušeli v několika variantách, postavených na síti
 \textit{ResNet 50} a \textit{ShuffleNet V2} \cite{shufflenetv2}. V tabulce
 \ref{tab:openpifpaf_performance} vidíme, že většina variant ani zdaleka
-nedosahuje požadovaného výkonu. Taky tento algoritmus dosahuje nejhorších
-kvalitativních výsledků ze všech testovaných algoritmů. Kromě nedetekování
-části těla, které nejsou vidět, totiž často nedetekuje člověka vůbec,
-nejčastěji pak když člověk padá nebo leží, což jsou situace pro nás stěžejní.
-Hlavně tento problém vystupuje ve variantě $resnet50$ a $shufflenetv2k16$, jsou
-tak pro nás nepoužitelné. Varianty $shufflenetv2k30$ a $tshufflenetv2k30$ by
-sice s ohledem na kvalitu výsledků použitelné byly, nicméně je jejich výkon
-příliš nízký.
+nedosahuje požadovaného výkonu.
+
+Tento algoritmus je poměrně robustní s pohledu světelných podmínek a rozlišení
+či rozmazaní obrazu, jinak ale dosahuje nejhorší přesnosti ze všech testovaných
+algoritmů. Kromě nedetekování části těla, které nejsou vidět (jsou např.
+schovány za jinou části těla), totiž často nedetekuje člověka vůbec, nejčastěji
+pak když člověk padá nebo leží, což jsou situace pro nás stěžejní. Hlavně tento
+problém vystupuje ve variantě $resnet50$ a $shufflenetv2k16$, jsou tak pro nás
+nepoužitelné. Varianty $shufflenetv2k30$ a $tshufflenetv2k30$ by sice s ohledem
+na kvalitu výsledků použitelné byly, nicméně je jejich výkon příliš nízký.
 
 \begin{table}[htbp]
     \centering
@@ -477,10 +478,10 @@ příliš nízký.
     \begin{tabular}{|l|l|l|l|}
         \hline
         \textbf{Verze}   & \textbf{Interference [ms]} & \textbf{Frekvence [FPS]} \\
-        resnet50         & 49,2                       & 20.32393576103568        \\ \hline
-        shufflenetv2k16  & 31,3                       & 31.910143270071657       \\ \hline
-        shufflenetv2k30  & 58,6                       & 17.069978743147114       \\ \hline
-        tshufflenetv2k30 & 70,0                       & 14.280550155929461       \\ \hline
+        resnet50         & 49,2                       & 20.324                   \\ \hline
+        shufflenetv2k16  & 31,3                       & 31.910                   \\ \hline
+        shufflenetv2k30  & 58,6                       & 17.070                   \\ \hline
+        tshufflenetv2k30 & 70,0                       & 14.281                   \\ \hline
     \end{tabular}
 \end{table}
 
@@ -488,10 +489,25 @@ příliš nízký.
 
 Algoritmus BlazePose z knihovny MediaPipe jsme testovali ve třech variantách:
 $Lite$, $Full$ a $Heavy$. Ve všech variantách tento algoritmus dosahoval velmi
-kvalitních výsledku, asi nejlepších ze všech testovaných algoritmů. Taky s
-ohledem na to, že nemáme k dispozici grafickou akceleraci, je jeho výkon velmi
-dobrý, viz tabulka \ref{tab:mediapipe_performance}. Verze $Lite$ a $Full$ by
-tak mohla být v našem řešení použitelná, což by nám taky dávalo možnost
+přesných výsledku, asi nejlepších ze všech testovaných algoritmů. Na rozdíl od
+jiných algoritmů totiž, pokud detekoval osobu, vždy velmi přesně označil
+všechny její klíčové body, v rámci možnosti i ty, které byly hůře viditelné
+(např. schovány za jinou části těla). Na obrázku \ref{fig:ym_comparison} je
+vidět rozdíl v přesnosti detekce klíčových bodů mezi nejmenší variantou
+BlazePose a druhou největší variantou YOLO, kdy BlazePose dosahuje mnohem vetší
+přesnosti, v tomto příkladě zejména co se týče detekce nohou.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.4\textwidth]{Figures/pose_tests/mh1.png}
+    \includegraphics[width=0.4\textwidth]{Figures/pose_tests/yl1.png}
+    \caption{Porovnání přesnosti \textit{MediaPipe Lite} (vlevo) a \textit{YOLO Large} (vpravo)}
+    \label{fig:ym_comparison}
+\end{figure}
+
+S ohledem na to, že nemáme k dispozici grafickou akceleraci, je jeho výkon
+velmi dobrý, viz tabulka \ref{tab:mediapipe_performance}. Verze $Lite$ a $Full$
+by tak mohla být v našem řešení použitelná, což by nám taky dávalo možnost
 nasazovat výsledný program v mobilních zařízeních či jiných systémech bez
 grafické karty.
 
@@ -503,24 +519,33 @@ grafické karty.
         \hline
         \textbf{Verze} & \textbf{Interference [ms]} & \textbf{Frekvence [FPS]} \\
         \hline
-        lite           & 25.5                       & 39.23930953748518        \\ \hline
-        full           & 30.9                       & 32.40481233370272        \\ \hline
-        heavy          & 68.2                       & 14.654971132094836       \\ \hline
+        lite           & 25.5                       & 39.239                   \\ \hline
+        full           & 30.9                       & 32.405                   \\ \hline
+        heavy          & 68.2                       & 14.655                   \\ \hline
     \end{tabular}
 \end{table}
+
+Algoritmus si ale velice špatně radí s horšími světelnými podmínkami či menším
+rozlišením obrazu. Ve většině případu sice detekuje klíčové body velmi přesně,
+pokud je ale osoba hůř viditelná, nedetekuje ji vůbec. Tento problém se
+projevuje ve všech variantách podobně. Jelikož bude náš výsledný program
+nasazován spíše právě v podmínkách s horším osvětlením a ve větší vzdálenosti
+od osob, pravděpodobně se pro naší aplikaci nebude hodit.
 
 \subsection{Torchvision Keypoint R-CNN}
 
 Torchvision Keypoint R-CNN nedosáhla ani dostatečného výkonu, viz tabulka
 \ref{tab:torchvision_performance}, ani kvalitních výsledků. Podobně jako
 \textit{OpenPifPaf} má totiž problém, když osoba padá anebo leží. V tomto
-případě osobu často detekuje, ale naprosto ztrácí přesnost detekovaných klíčových
-bodů, nejčastěji záměnou jednotlivých bodů, viz obrázek \ref{fig:torchvision_bad}. 
+případě osobu často detekuje, ale naprosto ztrácí přesnost detekovaných
+klíčových bodů, nejčastěji záměnou jednotlivých bodů, viz obrázek
+\ref{fig:torchvision_bad}. Zároveň oproti BlazePose nemá takový problém z
+horšími světelnými podmínkami a menším rozlišením obrazu.
 
 \begin{figure}[]
     \centering
-    \includegraphics[width=0.2\textwidth]{Figures/torchvision_bad.png}
-    \caption{Příklad nepřesné detekce bodů v modelu Torchvision Keypoint R-CNN}
+    \includegraphics[width=0.2\textwidth]{Figures/pose_tests/torchvision_bad.png}
+    \caption{Příklad špatné detekce bodů v modelu Torchvision Keypoint R-CNN}
     \label{fig:torchvision_bad}
 \end{figure}
 
@@ -532,50 +557,108 @@ bodů, nejčastěji záměnou jednotlivých bodů, viz obrázek \ref{fig:torchvi
         \hline
         \textbf{Interference [ms]} & \textbf{Frekvence [FPS]} \\
         \hline
-        50.3                       & 19.897253813962013       \\ \hline
+        50.3                       & 19.897                   \\ \hline
     \end{tabular}
 \end{table}
 
-% \begin{table}[htbp]
-%     \centering
-%     \caption{}
-%     \label{}
-%     \begin{tabular}{|l|l|l|l|}
-%         \hline
-%         \textbf{Model} & \textbf{Verze}            & \textbf{Interference [ms]} & \textbf{Frekvence [FPS]} \\
-%         \hline
-%         mediapipe      & lite                      & 25.5                     & 39.23930953748518        \\ \hline
-%         mediapipe      & full                      & 30.9                     & 32.40481233370272        \\ \hline
-%         mediapipe      & heavy                     & 68.2                     & 14.654971132094836       \\ \hline
-%         openpifpaf     & resnet50                  & 49.2                     & 20.32393576103568        \\ \hline
-%         openpifpaf     & shufflenetv2k16           & 31.3                     & 31.910143270071657       \\ \hline
-%         openpifpaf     & shufflenetv2k16-apollo-24 & 32.0                      & 31.293453481612836       \\ \hline
-%         openpifpaf     & shufflenetv2k16-apollo-66 & 38.4                     & 26.046095149101856       \\ \hline
-%         openpifpaf     & shufflenetv2k16-wholebody & 51.5                     & 19.405343193400522       \\ \hline
-%         openpifpaf     & shufflenetv2k16-withdense & 31.9                     & 31.3077395791324         \\ \hline
-%         openpifpaf     & shufflenetv2k30           & 58.6                     & 17.069978743147114       \\ \hline
-%         openpifpaf     & shufflenetv2k30-apollo-66 & 66.1                     & 15.122976213182007       \\ \hline
-%         openpifpaf     & shufflenetv2k30-wholebody & 80.1                     & 12.481867012174858       \\ \hline
-%         openpifpaf     & tshufflenetv2k30          & 70.0                       & 14.280550155929461       \\ \hline
-%         yolo           & cpu nano                  & 32.5                     & 30.74898266318138        \\ \hline
-%         yolo           & cpu small                 & 53.9                     & 18.563280918148752       \\ \hline
-%         yolo           & cpu medium                & 114.1                     & 8.763492212102856        \\ \hline
-%         yolo           & cpu large                 & 143.4                     & 6.973250908805735        \\ \hline
-%         yolo           & cpu xlarge                & 833.2                     & 1.2002117851080778       \\ \hline
-%         yolo           & gpu nano                  & 15.1                     & 66.32336074356859        \\ \hline
-%         yolo           & gpu small                 & 15.2                     & 65.9717806367005         \\ \hline
-%         yolo           & gpu medium                & 17.4                     & 57.5001504688788         \\ \hline
-%         yolo           & gpu large                 & 24.4                     & 41.025916403472124       \\ \hline
-%         yolo           & gpu xlarge                & 24.4                     & 41.00455404907248        \\ \hline
-%         yolo           & gpu track nano            & 27.4                     & 36.49993432946052        \\ \hline
-%         yolo           & gpu track small           & 27.7                     & 36.14849744520849        \\ \hline
-%         yolo           & gpu track medium          & 29.5                     & 33.88226705742545        \\ \hline
-%         yolo           & gpu track large           & 37.5                     & 26.663753062433376       \\ \hline
-%         yolo           & gpu track xlarge          & 40.5                     & 24.69518323409046        \\ \hline
-%         torchvision    & -                         & 50.3                     & 19.897253813962013       \\ \hline
-%     \end{tabular}
-% \end{table}
+\subsection{YOLO}
 
-% openpifpaf, mediapipe(shufflenet, resnet), torchvision, yolo
+Algoritmus YOLO ve verzi 11 jsme testovali v pěti variantách: $Nano$, $Small$,
+$Medium$, $Large$ a $Xlarge$. Všechny varianty byly testovány na GPU i CPU.
+
+V tabulce \ref{tab:yolo_performance} vidíme, že na CPU dosahuje tento
+algoritmus poměrně špatných výsledků. Jediný použitelný by pro nás mohl být v
+takové situaci model $Nano$. YOLO je ale velice kvalitně optimalizováno pro
+grafické karty, můžeme tak pozorovat, že na GPU je výkon výrazně vyšší. Pro
+naše potřeby by tak byly použitelné prakticky všechny varianty.
+
+Jelikož pro analýzu více osob v jednom snímku je potřeba, zejména v případě
+použití rekurentní neuronové sítě, jednotlivé osoby od sebe oddělit a
+identifikovat i mezi snímky, bude pro nás velmi užitečná funkce sledování
+objektu. Proto jsme otestovali algoritmus YOLO i s touto funkcí. Jak je vidět v
+tabulce \ref{tab:yolo_performance}, je výkon sice horší než bez sledování,
+pořád ale tři menší varianty dosahují frekvence větší než $30$ FPS.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Porovnání výkonu modelu YOLO}
+    \label{tab:yolo_performance}
+    \begin{tabular}{|c|l|l|l|}
+        \hline
+                                           & \textbf{Verze} & \textbf{Interference [ms]} & \textbf{Frekvence [FPS]} \\
+        \hline\hline
+        \multirow{3}{*}{CPU}               & nano           & 32.5                       & 30.749                   \\ \cline{2-4}
+                                           & small          & 53.9                       & 18.563                   \\ \cline{2-4}
+                                           & medium         & 114.1                      & 8.763                    \\ \cline{2-4}
+                                           & large          & 143.4                      & 6.973                    \\ \cline{2-4}
+                                           & xlarge         & 833.2                      & 1.200                    \\ \hline\hline
+        \multirow{3}{*}{GPU}               & nano           & 15.1                       & 66.323                   \\ \cline{2-4}
+                                           & small          & 15.2                       & 65.972                   \\ \cline{2-4}
+                                           & medium         & 17.4                       & 57.500                   \\ \cline{2-4}
+                                           & large          & 24.4                       & 41.026                   \\ \cline{2-4}
+                                           & xlarge         & 24.4                       & 41.005                   \\ \hline\hline
+        \multirow{3}{*}{GPU se sledováním} & nano           & 27.4                       & 36.500                   \\ \cline{2-4}
+                                           & small          & 27.7                       & 36.148                   \\ \cline{2-4}
+                                           & medium         & 29.5                       & 33.882                   \\ \cline{2-4}
+                                           & large          & 37.5                       & 26.664                   \\ \cline{2-4}
+                                           & xlarge         & 40.5                       & 24.695                   \\ \hline
+    \end{tabular}
+\end{table}
+
+Všechny varianty algoritmu YOLO dosahují poměrně kvalitních výsledků. I v
+horších světelných podmínkách vždy detekují osobu, a víceméně přesně určí její
+klíčové body. Obecně je ale vidět, že je model trochu méně robustní (než např.
+MediaPipe) v situacích, kdy není dobře vidět některá končetina - je třebas
+schovaná za jinou částí těla, anebo ve specifických pózách - např. když je
+osoba v dřepu nebo je v obraze natočená vzhůru nohama. V takovýchto případech
+dosahuje menší přesnosti pro jednotlivé body - detekuje jiné natočení končetiny
+nebo v extrémních případech špatně vyhodnotí natočení celé postavy. Špatně
+viditelné části těla pak často vůbec nedetekuje.
+
+Z pohledu přesnosti je zde výrazně vidět vliv velikosti modelu na přesnost
+detekce. Varianta $Nano$ ve výše zmíněných situacích někdy detekuje body zcela
+špatně, a je tak prakticky nepoužitelná. Varianta $Small$ je znatelně lepší,
+pořád ale v horších podmínkách vyhodnocuje mnoho části těla špatně - např.
+zamění nohy. Varianta $Medium$ je už výrazně lepší. Není sice ideální, ve valné
+většině ale vyhodnotí všechny části těla správně i když ne z přesností několika
+pixelů. Varianty $Large$ a $Xlarge$ jsou pak už velmi přesné, projevuje se to
+ale znatelně menší rychlostí.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.18\textwidth]{Figures/pose_tests/y_n.png}
+    \includegraphics[width=0.18\textwidth]{Figures/pose_tests/y_s.png}
+    \includegraphics[width=0.18\textwidth]{Figures/pose_tests/y_m.png}
+    \includegraphics[width=0.18\textwidth]{Figures/pose_tests/y_l.png}
+    \includegraphics[width=0.18\textwidth]{Figures/pose_tests/y_x.png}
+    \caption{Porovnání přesnosti variant modelu YOLO. Zleva: $Nano$, $Small$, $Medium$, $Large$, $Xlarge$}
+    \label{fig:y_comparison}
+\end{figure}
+
+Je zajímavé pozorovat, že i když je algoritmus BlazePose v mnoha situacích
+mnohém přesnější, než i větší varianty YOLO, viz obrázek
+\ref{fig:ym_comparison}, při horší viditelnosti, kdy i nejmenší varianty YOLO
+detekují osobu, BlazePose zcela selhává. Ve snímku na obrázku
+\ref{fig:y_comparison} například nedetekoval BlazePose osobu vůbec.
+
+\subsection{Shrnutí a výběr modelu}
+
+Z našeho testování jsme zjistili, že modely OpenPifPaf a Torchvision jsou
+natrénované spíše pro detekci postavy, když je osoba v běžnějších pózách, jako
+je stoje či chůze. Stejně i u menších variant YOLO přesnost prudce klesá v méně
+typických pózách či natočeních v obraze. Jelikož ale je naše práce postavena
+právě na detekování více netypické postavy, je pro nás důležité detekovat
+pozici ve všech situacích.
+
+Naopak algoritmus BlazePose je velmi přesný, strádá ale při horší viditelnosti
+osoby. Nehodí se tak pro naše využití s kamerami s horším rozlišením a vysokou
+vzdáleností od osob. Ostatní algoritmy v tomto ohledu jsou mnohem robustnější,
+nejlépe si s horšími podmínkami poradí algoritmus YOLO.
+
+Optimální cesta se tedy zdá být algoritmus YOLO ve verzi medium, kdy dosahuje
+dostatečné rychlosti i při sledování osob, zároveň dostatečně přesně detekuji
+pózy ve všech pozicích i podmínkách. Pokud bychom nevyužívali pro analýzu pózy
+rekurentní neuronovou síť, nemuseli bychom používat funkci sledování a mohli
+bychom tak použít i větší variantu YOLO, což by mohlo zlepšit přesnost detekce.
 
 \endinput

@@ -3,34 +3,46 @@
 
 I když byly jedny z prvních NN použity ke zpracování obrazu, brzy se ukázalo,
 že pro zpracování obrazu s větším rozlišením a větším množstvím kanálů je
-klasická architektura NN velmi neefektivní. Bylo tedy třeba vytvořit jinou
-architekturu, která by efektivně zpracovávala obrazová data. Nejznámější
-takovou architekturou je konvoluční neuronová síť (ang. convolutional neural
-network - CNN), která bude popsána v této kapitole.
+klasická architektura NN velmi neefektivní. To proto, že je obraz reprezentován
+velkým množstvím dat, a klasická NN by pro jejich zpracování musela být tak
+komplexní (velké množství skrytých vrstev a neuronů), že by bylo velmi těžké, a
+spíše nemožné ji nacvičit \cite{cnn_introduction}.
 
-\section{Problémy zpracování obrazu pomocí klasických neuronových sítí}
+Bylo tedy třeba vytvořit jinou architekturu, která by efektivně zpracovávala
+obrazová data. Nejznámější takovou architekturou je konvoluční neuronová síť
+(ang. convolutional neural network - CNN). Ta tento problém řeší tak, že se
+snaží zredukovat rozměr vstupních dat pomocí konvolučních vrstev, které jsou
+schopny efektivně zpracovávat obrazová data, a extrahovat z nich důležité
+vlastnosti, jež následně můžeme zpracovat pomocí poměrně jednoduché NN.
 
-Klasickým přístupem pro zpracování obrazů pomocí neuronové sítě je vytvoření
-sítě se stejným počtem prvků vstupní vrstvy, jako je počet pixelů vstupního
-obrazu (za předpokladu jednoho kanálu). Tato vrstva je pak plně propojena s
-několika skrytými vrstvami, výstupní vrstva pak buď vrací kategorie, v případě
-klasifikace, nebo hodnoty hledaných atributů, jako je lokalizace objektů či
-souřadnice klíčových bodů, v případě regrese.
+Jelikož je základem našeho problému analýza obrazových dat, použijeme
+pravděpodobně právě konvoluční sítě, minimálně v první fázi, kdy z obrazu
+extrahujeme klíčové body osob. V této kapitole se proto podíváme na základní
+principy konvolučních neuronových sítí.
 
-Problémem tohoto přístupu je rozměr vstupních dat takové sítě. Běžná velikost
-obrazu v dnešní době dosahuje několika miliónů pixelů, tento počet je ale ještě
-vynásoben počtem kanálů, většinou třemi (RGB). To znamená, že velikost vstupní
-vrstvy sítě je velmi vysoká, a aby byla taková síť efektivní, musí mít větší
-počet skrytých vrstev a neuronů v těchto vrstvách. Ve výsledku má taková síť
-velký počet parametrů, které je třeba natrénovat. Trénování takové sítě je
-možné, je ale velmi nepraktické. Bylo by potřeba velké množství trénovacích
-dat, jinak by s velkou pravděpodobností došlo k přetrénování sítě. I kdyby ale
-bylo k dispozici dostatečné množství trénovacích dat, bylo by jak trénování,
-tak i používání sítě velmi výpočetně i paměťově náročné.
+% \section{Problémy zpracování obrazu pomocí klasických neuronových sítí}
 
-CNN se proto tento problém řeší tak, že se snaží zredukovat rozměr vstupních
-dat pomocí konvolučních vrstev, které jsou schopny efektivně zpracovávat
-obrazová data.
+% Klasickým přístupem pro zpracování obrazů pomocí neuronové sítě je vytvoření
+% sítě se stejným počtem prvků vstupní vrstvy, jako je počet pixelů vstupního
+% obrazu (za předpokladu jednoho kanálu). Tato vrstva je pak plně propojena s
+% několika skrytými vrstvami, výstupní vrstva pak buď vrací kategorie, v případě
+% klasifikace, nebo hodnoty hledaných atributů, jako je lokalizace objektů či
+% souřadnice klíčových bodů, v případě regrese.
+
+% Problémem tohoto přístupu je rozměr vstupních dat takové sítě. Běžná velikost
+% obrazu v dnešní době dosahuje několika miliónů pixelů, tento počet je ale ještě
+% vynásoben počtem kanálů, většinou třemi (RGB). To znamená, že velikost vstupní
+% vrstvy sítě je velmi vysoká, a aby byla taková síť efektivní, musí mít větší
+% počet skrytých vrstev a neuronů v těchto vrstvách. Ve výsledku má taková síť
+% velký počet parametrů, které je třeba natrénovat. Trénování takové sítě je
+% možné, je ale velmi nepraktické. Bylo by potřeba velké množství trénovacích
+% dat, jinak by s velkou pravděpodobností došlo k přetrénování sítě. I kdyby ale
+% bylo k dispozici dostatečné množství trénovacích dat, bylo by jak trénování,
+% tak i používání sítě velmi výpočetně i paměťově náročné.
+
+% CNN se proto tento problém řeší tak, že se snaží zredukovat rozměr vstupních
+% dat pomocí konvolučních vrstev, které jsou schopny efektivně zpracovávat
+% obrazová data.
 
 \section{Konvoluce}
 
@@ -50,7 +62,7 @@ kde $h$ je vstupní obraz, $f$ je jádro konvoluce, velikost jádra je $2k+1
 Hodnota konvoluce na dané pozici je tedy suma součinů hodnot pixelů vstupního
 obrazu a hodnot váh vyjádřených jádrem konvoluce položeným středem na danou
 pozici, viz obrázek \ref{fig:convolution}. Nejčastěji je velikost jádra lichá,
-jelikož je pak jednodušší určení středu jádra.
+jelikož je pak jednodušší určení středu jádra \cite{cnn_introduction}.
 
 \begin{figure}[]
     \centering
@@ -59,41 +71,19 @@ jelikož je pak jednodušší určení středu jádra.
     \label{fig:convolution}
 \end{figure}
 
-Konvoluce je velmi rozšířená operace v počítačové grafice a zpracování obrazu,
-k nejpoužívanějším aplikacím patří například rozmazání nebo detekce hran.
+% V případě více kanálů vstupního obrazu musí být připraveno zvlášť jádro pro
+% každý kanál. Výsledné konvoluce se pak sečtou. Můžeme se na tuto situaci dívat
+% i jako na třírozměrné konvoluční jádro s rozměrem třetí dimenze rovným počtu
+% kanálů vstupního obrazu. Konvoluce je pak prováděná tak, že na každé pozici
+% vstupního obrazu provedeme součet vah jádra vynásobených hodnotami vstupního
+% obrazu na příslušných pozicích napříč všemi kanály. Výstup takové konvoluce má
+% pouze jeden kanál.
 
-Pro rozmazání se používá například průměrovací filtr (ang. box blur)
-využívající jádro, které má na všech pozicích hodnotu $1/n$, kde $n$ je počet
-prvků jádra, viz obrázek \ref{fig:blur}. Výsledná hodnota konvoluce daného
-pixelu je tedy rovná průměru hodnot tohoto pixelu a jeho sousedů. Dalším často
-využívaným filtrem je Gaussovo rozostření, viz obrázek \ref{fig:blur}.
-Rozmazání je někdy využíváno v počítačovém vidění jako první krok, za účelem
-odstranění šumu z obrazu.
+Konvoluční jádro může být pevně dáno pro danou úlohu, např. pro detekci hran se
+často používá Sobelův operátor, který využívá dvě jádra - pro vertikální a
+horizontální hrany. Jádra pro detekci hran jsou zobrazena na obrázku
+\ref{fig:sobel}.
 
-Pro detekci hran se často používá Sobelův operátor, který využívá dvě jádra -
-pro vertikální a horizontální hrany. Jádra pro detekci hran jsou zobrazena na
-obrázku \ref{fig:sobel}.
-
-\begin{figure}[]
-    \centering
-    \begin{equation*}
-        {\displaystyle {\frac {1}{9}}{
-                \begin{bmatrix}
-                    1 & 1 & 1 \\
-                    1 & 1 & 1 \\
-                    1 & 1 & 1 \\
-                \end{bmatrix}},\ \ \ \ }
-        {\displaystyle {\frac {1}{16}}{
-                \begin{bmatrix}
-                    1 & 2 & 1 \\
-                    2 & 4 & 2 \\
-                    1 & 2 & 1 \\
-                \end{bmatrix}}}
-    \end{equation*}
-
-    \caption{Jádro konvoluce pro průměrovací a Gaussovo rozostření}
-    \label{fig:blur}
-\end{figure}
 \begin{figure}[]
     \centering
     \begin{equation*}
@@ -115,61 +105,54 @@ obrázku \ref{fig:sobel}.
     \label{fig:sobel}
 \end{figure}
 
-V případě více kanálů vstupního obrazu musí být připraveno zvlášť jádro pro
-každý kanál. Výsledné konvoluce se pak sečtou. Můžeme se na tuto situaci dívat
-i jako na třírozměrné konvoluční jádro s rozměrem třetí dimenze rovným počtu
-kanálů vstupního obrazu. Konvoluce je pak prováděná tak, že na každé pozici
-vstupního obrazu provedeme součet vah jádra vynásobených hodnotami vstupního
-obrazu na příslušných pozicích napříč všemi kanály. Výstup takové konvoluce má
-pouze jeden kanál.
-
-Myšlenkou konvolučních neuronových sítí je nahradit plně propojené vrstvy
-konvolučními vrstvami. Ruční nastavení všech hodnot jader tak, aby konvoluční
-vrstvy extrahovaly požadované vlastnosti z obrázku, je ale velmi obtížné, v
-případě složitějších či obecnějších problémů téměř nemožné. V 1989 proto Yann
-LeCun et al. navrhli metodu, jak se síť může hodnoty jader naučit sama, a tak
-si efektivně vytvořit i složitější filtry, které by člověk těžko navrhl ručně.
-Zjistili, že váhy konvolučních jader se mohou trénovat pomocí algoritmu
+Myšlenkou konvolučních neuronových sítí je nahradit část plně propojených
+vrstev konvolučními vrstvami, které z obrazu extrahují vlastnosti relevantní k
+problému. Ruční nastavení všech hodnot jader tak, aby konvoluční vrstvy
+extrahovaly požadované vlastnosti z obrázku, je ale velmi obtížné, v případě
+složitějších či obecnějších problémů téměř nemožné. V 1989 proto Yann LeCun et
+al. navrhli metodu, jak se síť může hodnoty jader naučit sama \cite{lecun1989},
+a tak si efektivně vytvořit i složitější filtry, které by člověk těžko navrhl
+ručně. Zjistili, že váhy konvolučních jader se mohou trénovat pomocí algoritmu
 backpropagation stejně jako váhy neuronů v plně propojených vrstvách.
 
 Takový přístup má mnoho výhod. Konvoluce se dá velmi dobře paralelizovat a
 zajistit tak vysokou efektivitu výpočtů. Oproti plně propojeným vrstvám má vždy
-konvoluce s jedním jádrem počet vah pouze rovný velikosti jádra. I v případě
-provedení mnoha konvolucí je počet výrazně menší než v případě potřebného počtu
-a velikosti plně propojených vrstev. Zároveň lze pomocí konvolucí efektivně
-extrahovat různé vlastnosti ze vstupního obrazu, ty pak pomocí plně propojených
-vrstev zpracovat a využít k řešení problému. Proto se taky výstupu konvoluce
-často říká mapa příznaků (ang. feature map).
+konvoluce počet vah pouze rovný počtu prvků ve všech jádrech. I v případě
+provedení mnoha konvolucí je počet váh výrazně menší než v případě potřebného
+počtu a velikosti plně propojených vrstev. Zároveň lze pomocí konvolucí
+efektivně extrahovat různé vlastnosti ze vstupního obrazu, ty pak pomocí plně
+propojených vrstev zpracovat a využít k řešení problému. Proto se taky výstupu
+konvoluce často říká mapa příznaků (ang. feature map).
 
-\section{Krok a padding}
+% \section{Krok a padding}
 
-Pro pochopení funkčnosti konvolučních neuronových sítí je ještě důležité
-pochopit dva parametry, které ovlivňují výstup konvoluční vrstvy. Jedná se o
-krok (ang. stride) a padding (česky vycpávka či doplnění).
+% Pro pochopení funkčnosti konvolučních neuronových sítí je ještě důležité
+% pochopit dva parametry, které ovlivňují výstup konvoluční vrstvy. Jedná se o
+% krok (ang. stride) a padding (česky vycpávka či doplnění).
 
-Krok určuje, co kolik pixelů se aplikuje jádro konvoluce na vstupní obraz.
-Pokud tedy bude krok $k = 1$, bude jádro aplikováno na každý pixel vstupního
-obrazu. Pokud bude krok $k = 2$, bude jádro aplikováno na každý druhý pixel
-vstupního obrazu. Pokud bude krok $k > 1$, bude výstup konvoluce násobně menší.
+% Krok určuje, co kolik pixelů se aplikuje jádro konvoluce na vstupní obraz.
+% Pokud tedy bude krok $k = 1$, bude jádro aplikováno na každý pixel vstupního
+% obrazu. Pokud bude krok $k = 2$, bude jádro aplikováno na každý druhý pixel
+% vstupního obrazu. Pokud bude krok $k > 1$, bude výstup konvoluce násobně menší.
 
-Jelikož na nejkrajnější pixely nemůžeme aplikovat jádro, protože by přesahovalo
-hranice obrazu, bude se obraz z každou konvolucí nežádaně zmenšovat i při
-jednotkovém kroku. Pokud použijeme například jádro o velikosti $3 \times 3$,
-bude výsledná mapa o 2 řádky a 2 sloupce menší, než byl vstupní obraz. Dalším
-problémem je, že ve výsledné konvoluci je marginalizován vliv krajních pixelů.
-Obraz je tedy jistým způsobem oříznut. Tyto problémy se proto někdy řeší pomocí
-tzv. paddingu. Je to technika, kdy se vstupní obraz rozšíří o takový počet
-pixelů z každé strany, aby vzhledem k velikosti konvolučního jádra bylo možné
-aplikovat jádro i na krajní pixely obrazu.
+% Jelikož na nejkrajnější pixely nemůžeme aplikovat jádro, protože by přesahovalo
+% hranice obrazu, bude se obraz z každou konvolucí nežádaně zmenšovat i při
+% jednotkovém kroku. Pokud použijeme například jádro o velikosti $3 \times 3$,
+% bude výsledná mapa o 2 řádky a 2 sloupce menší, než byl vstupní obraz. Dalším
+% problémem je, že ve výsledné konvoluci je marginalizován vliv krajních pixelů.
+% Obraz je tedy jistým způsobem oříznut. Tyto problémy se proto někdy řeší pomocí
+% tzv. paddingu. Je to technika, kdy se vstupní obraz rozšíří o takový počet
+% pixelů z každé strany, aby vzhledem k velikosti konvolučního jádra bylo možné
+% aplikovat jádro i na krajní pixely obrazu.
 
-Velikost výstupní mapy konvoluce je tedy dána vztahem:
+% Velikost výstupní mapy konvoluce je tedy dána vztahem:
 
-\begin{equation*}
-    \left\lfloor \frac{n+2p-f}{s}+1 \right\rfloor \times \left\lfloor \frac{n+2p-f}{s}+1 \right\rfloor
-\end{equation*}
+% \begin{equation*}
+%     \left\lfloor \frac{n+2p-f}{s}+1 \right\rfloor \times \left\lfloor \frac{n+2p-f}{s}+1 \right\rfloor
+% \end{equation*}
 
-kde $n$ je velikost vstupního obrazu, $p$ je velikost paddingu, $s$ je krok a
-jádro je velikosti $f \times f$.
+% kde $n$ je velikost vstupního obrazu, $p$ je velikost paddingu, $s$ je krok a
+% jádro je velikosti $f \times f$.
 
 \section{Konvoluční vrstva}
 
@@ -197,7 +180,7 @@ samotnou myšlenku konvolučních sítí, která je založena na snaze zredukova
 rozměr dat. Proto se snažíme rozměr map příznaků zmenšovat. Jak již bylo
 zmíněno, dojde k redukci rozměrů v konvoluční vrstvě, pokud použijeme krok $k >
     1$. Častěji ale je k tomuto účelu prováděno podvzorkování dat v tzv.
-poolovacích vrstvách (z ang. pooling layer).
+poolovacích vrstvách (z ang. pooling layer) \cite{rawat2017deep}.
 
 V poolovací vrstvě je vstupní mapa rozdělená do stejně velkých čtvercových
 oblastí velikosti $t \times t$, na základě hodnot v daném čtverci je pak
@@ -222,5 +205,14 @@ Plně propojená část je pak klasická dopředná neuronová síť, která na 
 extrahovaných vlastností provádí klasifikační či regresní úlohu. Před vstupem
 do plně propojené části jsou mapy příznaků převedené do jednoho vektoru o
 velikosti rovné součtu velikostí všech map příznaků.
+
+V praxi se často používá komplexnější architektury, které jsou přímo zaměřené
+na specifické úlohy, jako je detekce a klasifikace objektů či detekce klíčových
+bodů. Některé z nich budeme testovat pro potenciální využití v konečném řešení.
+Tyto architektury často zahrnují i další specifické techniky jako je extrakce
+vlastnosti na různých úrovních rozlišení či metody zaměření analýzy pouze na
+zajímavé oblasti. Taky jsou často postaveny na obecných ověřených CNN
+architekturách, pomocí kterých extrahují ve vstupní fázi vlastnosti, které pak
+způsobem specifickým pro danou úlohu zpracovávají.
 
 \endinput

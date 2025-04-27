@@ -374,8 +374,10 @@ jednotlivých vrstvách, které někdy destabilizují proces trénování.
 U trénování hlubokých sítí se často naráží také na problém přetrénování (taky
 nadměrné přizpůsobení, ang. overfitting). Přetrénování nastává, když se síť
 dobře naučí trénovací data, zároveň ale postrádá schopnost generalizace, a když
-pak dostane nová data, nedosahuje dobrých výsledků. K základním řešením tohoto
-problému patří použití většího množství trénovacích dat - pokud jsou dostupná,
+pak dostane nová data, nedosahuje dobrých výsledků. Nejčastěji k problému
+dochází v situacích, kdy se snažíme natrénovat hluboké a komplexni modely, aniž
+bychom měli k tomu dostatečné množství dat. K základním řešením tohoto problému
+tedy patří použití většího množství trénovacích dat - pokud jsou dostupná,
 jinak se někdy zavádí umělé variace dat jako rotace či převrácení, jinak je
 třeba někdy zvážit zjednodušení architektury modelu. Dále pak jsou využívány
 techniky regularizace, které upravují samotný proces trénování.

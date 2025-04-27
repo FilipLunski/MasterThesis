@@ -234,7 +234,7 @@ verze.
 Dalším populárním algoritmem, který používá jednofázový přístup, je SSD (z ang.
 single shot detector) \cite{szegedy:ssd}. Ten rozdělí vstupní obraz do několika
 mřížek o různé velikosti. Postup je takový, že nejprve projde obraz konvoluční
-síťí, konkrétně síťí VGG16, která extrahuje mapu příznaků. Tu se postupně
+sítí, konkrétně sítí VGG16, která extrahuje mapu příznaků. Tu se postupně
 dalšími konvolučními vrstvami zmenšuje, výstup každého stádia zmenšení,
 reprezentující mřížku dané velikosti, se spolu s původní mapou dále zpracovává
 plně propojenou sítí.
@@ -257,11 +257,11 @@ použití různých měřítek, byly převzaty do novějších verzí YOLO.
 
 \section{Charakteristiky vybraných implementací pro detekci pózy}
 
-V této sekci bude popsáno několik populárních algoritmů (a jejích implementací)
+V této sekci bude popsáno několik populárních algoritmů (a jejich implementací)
 pro detekci pózy zejména se zaměřením na jejich rychlost, přesnost a specifika
 architektury.
 
-Velká část algoritmů byla zamítnutá a neproběhlo ani jejích testování.
+Velká část algoritmů byla zamítnuta a neproběhlo ani jejích testování.
 Nejčastějším důvodem zamítnutí některého z algoritmů je, že schází jeho volně
 dostupná, aktualizovaná implementace. Tvůrci algoritmů většinou investují čas a
 zdroje pro vývoj algoritmu a natrénování modelu (často pro akademické účely),
@@ -270,10 +270,10 @@ neustále vyvíjejí nové knihovny a zpětná kompatibilita starších verzí n
 zaručena, je pak obtížné použít takovéto řešení ve svém projektu, aniž by bylo
 nutné investovat další čas do pochopení zdrojového kódu a jeho úpravy. Jak již
 bylo zmíněno na počátku kapitoly, implementace algoritmu od nuly by vyžadovala
-velké množství času a zdrojů (zejména výpočetních), hlavně by taky byla
+velké množství času a zdrojů (zejména výpočetních), hlavně by také byla
 potřebná hlubší znalost problematiky. Někdy je možné řešení použít za cenu
 kompromisu ve formě použití starších verzí knihoven či Pythonu, může to ale
-představovat bezpečnostní rizika. Taky některé algoritmy jsou sice volně
+představovat bezpečnostní rizika. Také některé algoritmy jsou sice volně
 dostupné, ale jejich implementace jsou součástí komerčních produktů. %todo citace
 
 \subsection{DeepPose}
@@ -316,7 +316,7 @@ kromě směru i velikost dané končetiny, což umožňuje lepší prostorové z
 pózy.
 
 Dalším rozšířením oproti OpenPose je možnost sledování osob ve videu. Mapa
-příznaků, která je výsledkem vstupní CNN, je udržována v mězipaměti, do další
+příznaků, která je výsledkem vstupní CNN, je udržována v mezipaměti, do další
 části sítě pak vždy vstupují mapy pro aktuální a předchozí snímek. Výstupem pak
 kromě klíčových bodů v každém snímku a jejich propojení tvořící kostru, jsou i
 propojení mezi klíčovými body z jednotlivých snímků, viz
@@ -331,7 +331,7 @@ Pokud je nalezena nová osoba, je jí přiřazeno nové ID.
     \label{fig:pipaf-tracking}
 \end{figure}
 
-U OpenPifPaf je k dispozici výběr několika páteřních modelů jako je ResNet50 či
+U OpenPifPaf je k dispozici výběr několika páteřních modelů, jako je ResNet50 či
 ShuffleNet v různých variantách a velikostech. Můžeme tak zvolit model, který
 je kompromisem mezi výkonem a přesností, v závislosti na konkrétních
 požadavcích aplikace.
@@ -393,7 +393,7 @@ kterého můžeme spojit danou postavu s předchozími snímky. Můžeme tak efe
 analyzovat pohyby jednotlivých osob.
 
 Jednou z výhod framevorku YOLO, zejména verzí vyvíjených firmou Ultralytics, je
-široká škála velikosti modelů. Každý model je dostupný v pěti variantach:
+široká škála velikostí modelů. Každý model je dostupný v pěti variantách:
 $Nano$, $Small$, $Medium$, $Large$, $Xlarge$.
 
 \subsection{Torchvision}
@@ -407,12 +407,12 @@ Algoritmus Keypoint R-CNN je založen na stejné myšlence jako Mask R-CNN
 \cite{mask-r-cnn}, a tedy rozšíření Faster R-CNN o další hlavu, která v případě
 Mask R-CNN provádí segmentaci, v případě Keypoint R-CNN detekuje klíčové body.
 V algoritmu je taky upravená pooling vrstva, která zajišťuje, že se výstupy
-algoritmu shodují se vstupy s přesností pixelu.
+algoritmu shodují s vstupy s přesností pixelu.
 
 Tuto implementaci budeme testovat zejména z důvodu její jednoduchosti použití a
 integrace do frameworku PyTorch, který budeme používat i v další části řešení.
-Na druhou stranu máme oproti jiným framevorkům, jako je YOLO či MediaPipe, k
-dispozici pouze jeden model, nikoliv více více velikostních variant.
+Na druhou stranu máme oproti jiným frameworkům, jako je YOLO či MediaPipe, k
+dispozici pouze jeden model, nikoliv více velikostních variant.
 
 \section{Testování a porovnání vybraných algoritmů pro detekci pózy}
 
@@ -444,13 +444,13 @@ model, který použijeme v další části vývoje.
 
 Při výběru algoritmu musíme s ohledem na práci v reálném čase brát v úvahu
 zejména výkon detekčního algoritmu. Bezpečnostní kamery mají obvykle snímkovou
-frekvenci od 15 do 30 snímku za sekundu (FPS), ideální by tedy bylo, aby
+frekvenci od 15 do 30 snímků za sekundu (FPS), ideální by tedy bylo, aby
 konečný program byl schopen pracovat s frekvencí alespoň 30 FPS. Zároveň se
 předpokládá, že v prostředí, kde bude program nasazen, bude dostupná grafická
 karta.
 
 V této fázi jsme již zkoušeli trénování neuronové sítě pro klasifikaci pózy, a
-ověřili jsme, že i v případě hlubších a komplexnějších sítích dosahujeme doby
+ověřili jsme, že i v případě hlubších a komplexnějších sítí dosahujeme doby
 interference v řádu nižších jednotek milisekund. Hlavní vliv na výslednou
 rychlost programu tedy bude mít hlavně detekční algoritmus, který musí
 zpracovávat mnohem větší objem dat - stovky tisíc až miliony pixelů oproti
@@ -463,10 +463,10 @@ Algoritmus OpenPifPaf jsme zkoušeli v několika variantách, postavených na s�
 \ref{tab:openpifpaf_performance} vidíme, že většina variant ani zdaleka
 nedosahuje požadovaného výkonu.
 
-Tento algoritmus je poměrně robustní s pohledu světelných podmínek a rozlišení
+Tento algoritmus je poměrně robustní z pohledu světelných podmínek a rozlišení
 či rozmazaní obrazu, jinak ale dosahuje nejhorší přesnosti ze všech testovaných
 algoritmů. Kromě nedetekování části těla, které nejsou vidět (jsou např.
-schovány za jinou části těla), totiž často nedetekuje člověka vůbec, nejčastěji
+schovány za jinou částí těla), totiž často nedetekuje člověka vůbec, nejčastěji
 pak když člověk padá nebo leží, což jsou situace pro nás stěžejní. Hlavně tento
 problém vystupuje ve variantě $resnet50$ a $shufflenetv2k16$, jsou tak pro nás
 nepoužitelné. Varianty $shufflenetv2k30$ a $tshufflenetv2k30$ by sice s ohledem
@@ -490,12 +490,12 @@ na kvalitu výsledků použitelné byly, nicméně je jejich výkon příliš n�
 
 Algoritmus BlazePose z knihovny MediaPipe jsme testovali ve třech variantách:
 $Lite$, $Full$ a $Heavy$. Ve všech variantách tento algoritmus dosahoval velmi
-přesných výsledku, asi nejlepších ze všech testovaných algoritmů. Na rozdíl od
+přesných výsledků, asi nejlepších ze všech testovaných algoritmů. Na rozdíl od
 jiných algoritmů totiž, pokud detekoval osobu, vždy velmi přesně označil
-všechny její klíčové body, v rámci možnosti i ty, které byly hůře viditelné
-(např. schovány za jinou části těla). Na obrázku \ref{fig:ym_comparison} je
+všechny její klíčové body, v rámci možností i ty, které byly hůře viditelné
+(např. schovány za jinou částí těla). Na obrázku \ref{fig:ym_comparison} je
 vidět rozdíl v přesnosti detekce klíčových bodů mezi nejmenší variantou
-BlazePose a druhou největší variantou YOLO, kdy BlazePose dosahuje mnohem vetší
+BlazePose a druhou největší variantou YOLO, kdy BlazePose dosahuje mnohem větší  
 přesnosti, v tomto příkladě zejména co se týče detekce nohou.
 
 \begin{figure}
@@ -527,11 +527,11 @@ grafické karty.
 \end{table}
 
 Algoritmus si ale velice špatně radí s horšími světelnými podmínkami či menším
-rozlišením obrazu. Ve většině případu sice detekuje klíčové body velmi přesně,
+rozlišením obrazu. Ve většině případů sice detekuje klíčové body velmi přesně,
 pokud je ale osoba hůř viditelná, nedetekuje ji vůbec. Tento problém se
 projevuje ve všech variantách podobně. Jelikož bude náš výsledný program
 nasazován spíše právě v podmínkách s horším osvětlením a ve větší vzdálenosti
-od osob, pravděpodobně se pro naší aplikaci nebude hodit.
+od osob, pravděpodobně se pro naši aplikaci nebude hodit.
 
 \subsection{Torchvision Keypoint R-CNN}
 
@@ -540,7 +540,7 @@ Torchvision Keypoint R-CNN nedosáhla ani dostatečného výkonu, viz tabulka
 \textit{OpenPifPaf} má totiž problém, když osoba padá anebo leží. V tomto
 případě osobu často detekuje, ale naprosto ztrácí přesnost detekovaných
 klíčových bodů, nejčastěji záměnou jednotlivých bodů, viz obrázek
-\ref{fig:torchvision_bad}. Zároveň oproti BlazePose nemá takový problém z
+\ref{fig:torchvision_bad}. Zároveň oproti BlazePose nemá takový problém d
 horšími světelnými podmínkami a menším rozlišením obrazu.
 
 \begin{figure}[]
@@ -646,7 +646,7 @@ detekují osobu, BlazePose zcela selhává. Ve snímku na obrázku
 
 Z našeho testování jsme zjistili, že modely OpenPifPaf a Torchvision jsou
 natrénované spíše pro detekci postavy, když je osoba v běžnějších pózách, jako
-je stoje či chůze. Stejně i u menších variant YOLO přesnost prudce klesá v méně
+je ve stoje či chůze. Stejně i u menších variant YOLO přesnost prudce klesá v méně
 typických pózách či natočeních v obraze. Jelikož ale je naše práce postavena
 právě na detekování více netypické postavy, je pro nás důležité detekovat
 pozici ve všech situacích.

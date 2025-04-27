@@ -46,7 +46,7 @@ YOLO11 dokáže zpracovat širokou škálu vstupních dat, včetně videí, kdy 
 vráceno pole výsledků, datových proudů (je třeba specifikovat příznak
 $stream$), kdy nám je vrácen iterátor, nebo obrázků, kdy dostaneme výsledek pro
 daný snímek. Pokud chceme použít režim \textit{sledování} na jednotlivé snímky,
-musíme specifikovat příznak $persist$, která zajistí, že mezi jednotlivými
+musíme specifikovat příznak $persist$, který zajistí, že mezi jednotlivými
 snímky bude uchovávána informace o sledovaných objektech. Zde můžeme vidět
 použití metody $track()$ v našem programu (příznaky $show$ a $verbose$
 specifikují, zda se má zobrazit výsledek každého snímku a zda má model do
@@ -60,7 +60,7 @@ konzoly vypisovat ladící informace)
 \section{Struktura třídy FallDetector}
 
 Třída $FallDetector$ slouží pro detekci pádu v sekvenci postupně předávaných
-snímků. Můžeme jí tak použít jak pro analýzu uloženého videa, tak pro detekci
+snímků. Můžeme ji tak použít jak pro analýzu uloženého videa, tak pro detekci
 pádu v živém přenosu v reálném čase. Mezi jednotlivými snímky uchovává pro
 každou osobu klíčové body z $x$ posledních snímků pro predikci na základě
 sekvence snímků. Dále dle nastavení uchovává $n$ posledních snímků, popřípadě i
@@ -88,10 +88,10 @@ Nejprve se detekují všechny osoby a jejich klíčové body pomocí vybraného
 modelu. Pokud je požadováno uložení anotovaného videa, převezmeme zde anotovaný
 snímek přímo od modelu YOLO, později pouze dopíšeme třídu detekce pádu. Dále
 jsou na základě detekovaných informací vytvořeny, popřípadě aktualizovány
-instance třídy $Person$. Pro každou osobu je taky provedena analýza sekvence
+instance třídy $Person$. Pro každou osobu je také provedena analýza sekvence
 klíčových bodů pro detekci pádu a popřípadě je patřičně anotována ve snímku.
 Pokud je detekován pád a je nastaveno ukládání videa, vytvoří se nový soubor a
-zapíše se do uchované předešlé snímky, zapisuje se pak do něj, dokud je  
+zapíše se do něj uchované předešlé snímky. Do souboru se pak zapisuje, dokud je  
 detekován pád a nevyprší požadovaný počet snímků po pádu.
 
 \endinput

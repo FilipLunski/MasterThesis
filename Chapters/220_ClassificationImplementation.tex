@@ -1,12 +1,33 @@
 \chapter{Implementace klasifikační neuronové sítě}
 \label{chap:ClassificationImplementation}
 
+Problematika vyhodnocování je velmi široká a přináší mnoho problémů. Ostatně i
+člověk někdy může špatně interpretovat chování druhé osoby. Například pokud
+někdo skáče do postele či jinak prudce lehá, může to vypadat jako nebezpečná
+situace. Stejně se v počítačovém vidění nevyhneme falešným poplachům, nicméně
+se budeme snažit zapojit různé techniky pro zlepšení přesnosti našeho
+detektoru.
+
+Naším úkolem je nyní vytvořit algoritmus, který pro danou pózu (reprezentovanou
+klíčovými body), resp. sekvenci takových póz (získané pro jednu osobu ze
+sekvence snímků), určí, zda se jedná o situaci pádu, či nikoliv. Tento
+algoritmus bude přijímat vždy pózu jedné osoby, funkcionalita pro více osob
+bude řešená později.
+
+V kapitole \ref{chap:Pose} jsme pro detekci klíčových bodů zvolili model
+\textit{YOLO pose}. Ten je předtrénovaný na datasetu \textit{COCO}, který pro
+lidské pózy definuje 17 klíčových bodů v dvourozměrném prostoru. To udává
+velikost vstupu do našeho klasifikačního algoritmu. Navrhneme tedy a
+natrénujeme neuronovou síť, jejíž vstupem bude 17 2D klíčových bodů - tedy 34
+čísel - a výstupem bude klasifikace třídy pózy - \textit{normální} a
+\textit{upadl}.
+
 V této kapitole se zaměříme na implementaci klasifikačního algoritmu pro
 analýzu pózy. Nejdříve se podíváme na použité technologie a knihovny, které nám
-pomohou s vývojem. Poté se zaměříme na návrh různých architektur a možné
-hyperparametry, jejichž vliv na výkon modelu bychom mohli otestovat. V další
-kapitole se pak zaměříme na experimenty s těmito architekturami a
-hyperparametry a zhodnotíme získané výsledky.
+pomohou s vývojem. Poté rozebereme možné architektury sítě a ukážeme, jak byly
+implementovány. Dále se zaměříme na návrh vnitřní struktury u techto
+architektur, zkusíme je natrénovat v různých konfiguracích a nakonec vybereme
+nejoptimálnější řešení.
 
 \section{Použité technologie}
 
@@ -44,76 +65,169 @@ taky nativně práci s TensorBoard, což je logovací nástroj umožňující p�
 sledování metrik během trénování, včetně grafického zobrazení ve webovém
 prostředí.
 
-\begin{lstlisting}[language=Python, label=src:pytorch, caption={Ukázka implementace GRU sítě v PyTorch Lightning}]
-class KeypointClassifier(lightning.LightningModule):
-    def __init__():
-        super(KeypointClassifierGRULightning, self).__init__()
-        self.gru = nn.GRU(34, 128)              # GRU vrstvy
-        self.classifier = nn.Sequential(        # Plně propojené vrstvy
-            nn.Linear(128, 128),
-            nn.ReLU(),
-            nn.Dropout(0.3),
-            nn.Linear(128, 1) )
-        self.criterion = nn.BCEWithLogitsLoss ()    # Ztrátová funkce
-        self.accuracy = BinaryAccuracy()            # Metrika přesnosti
-    def forward(self, x):
-        _, x = self.gru(x)
-        x = x[-1]                               # Poslední skrytý stav
-        x = self.classifier(x)
-        return x
-    def training_step(self, batch, batch_idx):
-        input, target = batch
-        output = self(input)
-        loss = self.criterion(output, target)
-        self.log("train_loss", loss)
-        return loss
-    def validation_step(self, batch, batch_idx):
-        input, target = batch
-        output = self(input)
-        loss = self.criterion(output, target)
-        self.log('val_loss', loss)
-        accuracy = self.accuracy(output, target.int())
-        self.log('val_accuracy', accuracy)
-        return loss
-
-\end{lstlisting}
+Pro implementaci modelu vytvoříme třídu, který dědí z
+$lightning.LightningModule$, a kromě konstruktoru, ve kterém inicializujeme
+jednotlivé vrstvy, definujeme metody $training\_step$ (krok trénování),
+$validation\_step$ - krok validace, $configure\_optimizers$ - definování
+optimalizační techniky a $forward$, která definuje, jak signál prochází
+jednotlivými vrstvami.
 
 \section{Implementace vybraných architektur}
 \label{sec:SelectedArchitectures}
 
+Podíváme se nyní, jak jsme jednotlive architektury implementovali, nezávisle na
+jejich vnitřní struktuře a konfiguraci.
+
 \subsection{Dopředná neuronová síť}
 
-Nejprve budeme implementovat jednoduchou dopřednou neuronovou síť. Její hlavní
-výhodou je rychlost, je to ale za cenu menší přesnosti. Jako vstupní data jsou
-použity klíčové body jedné osoby z daného jednoho snímku. Trénovací data tedy
-pouze přečteme z trénovacího souboru a překonvertujeme je do formy tenzoru,
-konkrétně je zabalíme do instance třídy $DataLoader$. Při použití ve výsledném
-programu předáme modelu klíčové body detekované v daném snímku.
+Nejjednodušší architekturou, kterou můžeme pro náš model použít, je dopředná
+neuronová síť. Tento model pak bude klasifikovat jednotlivé pózy, aniž by znal
+jejich kontext. Síť bude klasifikovat klíčové body pouze podle aktuální
+lokalizace ve snímku, nikoliv podle pohybu.
 
-% TODO: doplnit testované topologie a hyperparametry
+Výhodou této architektury je jednoduchost, potažmo rychlost. Síť nepotřebuje
+mnoho parametrů a oproti rekurentním sítím potřebuje pro evaluaci pouze jeden
+dopředný průchod vrstvami sítě.
+
+Další výhodou je jednoduchost trénování a používání. V případě více osob pro
+samotnou klasifikaci pádu není nutné sledování osob. Můžeme jednoduše
+klasifikovat všechny detekované pózy, aniž bychom řešili, které osobě patří.
+
+Tato síť ale ve výsledku bude klasifikovat pózy pouze dle vzájemného umístění
+jednotlivých klíčových bodů, potažmo délky končetin, nebude ale brát v úvahu
+natočení postavy. To proto, že postavy ve snímku vystupují pod různým úhlem
+natočení v závislosti na natočení kamery. Naopak síť, která je schopná sledovat
+pohyb, bude schopna sledovat mj. i změnu natočení postavy a to bez ohledu na
+natočení kamery.
+
+Při použití této architektury jsou jako vstupní data použity klíčové body jedné
+osoby z daného jednoho snímku. Trénovací data pak pouze přečteme z trénovacího
+souboru a překonvertujeme je do formy tenzoru, konkrétně je zabalíme do
+instance třídy $DataLoader$. Při použití ve výsledném programu předáme modelu
+klíčové body každé detekované osoby v daném snímku.
 
 Výstupem sítě je hodnota od $0$ do $1$, čísla od $0$ do $0.5$ jsou považována
 za třídu \textit{normální}, zatímco čísla od $0.5$ do $1$ za třídu
 \textit{upadl}.
 
+Pro implementaci dopředné sítě v Pytorch Lightning jsme použili modul
+$nn.sequential$, ve kterém definujeme postupné kroky průchodů sítě. $nn.Linear$
+definuje vrstvu sítě včetně počtu neuronů předcházející a aktuální vrstvy. Dále
+můžeme definovat aktivační funkci po dané vrstvě a regularizační techniky jako
+je dropout či normalizace. Příklad implementace dopředné sítě je uveden v kódu
+\ref{src:ffnn}. V tomto příkladě jsou definovány dvě vnitřní vrstvy o velikosti
+$128$ a $32$ a výstupní vrstva s jedním neuronem. Mezi vrstvami je aplikovaná
+normalizace a dropout $0.3$, jako aktivační funkce je použita ReLU.
+
+\begin{lstlisting}[language=Python, label=src:ffnn, caption={Ukázka implementace Dopředné sítě v PyTorch Lightning}]
+class KeypointClassifierFFNN(L.LightningModule):
+    def __init__(self):
+        super(KeypointClassifierFFNN, self).__init__()
+        self.classifier = nn.Sequential(
+            nn.Linear(34, 128),
+            nn.BatchNorm1d(128),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(128, 32),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(32, 1),
+        )
+        self.criterion = nn.BCEWithLogitsLoss()
+        self.accuracy = BinaryAccuracy(threshold=0.5)
+        self.sigmoid = nn.Sigmoid()    
+    def forward(self, x):
+        x = self.classifier(x)
+        return x
+    def configure_optimizers(self):
+        optimizer = optim.Adam(self.parameters(), lr=1e-4)
+        return optimizer
+    def training_step(self, batch, batch_idx):
+        input, target = batch
+        output = self(input)
+        loss = self.criterion(output, target.float())    
+        self.log("train_loss", loss, on_epoch=True, on_step=False)
+        return loss
+    def validation_step(self, batch, batch_idx):
+        data, target = batch
+        output = self(data)
+        loss = self.criterion(output, target.float())
+        self.log('val_loss', loss, on_epoch=True, on_step=False)
+        output = self.sigmoid(output)
+        accuracy = self.accuracy(output, target.int())    
+        self.log('val_accuracy', accuracy, on_epoch=True, on_step=False)
+    return loss
+\end{lstlisting}
+
+Abychom mohli tuto síť efektivně trénovat, musíme umožnit jednoduchou změnu
+konfigurace sítě. Třída $KeypointClassifierFFNN$ proto v konstruktoru přijímá
+parametry \textit{layers} - pole čísel reprezentujících velikosti jednotlivých
+vrstev, \textit{activation} - identifikátor vybrané aktivační funkce a
+\textit{dropout} definující velikost dropoutu, viz kód \ref{src:ffnn_params}.
+Jako ztrátovou funkce jsme použili křížovou entropii, tedy
+$nn.BCEWithLogitsLoss()$, která je vhodná pro binární klasifikaci.
+
+\begin{lstlisting}[language=Python, label=src:ffnn_params, caption={Parametrizace konfigurace dopředné sítě}] 
+class KeypointClassifierFFNN(L.LightningModule):
+    def __init__(self, layers, activation, dropout=0.3, device=None):
+        super(KeypointClassifierFFNN, self).__init__()        
+        classifier = nn.Sequential()
+        for i in range(len(layers)-1):
+            classifier.add_module(f'layer_{i}', nn.Linear(layers[i], layers[i+1]))
+            classifier.add_module(f'batch_norm_{i}', nn.BatchNorm1d(layers[i+1]))
+            classifier.add_module(f'activation_{i}', activations[activation])
+            classifier.add_module(f'dropout_{i}', nn.Dropout(dropout))
+        classifier.add_module(f'layer_{len(layers)-1}', nn.Linear(layers[-1], 1))
+        self.classifier = classifier
+        self.criterion = nn.BCEWithLogitsLoss()
+        self.accuracy = BinaryAccuracy(threshold=0.5)
+        self.layers = layers
+        self.sigmoid = nn.Sigmoid()   
+\end{lstlisting}
+
 \subsection{GRU síť}
 
-Dále jsme implementovali GRU síť, viz kód \ref{src:pytorch}. V tomto příkladu
-je definována GRU jednotka s jednou vrstvou, velikosti vstupního vektoru $34$ a
-skrytým stavem velikosti $128$, následována dvouvrstvou dopřednou plně
-propojenou sítí ze $128$ neurony v první vrstvě a s jedním neuronem ve druhé
-vrstvě.
+Jelikož pád je událost, nikoliv statická póza, mohlo by být optimálnější použit
+algoritmus, který bude analyzovat nejenom aktuální pózu ale sekvenci posledních
+$n$ póz. Pro tento účel se nabízí rekurentní neuronové sítě. V dnešní době je
+nejpoužívanější rekurentní architekturou GRU (Gated Recurrent Unit).
 
-Cást těchto hyperparametrů jsme parametrizovali, abychom mohli postupně
+Příklad implementace GRU sítě je uveden v kódu \ref{src:gru}, kde je definována
+GRU jednotka s jednou vrstvou, velikosti vstupního vektoru $34$ a skrytým
+stavem velikosti $128$, následována dvouvrstvou dopřednou plně propojenou sítí
+ze $128$ neurony v první vrstvě a s jedním neuronem ve druhé vrstvě.
+
+\begin{lstlisting}[language=Python, label=src:gru, caption={Ukázka implementace GRU sítě v PyTorch Lightning}]
+    class KeypointClassifierGRU(lightning.LightningModule):
+        def __init__(self):
+            super(KeypointClassifierGRU, self).__init__()
+            self.gru = nn.GRU(34, 128)              # GRU vrstvy
+            self.classifier = nn.Sequential(        # Plně propojené vrstvy
+                nn.Linear(128, 128),
+                nn.ReLU(),
+                nn.Dropout(0.3),
+                nn.Linear(128, 1) )
+            self.criterion = nn.BCEWithLogitsLoss ()    # Ztrátová funkce
+            self.accuracy = BinaryAccuracy()            # Metrika přesnosti
+        def forward(self, x):
+            _, x = self.gru(x)
+            x = x[-1]                               # Poslední skrytý stav
+            x = self.classifier(x)
+            return x
+    
+\end{lstlisting}
+
+Část těchto hyperparametrů jsme opět parametrizovali, abychom mohli postupně
 otestovat různé jejich kombinace a vyhodnotit jejich vliv na výkon modelu, viz
 kód \ref{src:params}. Jedná se o velikost vstupního vektoru, velikost skrytého
 stavu sítě GRU, počet vrstev GRU, velikost první plně propojené vrstvy,
 velikost výstupní vrstvy (pro binární klasifikaci vždy $1$, potřebné pro
 pozdější optimalizace) a dropout pro GRU i plně propojené vrstvy. Všechny tyto
-hyperparametry budeme ladit v rámci následujících experimentů.
+hyperparametry budeme ladit v další části.
 
 \begin{lstlisting}[language=Python, label=src:params, caption={Parametry konstruktoru třídy $KeypointClassifierGRU$ definující hyperparametry sítě}]
-class KeypointClassifierGRULightning(L.LightningModule):
+class KeypointClassifierGRU(L.LightningModule):
     def __init__(self, input_size=34, rnn_hidden_size=128, rnn_layers_count=2, fc_size=128, output_size=1, rnn_dropout=0.3, fc_dropout=0.3, device=None):
 \end{lstlisting}
 
@@ -123,25 +237,130 @@ klasifikaci.
 
 \subsection{LSTM síť}
 
-Podobně jako GRU síť jsme implementovali i LSTM síť. V implementaci se odlišuje
-pouze použitím modulu $nn.LSTM$ místo $nn.GRU$. Tento modul se v použití liší
-od GRU pouze tím, že kromě skrytého stavu vrací také stav buňky (dlouhodobou
-paměť), ten ale stejně nevyužijeme. Pro síť LSTM budeme ladit stejnou množinu
-hyperparametrů, jako pro GRU síť, abychom mohli porovnat jejich výkonnost.
+Další populární rekurentní architekturou je LSTM (Long Short-Term Memory). Ta
+je lepší pro delší sekvence, je to ale za cenu větší komplexity. Jak již bylo
+vysvětleno, s nárůstem komplexity se zvyšuje riziko přetrénování, zejména při
+nedostatku trénovacích dat. Vzhledem k množství trénovacích dat, které máme k
+dispozici, se tak dá předpokládat, že trénování této sítě bude spíše méně
+stabilní než v případě sítě GRU.
 
-\subsection{Vícetřídní klasifikace}
+Implementace sítě LSTM se od GRU liší pouze použitím modulu $nn.LSTM$ místo
+$nn.GRU$. Použití těchto modulů je v PyTorch velice podobné, pouze LSTM vrací
+kromě skrytého stavu také stav buňky (dlouhodobou paměť), ten ale stejně
+nevyužijeme. Pro síť LSTM budeme ladit stejnou množinu hyperparametrů, jako pro
+GRU síť, abychom mohli porovnat jejich výkonnost.
 
-Jak již bylo zmíněno (\ref{sec:TrainingData}), pro naše řešení potřebujeme
-detekovat pouze třídy \textit{normální} a \textit{upadl}, vyzkoušíme ale
-natrénovat i modely se třemi třídami - přidáme třídu \textit{padá}. Nemá smysl
-v našem případě implementovat takovou dopřednou neuronovou síť, jelikož
-klasifikuje snímky bez kontextu předchozích snímků.
+\section{Návrh architektury a konfigurace sítě}
 
-Budeme tedy navíc implementovat sítě GRU a LSTM, s velice podobnou topologií
-jako sítě s binární klasifikací. Hlavním rozdílem bude velikost výstupní
-vrstvy, jež bude rovna počtu tříd a použitá ztrátová funkce - nyní použijeme
-křížovou entropii. Výstup vícetřídní klasifikační sítě pak představuje pole
-pravděpodobností, že se jedná o danou třídu. Při inferenci pak použijeme jednotku 
-softmax pro převod výstupu na číslo třídy.
+Nyní přistoupíme do samotného návrhu architektury a konfigurace sítě. Vybrané
+architektury jsme natrénovali v různých konfiguracích a celý postup trénování
+jsme zapisovali pomocí logovacího nástroje TensorBoard. Nyní na základě grafů
+základních metrik, jako jsou ztrátová funkce či přesnost, zhodnotíme výkon
+vybraných architektur, podíváme se, jaký mají jednotlivé hyperparametry vliv
+proces trénování a výsledný výkon. Nakonec vybereme nejoptimálnější variantu. 
 
-\endinput
+K hyperparametrům, které jsme zkoušeli, patří počet vrstev a jejích velikost a
+velikost dropoutu. U dopředných síti jsme navíc zkoušeli i různé aktivační
+funkce, u rekurentních síti pak velikost skrytého stavu.
+
+\subsection{Dopředná neuronová síť}
+
+Nejprve jsme zkoušeli natrénovat dopřednou neuronovou síť. Vyzkoušeli jsme od
+dvou do čtyř vnitřních vrstev, ve velikostech od $32$ do $512$ neuronů, vždy
+mocniny dvou. Pojďme postupně rozebrat jednotlivé hyperparametry a jejich vliv
+na výkon modelu.
+
+Síť jsme zkoušeli trénovat z těmito vybranými aktivačními funkcemi: $ReLU$,
+$Tanh$, $PReLU$ a $Mish$. Ve všech případech ale nejlepších výsledku dosahovala
+$ReLU$. Příklad
+
+%
+%
+%
+% TODO ::(
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+
+% \subsection{GRU síť}
+
+% Jak již bylo zmíněno, v oblasti jednodušších RNN je dnešním standardem GRU síť,
+% sítě LSTM se používá zejména pokud si GRU s problémem neradí anebo je vzhledem
+% k problému důležité uchování dlouhodobých závislostí.
+
+% Stejnou taktiku zvolíme i my. Nejdříve otestujeme GRU sítě, a to pro několik
+% možností délky analyzované sekvence. To znamená, že pro každý snímek předáme
+% síti očekávanou třídu a sekvenci póz dané osoby z $n$ posledních snímků. Pak
+% vyzkoušíme síti předávat celou sekvenci póz dané osoby.
+
+% \endinput
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% %
+% \subsection{Vícetřídní klasifikace}
+
+% Jak již bylo zmíněno (\ref{sec:TrainingData}), pro naše řešení potřebujeme
+% detekovat pouze třídy \textit{normální} a \textit{upadl}, vyzkoušíme ale
+% natrénovat i modely se třemi třídami - přidáme třídu \textit{padá}. Nemá smysl
+% v našem případě implementovat takovou dopřednou neuronovou síť, jelikož
+% klasifikuje snímky bez kontextu předchozích snímků.
+
+% Budeme tedy navíc implementovat sítě GRU a LSTM, s velice podobnou topologií
+% jako sítě s binární klasifikací. Hlavním rozdílem bude velikost výstupní
+% vrstvy, jež bude rovna počtu tříd a použitá ztrátová funkce - nyní použijeme
+% křížovou entropii. Výstup vícetřídní klasifikační sítě pak představuje pole
+% pravděpodobností, že se jedná o danou třídu. Při inferenci pak použijeme
+% jednotku softmax pro převod výstupu na číslo třídy.

@@ -75,12 +75,12 @@ informaci o délce sekvence předávané tomuto modelu, a informace týkající 
 ukládání videí s pády, jako jsou cesty k souborům a délka videa před a po pádu.
 
 Pro práci s jednotlivými osobami používáme třídu $Person$, která uchovává
-hlavně klíčové body z posledních snímku a $id$, dále také bounding boxy,
+hlavně klíčové body z posledních snímků a $id$, dále také bounding boxy,
 detekovaný stav a confidence score této detekce pro poslední snímek, kdy byla
 osoba detekována. V případě, že daná osoba již není detekována, obsahuje
-informaci, kolik snímku již není vidět pro vymazání osob, jež odešly ze scény.
+informaci, kolik snímků již není vidět pro vymazání osob, jež odešly ze scény.
 Okamžité vymazání zmizelé osoby není žádoucí, jelikož někdy osoba je pořád na
-scéně, ale algoritmus ji i na několik snímku ztratí, zejména v případě okluze
+scéně, ale algoritmus ji i na několik snímků ztratí, zejména v případě okluze
 či špatných světelných podmínek.
 
 V metodě $process_frame$ třídy $FallDetector$ je zpracován vždy jeden snímek.

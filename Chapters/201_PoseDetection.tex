@@ -100,7 +100,7 @@ nad celým vstupním obrazem \cite{yolo-pose}.
 
 Detekce osob se v podstatě může generalizovat na detekci objektů v obraze.
 Detekci objektů v obraze definujeme jako úlohu, kdy ve vstupním obrázku určíme
-lokaci a třídu všech hledaných objektů.
+lokalizaci a třídu všech hledaných objektů. Lokalizace je většinou reprezentována jako souřadnice obdélníku ohraničujícího daný objekt, tzv. bounding box.
 
 V kapitole \ref{chap:CNN} jsme si popsali základní architekturu konvolučních
 neuronových sítí, ta se ale většinou v praxi používá pro klasifikaci obrázků,
@@ -115,34 +115,34 @@ neurony. Jak již ale bylo zmiňováno, komplexnost sítě zvyšuje její nárok
 výpočetní výkon a komplikuje nebo úplně znemožňuje její trénování s ohledem na
 pravděpodobnost přetrénování.
 
-Snahou tedy je najít metody, které poupraví funkčnost sítě tak, aby byla
+Snahou tedy bylo najít metody, které poupraví architekturu sítě tak, aby byla
 schopna efektivní detekce objektů. Většina těchto metod se nějakým způsobem
 snaží rozdělit vstupní obrázek na menší části, ty následně jednak klasifikovat,
 a tedy určit, zda se v dané lokalitě vyskytuje objekt, popřípadě pomocí regrese
-určit jeho přesnou lokalizaci. Lokalizace je většinou reprezentována jako
-souřadnice obdélníku ohraničujícího daný objekt, tzv. bounding box. Rozdělení
+určit jeho přesnou lokalizaci. Rozdělení
 může být provedeno přímo na vstupním obrázku nebo na mapě příznaků v rámci
-sítě. Taky můžeme buď rozdělit obrázek na pevně dané oblasti (např. do mřížky)
-- jednofázový přístup, anebo v jedné fázi předpřípravit množinu oblastí a ve
-druhé fázi nad těmito oblastmi provést klasifikaci a regresi - dvoufázový
-přístup.
+sítě. 
 
-\subsection{Sliding window}
+Metoda sliding window (klouzavé okno), která aplikuje hrubou sílu a projde veškeré možné oblasti, je samozřejmě velice neefektivní, a tak se další metody snaží buď najít pouze oblasti, ve kterých je pravděpodobné, že se nějaký objekt nachází - dvoufázový přístup, anebo rozdělí obrázek do mřížky - jednofázový přístup.
 
-Jednou z prvních takových metod byl tzv. sliding window (klouzavé okno), který
-aplikuje hrubou sílu. Vstupní obrázek se postupně projíždí oknem o fixní
-velikosti. Vznikne tak množina pokrývající každou možnou lokaci objektů. Na
-tyto oblasti se pak aplikuje klasifikační algoritmus. Postup se opakuje pro
-několik velikostí okna, aby se detekovaly objekty různé velikosti.
+Jelikož jsou tyto metody základem pro většinu detektorů klíčových bodů, pojďme si několik základních popsat.
 
-Tento postup je ale velice pomalý, jelikož je pro každý obrázek zvolený velký
-počet oblastí, pro které je třeba provést klasifikaci popřípadě regresi. Navíc
-je většina těchto oblastí prázdná, a dochází tak k plýtvání výpočetním výkonem.
-Algoritmus se taky potýká s překrývajícími se objekty.
+% \subsection{Sliding window}
 
-Další metody se tedy snaží redukovat počet oblastí, na které se aplikuje
-klasifikace, tak, že se vybere pouze oblasti, které pravděpodobně budou
-obsahovat nějaký objekt.
+% Jednou z prvních takových metod byl tzv. sliding window (klouzavé okno), který
+% aplikuje hrubou sílu. Vstupní obrázek se postupně projíždí oknem o fixní
+% velikosti. Vznikne tak množina pokrývající každou možnou lokaci objektů. Na
+% tyto oblasti se pak aplikuje klasifikační algoritmus. Postup se opakuje pro
+% několik velikostí okna, aby se detekovaly objekty různé velikosti.
+
+% Tento postup je ale velice pomalý, jelikož je pro každý obrázek zvolený velký
+% počet oblastí, pro které je třeba provést klasifikaci popřípadě regresi. Navíc
+% je většina těchto oblastí prázdná, a dochází tak k plýtvání výpočetním výkonem.
+% Algoritmus se taky potýká s překrývajícími se objekty.
+
+% Další metody se tedy snaží redukovat počet oblastí, na které se aplikuje
+% klasifikace, tak, že se vybere pouze oblasti, které pravděpodobně budou
+% obsahovat nějaký objekt.
 
 \subsection{Dvoufázový přístup}
 
@@ -258,10 +258,10 @@ použití různých měřítek, byly převzaty do novějších verzí YOLO.
 \section{Charakteristiky vybraných implementací pro detekci pózy}
 
 V této sekci bude popsáno několik populárních algoritmů (a jejich implementací)
-pro detekci pózy zejména se zaměřením na jejich rychlost, přesnost a specifika
+pro detekci pózy, zejména se zaměřením na jejich rychlost, přesnost a specifika
 architektury.
 
-Velká část algoritmů byla zamítnuta a neproběhlo ani jejích testování.
+Velká část algoritmů byla zamítnuta a neproběhlo ani jejich testování.
 Nejčastějším důvodem zamítnutí některého z algoritmů je, že schází jeho volně
 dostupná, aktualizovaná implementace. Tvůrci algoritmů většinou investují čas a
 zdroje pro vývoj algoritmu a natrénování modelu (často pro akademické účely),
@@ -311,7 +311,7 @@ stavebních kamenů: PIF (Part Intensity Field) - pole intenzity klíčových bo
 a PAF (Part Affinity Field) - pole propojení klíčových bodů. PIF je rozšířením
 heatmap, kdy kromě intenzity pravděpodobnosti klíčového bodu obsahuje i jeho
 posun, zaručující přesnější lokalizaci bodu, a odhadovanou velikost dané části
-těla. PAF v OpenPifPaf je taky podobný tomu v OpenPose, navíc ale indikuje
+těla. PAF v OpenPifPaf je také podobný tomu v OpenPose, navíc ale indikuje
 kromě směru i velikost dané končetiny, což umožňuje lepší prostorové zachycení
 pózy.
 
@@ -387,7 +387,7 @@ proces trénování a postprocessing se v praxi navzájem výrazně ovlivňují.
     \label{fig:yolov11}
 \end{figure}
 
-Nejnovější verze YOLO taky podporují kombinaci detekce klíčových bodů a
+Nejnovější verze YOLO také podporují kombinaci detekce klíčových bodů a
 sledování osob. Model tedy kromě klíčových bodů vrací ID dané osoby, pomocí
 kterého můžeme spojit danou postavu s předchozími snímky. Můžeme tak efektivně
 analyzovat pohyby jednotlivých osob.

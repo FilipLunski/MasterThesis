@@ -65,7 +65,7 @@ taky nativně práci s TensorBoard, což je logovací nástroj umožňující p�
 sledování metrik během trénování, včetně grafického zobrazení ve webovém
 prostředí.
 
-Pro implementaci modelu vytvoříme třídu, který dědí z
+Pro implementaci modelu vytvoříme třídu, která dědí z
 $lightning.LightningModule$, a kromě konstruktoru, ve kterém inicializujeme
 jednotlivé vrstvy, definujeme metody $training\_step$ (krok trénování),
 $validation\_step$ - krok validace, $configure\_optimizers$ - definování
@@ -75,7 +75,7 @@ jednotlivými vrstvami.
 \section{Implementace vybraných architektur}
 \label{sec:SelectedArchitectures}
 
-Podíváme se nyní, jak jsme jednotlive architektury implementovali, nezávisle na
+Podíváme se nyní, jak jsme jednotlivé architektury implementovali, nezávisle na
 jejich vnitřní struktuře a konfiguraci.
 
 \subsection{Dopředná neuronová síť}
@@ -116,7 +116,7 @@ definuje vrstvu sítě včetně počtu neuronů předcházející a aktuální v
 můžeme definovat aktivační funkci po dané vrstvě a regularizační techniky jako
 je dropout či normalizace. Příklad implementace dopředné sítě je uveden v kódu
 \ref{src:ffnn}. V tomto příkladě jsou definovány dvě vnitřní vrstvy o velikosti
-$128$ a $32$ a výstupní vrstva s jedním neuronem. Mezi vrstvami je aplikovaná
+$128$ a $32$ a výstupní vrstva s jedním neuronem. Mezi vrstvami je aplikována
 normalizace a dropout $0.3$, jako aktivační funkce je použita ReLU.
 
 \begin{lstlisting}[language=Python, label=src:ffnn, caption={Ukázka implementace Dopředné sítě v PyTorch Lightning}]
@@ -165,7 +165,7 @@ konfigurace sítě. Třída $KeypointClassifierFFNN$ proto v konstruktoru přij�
 parametry \textit{layers} - pole čísel reprezentujících velikosti jednotlivých
 vrstev, \textit{activation} - identifikátor vybrané aktivační funkce a
 \textit{dropout} definující velikost dropoutu, viz kód \ref{src:ffnn_params}.
-Jako ztrátovou funkce jsme použili křížovou entropii, tedy
+Jako ztrátovou funkci jsme použili křížovou entropii, tedy
 $nn.BCEWithLogitsLoss()$, která je vhodná pro binární klasifikaci.
 
 \begin{lstlisting}[language=Python, label=src:ffnn_params, caption={Parametrizace konfigurace dopředné sítě}] 
@@ -188,8 +188,8 @@ class KeypointClassifierFFNN(L.LightningModule):
 
 \subsection{GRU síť}
 
-Jelikož pád je událost, nikoliv statická póza, mohlo by být optimálnější použit
-algoritmus, který bude analyzovat nejenom aktuální pózu ale sekvenci posledních
+Jelikož pád je událost, nikoliv statická póza, mohlo by být optimálnější použít
+algoritmus, který bude analyzovat nejenom aktuální pózu, ale sekvenci posledních
 $n$ póz. Pro tento účel se nabízí rekurentní neuronové sítě. V dnešní době je
 nejpoužívanější rekurentní architekturou GRU (Gated Recurrent Unit).
 
@@ -257,11 +257,11 @@ architektury jsme natrénovali v různých konfiguracích a celý postup trénov
 jsme zapisovali pomocí logovacího nástroje TensorBoard. Nyní na základě grafů
 základních metrik, jako jsou ztrátová funkce či přesnost, zhodnotíme výkon
 vybraných architektur, podíváme se, jaký mají jednotlivé hyperparametry vliv
-proces trénování a výsledný výkon. Nakonec vybereme nejoptimálnější variantu. 
+na proces trénování a výsledný výkon. Nakonec vybereme nejoptimálnější variantu. 
 
-K hyperparametrům, které jsme zkoušeli, patří počet vrstev a jejích velikost a
-velikost dropoutu. U dopředných síti jsme navíc zkoušeli i různé aktivační
-funkce, u rekurentních síti pak velikost skrytého stavu.
+K hyperparametrům, které jsme zkoušeli, patří počet vrstev a jejich velikost a
+velikost dropoutu. U dopředných sítí jsme navíc zkoušeli i různé aktivační
+funkce, u rekurentních sítí pak velikost skrytého stavu.
 
 \subsection{Dopředná neuronová síť}
 
@@ -270,9 +270,121 @@ dvou do čtyř vnitřních vrstev, ve velikostech od $32$ do $512$ neuronů, vž
 mocniny dvou. Pojďme postupně rozebrat jednotlivé hyperparametry a jejich vliv
 na výkon modelu.
 
-Síť jsme zkoušeli trénovat z těmito vybranými aktivačními funkcemi: $ReLU$,
-$Tanh$, $PReLU$ a $Mish$. Ve všech případech ale nejlepších výsledku dosahovala
-$ReLU$. Příklad
+U dopředných sítí se nám nejlépe ověřila velikost dávky $4096$. Síť se lépe trénovala s použitím normalizace (modul $nn.BatchNorm1d$) a dropoutu. Pro většinu konfigurací byla velikost dropoutu $0.4$ nejoptimálnější. 
+
+Síť jsme zkoušeli trénovat s těmito vybranými aktivačními funkcemi: $ReLU$,
+$Tanh$, $PReLU$ a $Mish$. $ReLu$ a $PReLu$ často dosahovaly podobných výsledků, většinou ale nejlepších výsledků dosahovala $ReLU$. Příkladem je graf přesnosti pro trénování sítě se třemi vnitřními vrstvami velikosti $128$, $64$, a $32$ na obrázku \ref{graph:fnnactivations}.
+
+\begin{figure}[] % 'htbp' controls figure placement (here, top, bottom, page)
+    \centering
+    \label{graph:fnnactivations}
+    \caption{Graf přesnosti na validačních datech v průbehu trénování pro různé použité aktivační funkce}
+\begin{tikzpicture}
+    \begin{axis}[
+        xlabel={Epoch},
+        ylabel={Value},
+        ymin=0.7,
+        grid=both,
+        width=0.9\textwidth,
+        height=0.5\textheight,
+        legend pos=south east,
+    ]
+    \addplot[
+        color=blue,
+        mark=*,
+        no markers
+    ]
+    table {Plots/relu.dat};
+    \addlegendentry{ReLu}
+    \addplot[
+        color=green,
+        mark=*,
+        no markers
+    ]
+    table {Plots/prelu.dat};
+    \addlegendentry{PReLu}
+    \addplot[
+        color=orange,
+        mark=*,
+        no markers
+    ]
+    table {Plots/tanh.dat};
+    \addlegendentry{Tanh}
+    \addplot[
+        color=purple,
+        mark=*,
+        no markers
+    ]
+    table {Plots/mish.dat};
+    \addlegendentry{Mish}
+    \end{axis}
+\end{tikzpicture}
+\end{figure}
+
+Obecně větší sítě dosahovaly lepších výsledků - menší ztrátové funkce a vyšší přesnosti na validačních datech, v jistém momentě jsme již ale začali narážet na problém se stabilitou trénování. Nejoptimálnějších výsledků dosáhla síť se třemi vrstvami o velikostech $128$, $64$ a $32$. Jak můžeme vidět na grafu \ref{graph:deepffnn}, sítě s větší šířkou nebo hloubkou sice dosahují lepších výsledků, začínají ale brzy výrazně kolísat. Zkoušeli jsme v těchto případech i L2 regularizaci (parametr $weight\_decay$), to ale neřešilo problém. Pro komplexnější sítě bychom pravděpodobně potřebovali větší množství dat.
+
+
+\begin{figure}[] % 'htbp' controls figure placement (here, top, bottom, page)
+    \centering
+    \label{graph:deepffnn}
+    \caption{Graf validační ztráty v průběhu trénování hlubší sítě }
+\begin{tikzpicture}
+    \begin{axis}[
+        xlabel={Epoch},
+        ylabel={Value},
+        grid=both,
+        width=0.9\textwidth,
+        height=0.5\textheight,
+        legend pos=north east,
+        ymax=0.25,
+    ]
+
+     \addplot[
+        color=blue,
+        mark=*,
+        no markers
+    ]
+    table {Plots/fnn_[34,128,64,32].dat};
+    \addlegendentry{Velikosti vrstev: 128, 64, 32}
+    \addplot[
+        color=green,
+        mark=*,
+        no markers
+    ]
+    table {Plots/fnn_[34,256,128,32].dat};
+    \addlegendentry{Velikosti vrstev: 256, 128, 32}
+    \addplot[
+        color=orange,
+        mark=*,
+        no markers
+    ]
+    table {Plots/fnn_[34,256,128,64,32].dat};
+    \addlegendentry{Velikosti vrstev: 256, 128, 64, 32}
+    \addplot[
+        color=purple,
+        mark=*,
+        no markers
+    ]
+    table {Plots/fnn_[34,512,128,64,32].dat};
+    \addlegendentry{Velikosti vrstev: 512, 128, 64, 32}
+    \end{axis}
+\end{tikzpicture}
+\end{figure}
+
+Pojďme si tedy shrnout, jaká je pro nás nejoptimálnější konfigurace: použili jsme tři vrstvy o velikostech $128$, $64$ a $32$, dropout $0.3$, normalizaci mezi vrstvami, velikost dávky 4096 a aktivační funkci $ReLu$. Dosáhli jsme tak validační ztráty $0.18$ a validační přesnosti 93.8%
+
+
+
+\subsection{GRU síť}
+
+Jak již bylo zmíněno, v oblasti jednodušších RNN jsou dnešním standardem GRU sítě, sítě LSTM se používají zejména, pokud si GRU s problémem neradí, anebo je vzhledem k problému důležité uchování dlouhodobých závislostí.
+
+Stejnou taktiku zvolíme i my. Nejdříve otestujeme GRU sítě, a to pro několik
+možností délky analyzované sekvence. To znamená, že pro každý snímek předáme
+síti očekávanou třídu a sekvenci póz dané osoby z $n$ posledních snímků. Pak
+vyzkoušíme síti předávat celou sekvenci póz dané osoby.
+
+
 
 %
 %
@@ -291,17 +403,6 @@ $ReLU$. Příklad
 %
 %
 %
-
-% \subsection{GRU síť}
-
-% Jak již bylo zmíněno, v oblasti jednodušších RNN je dnešním standardem GRU síť,
-% sítě LSTM se používá zejména pokud si GRU s problémem neradí anebo je vzhledem
-% k problému důležité uchování dlouhodobých závislostí.
-
-% Stejnou taktiku zvolíme i my. Nejdříve otestujeme GRU sítě, a to pro několik
-% možností délky analyzované sekvence. To znamená, že pro každý snímek předáme
-% síti očekávanou třídu a sekvenci póz dané osoby z $n$ posledních snímků. Pak
-% vyzkoušíme síti předávat celou sekvenci póz dané osoby.
 
 % \endinput
 % %

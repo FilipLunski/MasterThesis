@@ -58,7 +58,7 @@ hlubokému učení. Algoritmus využívá metodu gradientního sestupu v kombina
 minimalizaci chyby.
 
 Vynález backpropagation byl jedním z hlavních důvodů, proč se v 80. letech
-obnovil zájem o neuronové sítě a umělou inteligenci obecně. V 1989 roce taky
+obnovil zájem o neuronové sítě a umělou inteligenci obecně. V roce 1989 taky
 umožnil Yann LeCunovi at al. zefektivnit použití konvolučních neuronových sítí
 pro rozpoznávání rukou psaných číslic \cite{lecun1989} a položit tak základ
 širokému využití konvolučních sítí v oblasti počítačového vidění.
@@ -87,7 +87,7 @@ výstupní.\cite{Vondrak1994}
 Biologický neuron se skládá ze tří hlavních částí. Dendrity přijímají vstupní
 signály. V těle jsou vstupní signály sečteny do jednoho potenciálu, který vede
 k vybuzení neuronu - zaslání signálu na výstup, pokud potenciál překročí
-určitou mez. Axanové vlákno pak vede k synapsím, tedy spojům s dalšími neurony.
+určitou mez. Axonové vlákno pak vede k synapsím, tedy spojům s dalšími neurony.
 Lidská mysl pak funguje na principu posilování nebo oslabování těchto spojů.
 
 Umělý neuron se snaží tuto funkčnost napodobit, viz obrázek \ref{fig:neuron}.
@@ -95,8 +95,8 @@ Jeho vstupy $x_i$ jsou násobeny váhami $w_i$, které reprezentují sílu dané
 spoje. Neuron pak tyto vážené vstupy sečte, a na tento součet aplikuje
 aktivační funkci (AF), která definuje hodnotu výstupu $y$. V prvním a základním
 modelu neuronu, perceptronu, je AF prahová funkce s binárním výstupem. Nicméně
-v praxi se dnes využívají většinou reálné hodnoty a AF je obvykle spojitá.
-\cite{Vondrak1994} Existuje mnoho různých AF, některé z nich budou popsány v
+v praxi se dnes využívají většinou reálné hodnoty a AF je obvykle spojitá
+\cite{Vondrak1994}. Existuje mnoho různých AF, některé z nich budou popsány v
 další části.
 
 Kromě vah jednotlivých vstupů neuron obvykle obsahuje ještě tzv. bias (někdy
@@ -144,7 +144,7 @@ projdeme několik základních AF, od kterých se většina ostatních nějakým
 způsobem odvíjí.
 
 Sigmoida (lineární křivka) funkce transformuje vstup do rozmezí 0 ÷ 1, je tak
-vhodná pro odhad pravděpodobnosti. Proto se taky někdy používá ve výstupních
+vhodná pro odhad pravděpodobnosti \cite{sigmoidImplementation}. Proto se taky někdy používá ve výstupních
 vrstvách síti, zejména pro binární klasifikaci. Její funkčnost lze formálně
 zapsat takto:
 
@@ -159,16 +159,16 @@ procesu trénování a může jej zpomalit nebo zcela zastavit. Navíc to, že n
 nulová v počátku souřadnic, může způsobit špatnou konvergenci.
 
 Hyperbolický tangens (tanh) je velmi podobný sigmoidě, ale transformuje vstup
-do rozmezí -1 ÷ 1. Řeší tedy poslední zmíněný problém. Nicméně se pořád potýká
-s problémem mizejícího gradientu. Taky, obě tyto funkce představují větší
-výpočetní nároky. Formálně lze tuto AF popsat takto:
+do rozmezí -1 ÷ 1  \cite{afreview}. Řeší tedy poslední zmíněný problém. Nicméně se pořád potýká
+s problémem mizejícího gradientu. Formálně lze tuto AF popsat takto:
 
 \begin{equation*}
     f(x)= \frac{e^x-e^{-x}}{e^x+e^{-x}}
 \end{equation*}
 
-ReLU (Rectified Linear Unit, taky někdy rampa) je jednoduchá a efektivní AF.
-Pro kladné hodnoty se chová jako identita, pro záporné je nulová.
+ Obě dříve zmíněné funkce představují větší
+výpočetní nároky. ReLU (Rectified Linear Unit, taky někdy rampa) je naopak jednoduchá, zároveň ale velice efektivní.
+Pro kladné hodnoty se chová jako identita, pro záporné je nulová  \cite{reluAnalysis}.
 
 \begin{equation*}
     f(x)=\max(0,x)=\begin{cases}x&x>0,\\0&x\leq0,\end{cases}
@@ -188,12 +188,15 @@ vynásobený $x$ pro záporné hodnoty:
 LReLU má tento parametr fixně nastavený na $p=0.01$, zatímco v případě PReLU je
 tento parametr trénovaný spolu s jinými parametry sítě.
 
-Další alternativou k ReLU je ELU (Exponential Linear Unit), která v záporné
-části odpovídá exponenciální funkci:
+Další novější alternativou podobnou ReLU je Mish \cite{mishaf}. Její výhoda je, že přechod mezi zápornými a kladnými hodnotami je oproti ReLu plynulý. Je to ale za cenu vyšší výpočetní náročnosti. Formálně je popsána takto:
 
 \begin{equation*}
-    f(x)=\begin{cases}x&x>0,\\a \left(e^{x}-1\right)&x\leq0\end{cases}
+    f(x) = x \cdot \tanh\left( \ln\left(1 + e^{x}\right) \right)
 \end{equation*}
+
+% \begin{equation*}
+%     f(x)=\begin{cases}x&x>0,\\a \left(e^{x}-1\right)&x\leq0\end{cases}
+% \end{equation*}
 
 \begin{center}
     \begin{tikzpicture}
@@ -218,18 +221,22 @@ Další alternativou k ReLU je ELU (Exponential Linear Unit), která v záporné
             % ReLU
             \addplot[green, semithick] {x*(x>0)};
             \addlegendentry{ReLU}
+            
 
-            % ELU (alpha = 1)
-            \addplot[blue, semithick] {(x>0) * x + (x<=0) * (exp(x)-1) - 0.01};
-            \addlegendentry{ELU}
+            % % ELU (alpha = 1)
+            % \addplot[blue, semithick] {(x>0) * x + (x<=0) * (exp(x)-1) - 0.01};
+            % \addlegendentry{ELU}
 
-            % APL (Adaptive Piecewise Linear) - using a simple approximation
-            \addplot[purple, semithick] {max(0,x) + 0.1*min(0,x+1) - 0.1*min(0,x-1) + 0.01};
-            \addlegendentry{APL}
+            % % APL (Adaptive Piecewise Linear) - using a simple approximation
+            % \addplot[purple, semithick] {max(0,x) + 0.1*min(0,x+1) - 0.1*min(0,x-1) + 0.01};
+            % \addlegendentry{APL}
 
-            % Swish (x * sigmoid(x))
-            \addplot[cyan, semithick] {x/(1+exp(-x))};
-            \addlegendentry{Swish}
+            % % Swish (x * sigmoid(x))
+            % \addplot[cyan, semithick] {x/(1+exp(-x))};
+            % \addlegendentry{Swish}
+            % Mish (x * tanh(ln(1 + exp(x))))
+            \addplot[magenta, semithick] {x * tanh(ln(1 + exp(x)))};
+            \addlegendentry{Mish}
 
         \end{axis}
     \end{tikzpicture}
@@ -274,7 +281,7 @@ nepoužívají. Většina neuronových sítí má mezi vstupní a výstupní vrs
 alespoň jednu skrytou vrstvu, viz obrázek \ref{fig:layers}.
 
 U většiny klasických dopředných neuronových sítí jsou jednotlivé vrstvy mezi
-sebou plně propojeny, tzn. každý prvek jedné vrstvy je propojený se všemi prvky
+sebou plně propojeny, tzn. každý prvek jedné vrstvy je propojen se všemi prvky
 následující vrstvy.
 
 \begin{figure}[]
@@ -308,7 +315,7 @@ hodnotu druhých mocnin rozdílů mezi skutečnými a očekávanými hodnotami. 
 možností je absolutní chyba (ang. mean absolute error - MAE), která vyjadřuje
 střední hodnotu absolutních hodnot rozdílů.
 
-Dále je používaná metoda gradientního sestupu, k nalezení minima chybové
+Dále je používána metoda gradientního sestupu, k nalezení minima chybové
 funkce. Za tímto účelem se vypočítají derivace chyby podle jednotlivých
 parametrů sítě. Tyto derivace pak určují, jakým směrem a jak rychle se mají
 dané parametry měnit, aby se chyba minimalizovala. Jelikož se derivace

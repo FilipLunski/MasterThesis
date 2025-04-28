@@ -100,7 +100,9 @@ nad celým vstupním obrazem \cite{yolo-pose}.
 
 Detekce osob se v podstatě může generalizovat na detekci objektů v obraze.
 Detekci objektů v obraze definujeme jako úlohu, kdy ve vstupním obrázku určíme
-lokalizaci a třídu všech hledaných objektů. Lokalizace je většinou reprezentována jako souřadnice obdélníku ohraničujícího daný objekt, tzv. bounding box.
+lokalizaci a třídu všech hledaných objektů. Lokalizace je většinou
+reprezentována jako souřadnice obdélníku ohraničujícího daný objekt, tzv.
+bounding box.
 
 V kapitole \ref{chap:CNN} jsme si popsali základní architekturu konvolučních
 neuronových sítí, ta se ale většinou v praxi používá pro klasifikaci obrázků,
@@ -119,13 +121,17 @@ Snahou tedy bylo najít metody, které poupraví architekturu sítě tak, aby by
 schopna efektivní detekce objektů. Většina těchto metod se nějakým způsobem
 snaží rozdělit vstupní obrázek na menší části, ty následně jednak klasifikovat,
 a tedy určit, zda se v dané lokalitě vyskytuje objekt, popřípadě pomocí regrese
-určit jeho přesnou lokalizaci. Rozdělení
-může být provedeno přímo na vstupním obrázku nebo na mapě příznaků v rámci
-sítě. 
+určit jeho přesnou lokalizaci. Rozdělení může být provedeno přímo na vstupním
+obrázku nebo na mapě příznaků v rámci sítě.
 
-Metoda sliding window (klouzavé okno), která aplikuje hrubou sílu a projde veškeré možné oblasti, je samozřejmě velice neefektivní, a tak se další metody snaží buď najít pouze oblasti, ve kterých je pravděpodobné, že se nějaký objekt nachází - dvoufázový přístup, anebo rozdělí obrázek do mřížky - jednofázový přístup.
+Metoda sliding window (klouzavé okno), která aplikuje hrubou sílu a projde
+veškeré možné oblasti, je samozřejmě velice neefektivní, a tak se další metody
+snaží buď najít pouze oblasti, ve kterých je pravděpodobné, že se nějaký objekt
+nachází - dvoufázový přístup, anebo rozdělí obrázek do mřížky - jednofázový
+přístup.
 
-Jelikož jsou tyto metody základem pro většinu detektorů klíčových bodů, pojďme si několik základních popsat.
+Jelikož jsou tyto metody základem pro většinu detektorů klíčových bodů, pojďme
+si několik základních popsat.
 
 % \subsection{Sliding window}
 
@@ -331,9 +337,9 @@ Pokud je nalezena nová osoba, je jí přiřazeno nové ID.
     \label{fig:pipaf-tracking}
 \end{figure}
 
-U OpenPifPaf je k dispozici výběr několika páteřních modelů, jako je ResNet50 či
-ShuffleNet v různých variantách a velikostech. Můžeme tak zvolit model, který
-je kompromisem mezi výkonem a přesností, v závislosti na konkrétních
+U OpenPifPaf je k dispozici výběr několika páteřních modelů, jako je ResNet50
+či ShuffleNet v různých variantách a velikostech. Můžeme tak zvolit model,
+který je kompromisem mezi výkonem a přesností, v závislosti na konkrétních
 požadavcích aplikace.
 
 \subsection{MediaPipe - BlazePose}
@@ -495,7 +501,7 @@ jiných algoritmů totiž, pokud detekoval osobu, vždy velmi přesně označil
 všechny její klíčové body, v rámci možností i ty, které byly hůře viditelné
 (např. schovány za jinou částí těla). Na obrázku \ref{fig:ym_comparison} je
 vidět rozdíl v přesnosti detekce klíčových bodů mezi nejmenší variantou
-BlazePose a druhou největší variantou YOLO, kdy BlazePose dosahuje mnohem větší  
+BlazePose a druhou největší variantou YOLO, kdy BlazePose dosahuje mnohem větší
 přesnosti, v tomto příkladě zejména co se týče detekce nohou.
 
 \begin{figure}
@@ -646,10 +652,10 @@ detekují osobu, BlazePose zcela selhává. Ve snímku na obrázku
 
 Z našeho testování jsme zjistili, že modely OpenPifPaf a Torchvision jsou
 natrénované spíše pro detekci postavy, když je osoba v běžnějších pózách, jako
-je ve stoje či chůze. Stejně i u menších variant YOLO přesnost prudce klesá v méně
-typických pózách či natočeních v obraze. Jelikož ale je naše práce postavena
-právě na detekování více netypické postavy, je pro nás důležité detekovat
-pozici ve všech situacích.
+je ve stoje či chůze. Stejně i u menších variant YOLO přesnost prudce klesá v
+méně typických pózách či natočeních v obraze. Jelikož ale je naše práce
+postavena právě na detekování více netypické postavy, je pro nás důležité
+detekovat pozici ve všech situacích.
 
 Naopak algoritmus BlazePose je velmi přesný, strádá ale při horší viditelnosti
 osoby. Nehodí se tak pro naše využití s kamerami s horším rozlišením a vysokou

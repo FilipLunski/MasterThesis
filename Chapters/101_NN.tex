@@ -144,9 +144,9 @@ projdeme několik základních AF, od kterých se většina ostatních nějakým
 způsobem odvíjí.
 
 Sigmoida (lineární křivka) funkce transformuje vstup do rozmezí 0 ÷ 1, je tak
-vhodná pro odhad pravděpodobnosti \cite{sigmoidImplementation}. Proto se taky někdy používá ve výstupních
-vrstvách síti, zejména pro binární klasifikaci. Její funkčnost lze formálně
-zapsat takto:
+vhodná pro odhad pravděpodobnosti \cite{sigmoidImplementation}. Proto se taky
+někdy používá ve výstupních vrstvách síti, zejména pro binární klasifikaci.
+Její funkčnost lze formálně zapsat takto:
 
 \begin{equation*}
     f(x)= \frac{1}{1+e^{-x}}
@@ -159,16 +159,18 @@ procesu trénování a může jej zpomalit nebo zcela zastavit. Navíc to, že n
 nulová v počátku souřadnic, může způsobit špatnou konvergenci.
 
 Hyperbolický tangens (tanh) je velmi podobný sigmoidě, ale transformuje vstup
-do rozmezí -1 ÷ 1  \cite{afreview}. Řeší tedy poslední zmíněný problém. Nicméně se pořád potýká
-s problémem mizejícího gradientu. Formálně lze tuto AF popsat takto:
+do rozmezí -1 ÷ 1 \cite{afreview}. Řeší tedy poslední zmíněný problém. Nicméně
+se pořád potýká s problémem mizejícího gradientu. Formálně lze tuto AF popsat
+takto:
 
 \begin{equation*}
     f(x)= \frac{e^x-e^{-x}}{e^x+e^{-x}}
 \end{equation*}
 
- Obě dříve zmíněné funkce představují větší
-výpočetní nároky. ReLU (Rectified Linear Unit, taky někdy rampa) je naopak jednoduchá, zároveň ale velice efektivní.
-Pro kladné hodnoty se chová jako identita, pro záporné je nulová  \cite{reluAnalysis}.
+Obě dříve zmíněné funkce představují větší výpočetní nároky. ReLU (Rectified
+Linear Unit, taky někdy rampa) je naopak jednoduchá, zároveň ale velice
+efektivní. Pro kladné hodnoty se chová jako identita, pro záporné je nulová
+\cite{reluAnalysis}.
 
 \begin{equation*}
     f(x)=\max(0,x)=\begin{cases}x&x>0,\\0&x\leq0,\end{cases}
@@ -188,7 +190,9 @@ vynásobený $x$ pro záporné hodnoty:
 LReLU má tento parametr fixně nastavený na $p=0.01$, zatímco v případě PReLU je
 tento parametr trénovaný spolu s jinými parametry sítě.
 
-Další novější alternativou podobnou ReLU je Mish \cite{mishaf}. Její výhoda je, že přechod mezi zápornými a kladnými hodnotami je oproti ReLu plynulý. Je to ale za cenu vyšší výpočetní náročnosti. Formálně je popsána takto:
+Další novější alternativou podobnou ReLU je Mish \cite{mishaf}. Její výhoda je,
+že přechod mezi zápornými a kladnými hodnotami je oproti ReLu plynulý. Je to
+ale za cenu vyšší výpočetní náročnosti. Formálně je popsána takto:
 
 \begin{equation*}
     f(x) = x \cdot \tanh\left( \ln\left(1 + e^{x}\right) \right)
@@ -221,7 +225,6 @@ Další novější alternativou podobnou ReLU je Mish \cite{mishaf}. Její výho
             % ReLU
             \addplot[green, semithick] {x*(x>0)};
             \addlegendentry{ReLU}
-            
 
             % % ELU (alpha = 1)
             % \addplot[blue, semithick] {(x>0) * x + (x<=0) * (exp(x)-1) - 0.01};
@@ -367,12 +370,12 @@ tak nikdy nedosáhnout konvergence. Naopak, pokud je krok příliš malý, můž
 trénování trvat příliš dlouho. Řešením může být například adaptivní nastavení
 kroku. Nejznámější taková metoda je RMSProp (ang. root mean square
 propagation), která upravuje krok učení pro každý parametr podle průměrného
-druhého momentu gradientu. Další možností je v průběhu trénování postupně
-snižovat krok (ang. learning rate decay).
+druhého momentu gradientu \cite{RMSProp}. Další možností je v průběhu trénování
+postupně snižovat krok (ang. learning rate decay).
 
 Populárním řešením těchto problémů je také Adam (ang. adaptive moment
 estimation, v překladu adaptivní odhad momentu), který kombinuje zavedení
-momentu a adaptivního nastavení kroku pomocí RMSProp.
+momentu a adaptivního nastavení kroku pomocí RMSProp \cite{adam}.
 
 Další metodou, jak optimalizovat nastavení kroku, je normalizace dat mezi
 vrstvami sítě (ang. batch normalization). Tím se zamezí příliš velkým změnám v
@@ -398,14 +401,14 @@ generalizace.
 
 Další dvě metody, nazývané L1 a L2 regularizace, přičítají k chybové funkci
 člen, který penalizuje velikost parametrů sítě. L1 regularizace (taky metoda
-Lasso, z ang. least absolute shrinkage and selection operator) přičítá k
+\cite{lasso}, z ang. least absolute shrinkage and selection operator) přičítá k
 chybové funkci součet absolutních hodnot všech parametrů sítě vynásobený
 hyperparametrem, který určuje míru této penalizace. Tato metoda vede k řídké
-síti, ve které je mnoho parametrů nulových. L2 regularizace (taky hřebenová
-regrese, ang. ridge regression) přičítá k chybové funkci součet druhých mocnin
-všech parametrů sítě vynásobený hyperparametrem $\lambda$. Tato metoda vede
-jednak k menší variabilitě parametrů, jednak k pomalejším změnám parametrů v
-průběhů trénování, v důsledku pak k menší citlivosti na šum v datech. Využívá
-se zejména v hlubokých sítích.
+síti, ve které je mnoho parametrů nulových. L2 regularizace (taky weight decay)
+přičítá k chybové funkci součet druhých mocnin všech parametrů sítě vynásobený
+hyperparametrem $\lambda$ \cite{l2}. Tato metoda vede jednak k menší
+variabilitě parametrů, jednak k pomalejším změnám parametrů v průběhů
+trénování, v důsledku pak k menší citlivosti na šum v datech. Využívá se
+zejména v hlubokých sítích.
 
 \endinput

@@ -402,7 +402,7 @@ síti očekávanou třídu a sekvenci póz dané osoby z $n$ posledních snímk�
 vyzkoušíme síti předávat celou sekvenci póz dané osoby.
 
 Naše GRU síť se skládá z několika vrstev GRU, konkrétně jsme zkoušeli trénovat
-1 až 3 vrstvy, které následuje jedná plně propojená vrstva a výstupní vrstva.
+1 až 3 vrstvy, které následuje jedna plně propojená vrstva a výstupní vrstva.
 Velikosti GRU vrstev jsme volili v rozsahu od 64 do 256, u plně propojené
 vrstvy jsme volili mezi 32 a 128 neurony. Většinou jsme používali dávky o
 velikosti $4096$, menší dávky velice destabilizovaly trénování.
@@ -418,7 +418,7 @@ když většinou bylo dosaženo stabilnějších výsledků s větším dropoute
 Sítě s více GRU vrstvami většinou než dosáhly optimálního výkonu, začaly
 kolísat a ve validační ztrátě a přesnosti se objevovaly obrovské výkyvy.
 Zkoušeli jsme větší dávky - $8162$, které sice stabilizovaly trénování při
-stejném počtu epoch, jelikož se ale vetší dávka loučí s pomalejším učením,
+stejném počtu epoch, jelikož se ale větší dávka loučí s pomalejším učením,
 nedosahovaly takové přesnosti jako při dávkách velikosti $4096$. Pro dosažení
 podobné přesnosti jsme tedy zkoušeli trénovat ve více epochách, tehdy ale brzy
 docházelo k přetrénování.

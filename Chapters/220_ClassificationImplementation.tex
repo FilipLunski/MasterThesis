@@ -423,6 +423,28 @@ nedosahovaly takové přesnosti jako při dávkách velikosti $4096$. Pro dosaž
 podobné přesnosti jsme tedy zkoušeli trénovat ve více epochách, tehdy ale brzy
 docházelo k přetrénování.
 
+RNN sítě obecně můžou přijímat sekvence libovolné délky, je ale efektivnější,
+pokud je síť trénovaná na jednotné délce, tato délka sekvence je pak použitá i
+v případě inferencí. Zkoušeli jsme tedy trénovat sítě na sekvencích o délce
+$50$ a $100$ snímků, vyzkoušeli jsme i neomezenou délku sekvence, tedy modelu
+předáváme klíčové body z celé sekvence snímků, na kterých byla daná osoba
+detekována. Obecně jsme ale zjistili, že vždycky dosahují stabilnějších
+výsledků sítě spíše s kratšími sekvencemi. Zůstali jsme tedy u sekvencí délky
+$50$.
+
+\subsection{LSTM síť}
+
+LSTM sítě jsme trénovali se stejnými hyperparametry a konfiguracemi jako sítě
+GRU. Obecně se taky dá říct, že měly tyto parametry u obou architektur velice
+podobný vliv na výsldky, a tedy to co jsme napsali o GRU sítích, by se většinou
+dalo napsát i o LSTM sítích. Taky měly nejlepší výsledky s jednou vrstvou,
+podobně se projevovala déelka sekvence, a obdobně byl většinou optimální
+dropout velikosti $0.4$.
+
+Obecně ale LSTM sítě byly mnohem méně stabilní, a prakticky v žádné konfiguraci
+se nepodařilo natrénovat síť do požadované přesnosti, aniž by došlo k
+přetrénování anebo by začala validační ztráta extrémně kolísat. Pravděpodobně
+tedy nemáme dostatečný vzorek trénovacích dat pro trénování LSTM sítě.
 
 
 %

@@ -2,5 +2,28 @@
 \label{chap:Conclusion}
 
 % TODO
+\chapter{Závěr}
+\label{chap:Conclusion}
 
+Cílem práce bylo navrhnut a implementovat řešení pro detekci pádu osoby v toku
+obrázku v reálném čase. V první části byly popsány teoretické základy použitých
+technologií, se zaměřením na neuronové sítě.
+
+V praktické části byl popsán postup návrhu a vývoje výsledného programu. Řešení
+jsme dosáhli spojením volně dostupného modelu pro detekci pózy ve formě
+klíčových bodů a neuronové sítě pro klasifikaci těchto bodů do třídy
+\textit{normální} nebo \textit{upadl}.
+
+Prozkoumali jsme několik detekčních algoritmu - vysvětlili jsme si zásadu funkčnosti detekce klíčových bodů a otestovali jsme jednotlivé algoritmy na testovacích datech.
+Pro detekci pózy jsme tedy nakonec zvolili model YOLO11-pose pro jeho vysokou rychlost,
+zejména s využitím grafické akcelerace, a přesnost i při horší viditelnosti.
+Tento model taky v sobě integruje funkci sledování osob, která nám umožňuje provádět analýzu pro
+každou osobu zvlášť.
+
+Pro klasifikaci pózy byla zvolená rekurentní architektura GRU s jednou
+rekurentní a jednou plně propojenou vrstvou, obě velikosti $64$. Tuto síť se
+nám podařilo natrénovat na přesnost přes 96\% na testovacích datech, zároveň se
+ukázala jako velice stabilní a přesná i při detekci pádu v testovacích videích.
+
+\endinput
 \endinput

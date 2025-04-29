@@ -1,7 +1,7 @@
 \chapter{Rekurentní neuronové sítě}
 \label{chap:RNN}
 
-Rekurentní neuronové sítě (ang. Recurrent Neural Networks - RNN) je kategorie
+Rekurentní neuronové sítě (ang. Recurrent Neural Networks – RNN) je kategorie
 neuronových sítí, které do své architektury zapojují zpětnou vazbu. Na rozdíl
 od dopředných sítí, které zpracovávají jednotlivé vstupy nezávisle, rekurentní
 sítě spolu s aktuálním vstupem při evaluaci zohledňují nějakým způsobem i
@@ -32,8 +32,8 @@ využívajícími backpropagation pro trénování.
 % buď svých vlastních neuronů, anebo z neuronů výstupní vrstvy, viz obrázek
 % \ref{fig:rnn}. Obrázek je zjednodušený, v praxi jsou stavová a skrytá vrstva
 % plně propojeny. Tyto architektury se jmenují Elmanova síť \cite{elman}, resp.
-% Jordanova síť \cite{jordan}, od jejích tvůrců. Tyto sítě jsou taky známé jako
-% jednoduché rekurentní sítě (ang. Simple Recurrent Networks - SRN).
+% Jordanova síť \cite{jordan}, od jejích tvůrců. Tyto sítě jsou také známé jako
+% jednoduché rekurentní sítě (ang. Simple Recurrent Networks – SRN).
 
 % I když pojem rekurentních sítí byl známý už od začátků neuronových sítí jako
 % takových a byly i případy jejích použití, právě tyto sítě patřily k prvním,
@@ -52,12 +52,12 @@ využívajícími backpropagation pro trénování.
 
 Stejně jako u dopředných neuronových sítí, kde se od jednoduchého perceptronu
 přešlo k hlubokým sítím, se i rekurentní sítě rozšířily na více vrstev. V
-hlubokých rekurentních neuronových sítích (ang. deep RNN - DRNN) jsou pak
+hlubokých rekurentních neuronových sítích (ang. deep RNN – DRNN) jsou pak
 jednotlivé vrstvy většinou podobné struktuře Elmanovy sítě \cite{elman} -
 zpětná vazba je předávána pouze v rámci jedné vrstvy, nikoliv mezi vrstvami RNN
 (například z výstupní vrstvy do první skryté vrstvy) \cite{deeprnn}. Má to
 několik důvodů. Trénování sítě se zpětnou vazbou mezi vrstvami by bylo velmi
-složité a obtížné. Taky, u neuronových sítí obecně platí, že každá vrstva sítě
+složité a obtížné. Také, u neuronových sítí obecně platí, že každá vrstva sítě
 se učí pochopit problém na jiné úrovni abstrakce, zpětná vazba přes několik
 vrstev by pak mohla narušit stabilitu tohoto procesu a omezit kvalitu učení.
 
@@ -80,7 +80,7 @@ iterace. Takto je propojená mezi iteracemi každá skrytá vrstva (na obrázku
 \end{figure}
 
 Při trénování se pak používá algoritmus zpětného šíření chyby v čase (ang.
-backpropagation through time - BPTT). Algoritmus funguje stejně jako klasický
+backpropagation through time – BPTT). Algoritmus funguje stejně jako klasický
 backpropagation, šíří se ale nejenom vrstvami, ale i iteracemi. Unrolling nám
 pomáhá backpropagation pochopit, jednotlivé iterace totiž jsou naskládány jako
 vrstvy a celou síť řešíme jako klasickou dopřednou NN.
@@ -94,7 +94,7 @@ sítí. Ten se projevuje i u RNN a je zesílený tím, že jsou jednotlivé iter
 naskládané na sebe, podobně jako vrstvy. Zejména pak u delších sekvencí budou
 mít dřívější vstupy velmi malý vliv na učení sítě.
 
-U RNN se taky projevuje problém opačný - explodující gradient (ang. exploding
+U RNN se také projevuje problém opačný – explodující gradient (ang. exploding
 gradient). Ten způsobuje, že v průběhu sekvence se váhy začnou exponenciálně
 zvětšovat a dosáhnou tak nepřiměřeně velkých hodnot.
 
@@ -122,7 +122,7 @@ memory) a GRU (ang. gated recurrent unit), které nyní popíšeme.
 
 \section{LSTM}
 
-Dlouhá krátkodobá paměť (ang. long short-term memory - LSTM ), představena
+Dlouhá krátkodobá paměť (ang. long short-term memory – LSTM ), představena
 Hochreiterem a Schmidhuberem v roce 1997, je typ rekurentní neuronové sítě,
 který byl navržen tak, aby překonal problémy mizejícího a explodujícího
 gradientu.
@@ -143,12 +143,12 @@ skrytého stavu. Je použita pro úpravu dlouhodobé paměti, v konečném stadi
 ale vždy v rámci dané iterace vytvořena nová. Je tak vhodná pro uchování
 krátkodobých závislostí. Na obrázku \ref{fig:lstm} je znázorněna jako $h_t$.
 
-Jednotka LSTM má tři hlavní komponenty - zapomínací bránu (ang. forget gate),
+Jednotka LSTM má tři hlavní komponenty – zapomínací bránu (ang. forget gate),
 vstupní bránu (ang. input gate) a výstupní bránu (ang. output gate). Brány
 určují, které informace mají být předány dál.
 
 První, zapomínací brána určuje, které informace z dlouhodobé paměti $c_{t-1}$
-se dostanou dále - co má jednotka zapomenout, resp. zapamatovat. Ve vstupní
+se dostanou dále – co má jednotka zapomenout, resp. zapamatovat. Ve vstupní
 bráně se nejprve vytvoří kandidátní stav buňky. Ten je výsledkem neuronové
 vrstvy s tangenciální aktivační funkcí, do které vstupuje aktuální vstup $x_t$
 a krátkodobá paměť $h_{t-1}$. Pak se určí, které informace z kandidátního stavu
@@ -183,7 +183,7 @@ LSTM sítě vynikají v udržování dlouhodobých závislostí a složitých st
 Jelikož mají tři brány, je síť schopná přesně rozhodnout, které informace chce
 dlouhodobě uchovávat, které naopak mají větší vliv na aktuální výstup a které
 mají být zapomenuty. Je to ale za cenu většího výpočetního nároku a
-složitějšího trénování. Taky je pro tyto sítě vhodné mít větší množství
+složitějšího trénování. Také je pro tyto sítě vhodné mít větší množství
 trénovacích dat, jinak může dojít k přetrénování. Využívá se tak zejména pro
 predikci dlouhých a komplexních časových sekvencí či zpracování přirozeného
 jazyka. Zejména u přirozeného jazyka se LSTM sítě osvědčily jako velmi
@@ -224,7 +224,7 @@ stavu a které z kandidátního skrytého stavu.
 
 Hlavní výhodou GRU je jednoduchost. Oproti LSTM má méně parametrů a provádí
 méně výpočtů. Je tak jednak rychlejší při evaluaci, jednak jednodušší pro
-natrénování. Taky, u GRU sítí je menší pravděpodobnost přetrénování, což je
+natrénování. Také, u GRU sítí je menší pravděpodobnost přetrénování, což je
 výhodné zejména v situacích, kdy máme omezený počet trénovacích dat. GRU sítě
 se často využívají v úlohách, kde je důležité rychlé zpracování a efektivita,
 např. v mobilních aplikacích a zpracování v reálném čase. Je to ale za cenu

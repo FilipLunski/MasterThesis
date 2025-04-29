@@ -104,7 +104,7 @@ sítě.
 Oba datasety jsme rozdělili do tří sad: trénovací, validační a testovací.
 Rozděleny byly v tomto poměru: trénovací sada 70\%, validační sada 15\% a
 testovací sada 15\%. Trénovací a validační sada budou použity v procesu
-trénování - trénovací pro výpočet ztráty a úpravu vah, validační pro průběžné
+trénování – trénovací pro výpočet ztráty a úpravu vah, validační pro průběžné
 ověřování výkonu, a testovací sada bude na konci použitá pro otestování jednak
 klasifikačního algoritmu, jednak celkového řešení.
 
@@ -113,13 +113,13 @@ Pro videa byly vytvořeny anotace aktuální třídy pózy. Tato anotace není p
 každý snímek, ale pouze při změně definuje časovou značku a následující třídu.
 
 V anotacích jsme použili 3 třídy, ty odpovídají třem různým třídám pózy, které
-nás mohou zajímat - \textit{normální}, kdy osoba např. chodí, sedí nebo stojí,
-\textit{padá} - přechodný stav padání, definován od započatí pohybu směrem
-dolů, a \textit{upadl} - definován od momentu, kdy se dotkl země trupem nebo
+nás mohou zajímat – \textit{normální}, kdy osoba např. chodí, sedí nebo stojí,
+\textit{padá} – přechodný stav padání, definován od započatí pohybu směrem
+dolů, a \textit{upadl} – definován od momentu, kdy se dotkl země trupem nebo
 všemi končetinami.
 
 %todo
-Pro náš model obecně potřebujeme jenom dvě třídy - \textit{normální} a
+Pro náš model obecně potřebujeme jenom dvě třídy – \textit{normální} a
 \textit{upadl}. Skript tvořící trénovací data proto považuje třídu
 \textit{padá} za třídu \textit{normální}. Nicméně by se mohlo do budoucna pro pokročilejší
 optimalizaci zkusit experimentovat i se třídou \textit{padá}, která by mohla
@@ -141,7 +141,7 @@ model by tak dostával v praxi jiná data, než pro jaké byl natrénován.
 Jelikož pro rekurentní neuronové sítě potřebujeme sekvenci snímků, musí být
 trénovací data ještě zpracována. To ale bude již součastí samotného trénovacího
 skriptu, jelikož se konečná podoba dat může lišit hlavně délkou sekvencí, dále
-ale taky dodatečným rozšířením o sekvence vynechávající určité množství snímků,
+ale také dodatečným rozšířením o sekvence vynechávající určité množství snímků,
 což simuluje menší snímkovou frekvenci (FPS).
 
 \endinput

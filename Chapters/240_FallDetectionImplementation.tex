@@ -23,13 +23,13 @@ dispozici také další volitelné funkce. To, které funkce chceme využít,
 definujeme vybraným modelem. V závislosti na něm pak při inferenci model vrací
 patřičné hodnoty. Dostupné jsou tyto modely:
 \begin{itemize}
-    \item \textit{YOLO11<v>-seg }- detekce objektů - bounding boxů
-    \item \textit{YOLO11<v>-cls }- detekce objektů, klíčových bodů a segmentace
-    \item \textit{YOLO11<v>-pose} - detekce klíčových bodů
-    \item \textit{YOLO11<v>-obb }- orientovaná detekce objektů - bounding boxy natočené dle natočení objektů
+    \item \textit{YOLO11<v>-seg } – detekce objektů – bounding boxů
+    \item \textit{YOLO11<v>-cls } – detekce objektů, klíčových bodů a segmentace
+    \item \textit{YOLO11<v>-pose} – detekce klíčových bodů
+    \item \textit{YOLO11<v>-obb } – orientovaná detekce objektů – bounding boxy natočené dle natočení objektů
 \end{itemize}
 
-kde $<v>$ označuje velikost modelu - můžeme vybrat menší modely pro větší výkon
+kde $<v>$ označuje velikost modelu – můžeme vybrat menší modely pro větší výkon
 ale horší přesnost, anebo větší modely, které jsou sice velmi přesné, musíme
 ale počítat s vysokými nároky na výkon. V našem případě jsme zvolili model
 $YOLO11m-pose$. Pro inicializaci modelu musíme specifikovat cestu k němu, pokud
@@ -125,7 +125,7 @@ Zjistili jsme, že obecně jsou výsledky sítě GRU mnohém stabilnější než
 případě dopředné sítě. Pokud tedy osoba spadne a leží na zemi, GRU síť pořád
 klasifikuje pád, zatímco dopředná síť často, zvlášť pokud osoba leží vyrovnaná,
 kolísá mezi třídou \textit{normální} a \textit{upadl}. Stabilita dopředné sítě
-se taky zhoršuje v případě špatné viditelnosti osoby, kdy jsou výsledky modelu
+se také zhoršuje v případě špatné viditelnosti osoby, kdy jsou výsledky modelu
 pro detekci pózy více chaotické než v optimálních podmínkách.
 
 Dopředná síť také reaguje na pád mnohem rychleji, většinou už v době padání,

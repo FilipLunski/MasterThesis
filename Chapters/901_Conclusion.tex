@@ -10,16 +10,16 @@ jsme dosáhli spojením volně dostupného modelu pro detekci pózy ve formě
 klíčových bodů a neuronové sítě pro klasifikaci těchto bodů do třídy
 \textit{normální} nebo \textit{upadl}.
 
-Prozkoumali jsme několik detekčních algoritmu - vysvětlili jsme si zásadu
+Prozkoumali jsme několik detekčních algoritmu – vysvětlili jsme si zásadu
 funkčnosti detekce klíčových bodů a otestovali jsme jednotlivé algoritmy na
 testovacích datech. Pro detekci pózy jsme nakonec zvolili model YOLO11-pose pro
 jeho vysokou rychlost, zejména při využití grafické akcelerace, a přesnost i
-při horší viditelnosti. Tento model taky v sobě integruje funkci sledování
+při horší viditelnosti. Tento model také v sobě integruje funkci sledování
 osob, která nám umožňuje provádět následnou analýzu pro každou osobu zvlášť i v
 kontextu více snímků.
 
 Pro klasifikaci pózy jsme zkoušeli natrénovat modely postavené na tří
-architekturách: dopředná neuronová síť a dvě rekurentní architektury - LSTM a
+architekturách: dopředná neuronová síť a dvě rekurentní architektury – LSTM a
 GRU. LSTM síť se nám nepodařilo efektivně natrénovat, pravděpodobné pro
 nedostatek dat a její nevhodnost pro náš problém.
 
@@ -27,7 +27,7 @@ Dopřednou síť a GRU síť jsme po nalezení optimální konfigurace a natrén
 otestovali na testovacích datech. Následně jsme je použili v implementaci
 detektoru pádu. Ten jsme dále v obou verzích otestovali na videích z testovací
 sady. Dopředná síť se ukázala jako znatelně méně přesná, zejména při méně
-kvalitní detekci pózy v situacích s horší viditelnosti. Taky projevovala
+kvalitní detekci pózy v situacích s horší viditelnosti. Také projevovala
 falešné pozitivní detekce pádu.
 
 Pro klasifikaci pózy jsme tedy zvolili rekurentní architekturu GRU s jednou
@@ -57,7 +57,7 @@ programu, ve kterém by probíhalo více analýz videa, by bylo vhodné zvážit
 jednak jejich paralelní zpracování, jednak sdílení určitých získaných dat mezi
 jednotlivými analyzátory.
 
-Zajímavým rozšířením by taky mohlo být propojení více kamer z jedné místnosti
+Zajímavým rozšířením by také mohlo být propojení více kamer z jedné místnosti
 pro sledování osob z více úhlů. Dávalo by to možnost zasazení postav do
 trojrozměrného prostoru, bylo by pak možné dosáhnout mnohem kvalitnější detekce
 pózy. Nicméně by bylo obtížnější získat pro takové řešení trénovací data.

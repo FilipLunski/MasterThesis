@@ -1,8 +1,8 @@
 \chapter{Neuronové sítě}
 \label{chap:NN}
 
-Umělá neuronová síť (ang. artificial neural network - ANN) nebo jen neuronová
-síť (ang. neural network - NN) je výpočetní model inspirovaný biologickými
+Umělá neuronová síť (ang. artificial neural network – ANN) nebo jen neuronová
+síť (ang. neural network – NN) je výpočetní model inspirovaný biologickými
 nervovými systémy v lidském mozku. Na rozdíl od konvenčních výpočetních modelů,
 které zpracovávají informace algoritmicky, a tedy postupují dle předem určeného
 postupu, se informace v tomto modelu šíří paralelně v síti vah mezi
@@ -19,7 +19,7 @@ Jelikož budou neuronové sítě základem prakticky v každé fázi vývoje na�
 
 \subsection{Prvopočátky}
 První matematický model neuronové sítě byl popsán v roce 1943 dvěma
-neurofyziology - Warrenem McCullochem a Walterem Pittsem \cite{McCulloch1943}.
+neurofyziology – Warrenem McCullochem a Walterem Pittsem \cite{McCulloch1943}.
 Model byl založen na síti jednoduchých logických prvků, které provedou vážený
 součet svých vstupů a na výstup odešle signál založený na prahové funkcí.
 
@@ -27,13 +27,13 @@ V roce 1958 pak Frank Rosenblatt představil elektronický model neuronové sít
 Základní jednotku, postavenou na McCulloch-Pittsově modelu, nazval perceptron.
 \cite{Rosenblatt1958} Jeho architektura byla podobná modelu znázorněnému na
 obrázku \ref{fig:neuron}, kde aktivační funkce je prahová funkce. Rosenblattův
-stroj - Mark I Perceptron - byl postavený pro rozpoznávání jednoduchých vzorů v
+stroj – Mark I Perceptron – byl postavený pro rozpoznávání jednoduchých vzorů v
 obrazech.
 % Hlavním omezením tohoto modelu bylo, že byl schopen rozlišovat pouze lineárně separovatelné třídy. 
 Samotný model perceptronu je dodnes používán jako základ pro mnoho neuronových
 sítí.
 
-% Další systém - ADALINE (Adaptive Linear Neuron) - byl představen Bernardem
+% Další systém – ADALINE (Adaptive Linear Neuron) – byl představen Bernardem
 % Widrowem a Tedym Hoffem v roce 1960. Tento model umělého neuronu byl velmi
 % podobný perceptronu, na rozdíl od něj ale neobsahoval prahovou ale lineární
 % funkci, výstup tedy nebyl binární ale spojitý. Pro učení pak byla využita
@@ -49,7 +49,7 @@ výsledků \cite{nn_history}.
 
 \subsection{Backpropagation}
 Významným milníkem v historii neuronových sítí byl objev algoritmu
-backpropagation, zvaného taky algoritmus zpětného šíření chyby. Tento
+backpropagation, zvaného také algoritmus zpětného šíření chyby. Tento
 algoritmus byl vyvinut v roce 1974 Paulem Werbosem, popularitu ale dosáhl až po
 nezávislém objevení v roce 1986 Davidem Rumelhartem et al.
 \cite{backpropagation}.
@@ -60,7 +60,7 @@ hlubokému učení. Algoritmus využívá metodu gradientního sestupu v kombina
 minimalizaci chyby.
 
 Vynález backpropagation byl jedním z hlavních důvodů, proč se v 80. letech
-obnovil zájem o neuronové sítě a umělou inteligenci obecně. V roce 1989 taky
+obnovil zájem o neuronové sítě a umělou inteligenci obecně. V roce 1989 také
 umožnil Yann LeCunovi at al. zefektivnit použití konvolučních neuronových sítí
 pro rozpoznávání rukou psaných číslic \cite{lecun1989} a položit tak základ
 širokému využití konvolučních sítí v oblasti počítačového vidění.
@@ -69,7 +69,7 @@ pro rozpoznávání rukou psaných číslic \cite{lecun1989} a položit tak zák
 
 Umělé neuronové sítě jsou silně inspirované biologickými neuronovými sítěmi. A
 i když napodobení celé funkčnosti lidského nervového systému by bylo velmi
-složité - ne-li nereálné, zejména s ohledem na počet neuronů a způsob jejich
+složité – ne-li nereálné, zejména s ohledem na počet neuronů a způsob jejich
 propojení, je možné simulovat alespoň některé funkce lidské mysli.
 
 % Pro provádění výpočtů využívají neuronové sítě distribuovaný, paralelní
@@ -88,7 +88,7 @@ jakým způsobem bude síť transformovat vstupní data na výstupní
 \subsection{Neuron}
 Biologický neuron se skládá ze tří hlavních částí. Dendrity přijímají vstupní
 signály. V těle jsou vstupní signály sečteny do jednoho potenciálu, který vede
-k vybuzení neuronu - zaslání signálu na výstup, pokud potenciál překročí
+k vybuzení neuronu – zaslání signálu na výstup, pokud potenciál překročí
 určitou mez. Axonové vlákno pak vede k synapsím, tedy spojům s dalšími neurony.
 Lidská mysl pak funguje na principu posilování nebo oslabování těchto spojů.
 
@@ -100,7 +100,7 @@ různých AF, v našem řešení vyzkoušíme například hyperbolický tangens 
 ReLU či Mish \cite{afreview}. 
 
 Kromě vah jednotlivých vstupů neuron obvykle obsahuje ještě tzv. bias (někdy
-taky práh nebo posun), jehož funkci je posunout vážený součet vstupů tak, aby
+také práh nebo posun), jehož funkci je posunout vážený součet vstupů tak, aby
 bylo možné modelovat i funkce, které nejsou nulové v počátku souřadnic. Je buď
 reprezentován jako samostatný parametr, nebo jako váha konstantního vstupu s
 hodnotou 1, jako na obrázku \ref{fig:neuron}.
@@ -139,12 +139,12 @@ optimálních hodnot těchto parametrů, které vedou k co nejmenší chybě př
 % V průběhu let bylo vyvinuto mnoho typů AF, a i když jejich úloha se zdá být
 % podobná, můžou se od sebe výrazně lišit. Jejich rozdíly spočívají zejména v
 % oboru hodnot, spojitosti, monotónnosti, a v tom, zda je závislá na přídavných
-% trénovaných parametrech. Ve výsledku se taky liší i jejich využití. Nyní
+% trénovaných parametrech. Ve výsledku se také liší i jejich využití. Nyní
 % projdeme několik základních AF, od kterých se většina ostatních nějakým
 % způsobem odvíjí.
 
 % Sigmoida (lineární křivka) funkce transformuje vstup do rozmezí 0 ÷ 1, je tak
-% vhodná pro odhad pravděpodobnosti \cite{sigmoidImplementation}. Proto se taky
+% vhodná pro odhad pravděpodobnosti \cite{sigmoidImplementation}. Proto se také
 % někdy používá ve výstupních vrstvách síti, zejména pro binární klasifikaci.
 % Její funkčnost lze formálně zapsat takto:
 
@@ -168,7 +168,7 @@ optimálních hodnot těchto parametrů, které vedou k co nejmenší chybě př
 % \end{equation*}
 
 % Obě dříve zmíněné funkce představují větší výpočetní nároky. ReLU (Rectified
-% Linear Unit, taky někdy rampa) je naopak jednoduchá, zároveň ale velice
+% Linear Unit, také někdy rampa) je naopak jednoduchá, zároveň ale velice
 % efektivní. Pro kladné hodnoty se chová jako identita, pro záporné je nulová
 % \cite{reluAnalysis}.
 
@@ -231,7 +231,7 @@ optimálních hodnot těchto parametrů, které vedou k co nejmenší chybě př
 %             % \addplot[blue, semithick] {(x>0) * x + (x<=0) * (exp(x)-1) - 0.01};
 %             % \addlegendentry{ELU}
 
-%             % % APL (Adaptive Piecewise Linear) - using a simple approximation
+%             % % APL (Adaptive Piecewise Linear) – using a simple approximation
 %             % \addplot[purple, semithick] {max(0,x) + 0.1*min(0,x+1) - 0.1*min(0,x-1) + 0.01};
 %             % \addlegendentry{APL}
 
@@ -261,8 +261,8 @@ parametrů. Oproti tomu, u učení bez učitele nemá síť k dispozici očekáv
 výstupy, ale snaží se najít nějaké struktury v datech, například shluky. V
 další části se budeme věnovat hlavně neuronovým sítím pro učení s učitelem.
 
-Dále můžeme neuronové sítě rozdělit na dopředné (feedforward NN - FFNN) a
-rekurentní (recurrent NN - RNN). U dopředných sítí se informace šíří pouze ze
+Dále můžeme neuronové sítě rozdělit na dopředné (feedforward NN – FFNN) a
+rekurentní (recurrent NN – RNN). U dopředných sítí se informace šíří pouze ze
 vstupu k výstupu a nevyskytují se žádné smyčky. Naopak rekurentní sítě obsahují
 zpětnou vazbu z výstupu přivedenou na vstup. To umožňuje reagovat na změny v
 čase.
@@ -300,7 +300,7 @@ následující vrstvy.
 Jak již bylo řečeno, proces trénování NN spočívá v nalezení optimálních hodnot
 parametrů jednotlivých neuronů. Optimální parametry pak vedou k minimální
 chybě. Chybou rozumíme rozdíl mezi skutečným výstupem sítě a očekávaným
-výstupem. K tomu se nejčastěji používá algoritmus backpropagation (taky
+výstupem. K tomu se nejčastěji používá algoritmus backpropagation (také
 algoritmus zpětného šíření chyby). Nyní si popíšeme, jak trénování sítě pomocí
 tohoto algoritmu funguje v dopředné neuronové síti. Nicméně se tento algoritmus
 využívá i ve většině jiných architektur, jako jsou konvoluční či rekurentní
@@ -308,7 +308,7 @@ neuronové sítě, které budeme později využívat.
 
 Nejprve se ze vstupních dat vypočítají pomocí aktuálních parametrů sítě reálně
 výstupy sítě. Tento proces se nazývá dopředný průchod (ang. forward pass).
-Následně se pomocí chybové funkce (taky nákladová funkce - ang. loss function)
+Následně se pomocí chybové funkce (také nákladová funkce – ang. loss function)
 spočítá chyba sítě. Ta vyjadřuje, v jaké míře se skutečné výstupy liší od
 očekávaných. Můžou být použity různé chybové funkce, v závislosti na typu
 úlohy, kterou síť řeší.
@@ -316,9 +316,9 @@ očekávaných. Můžou být použity různé chybové funkce, v závislosti na 
 V klasifikačních úlohách je nejčastěji používaná chybová funkce křížové
 entropie, která porovnává rozdělení pravděpodobnosti skutečného výstupu sítě s
 očekávaným rozdělením pravděpodobnosti. Pro regresní úlohy se používá například
-střední kvadratická chyba (ang. mean squared error - MSE) vyjadřující střední
+střední kvadratická chyba (ang. mean squared error – MSE) vyjadřující střední
 hodnotu druhých mocnin rozdílů mezi skutečnými a očekávanými hodnotami. Další
-možností je absolutní chyba (ang. mean absolute error - MAE), která vyjadřuje
+možností je absolutní chyba (ang. mean absolute error – MAE), která vyjadřuje
 střední hodnotu absolutních hodnot rozdílů.
 
 Dále je používána metoda gradientního sestupu, k nalezení minima chybové
@@ -330,16 +330,16 @@ chain rule) podle derivací parametrů následující vrstvy, je tento proces
 nazýván zpětný průchod (ang. backward pass).
 
 Jednotlivé parametry se pak podle vypočítaných derivací upraví. Velikost změny
-je určená hyperparametrem rychlostí učení (ang. learning rate, taky krok),
+je určená hyperparametrem rychlostí učení (ang. learning rate, také krok),
 který určuje, jak rychle se mají parametry měnit. Vypočítaná derivace se
 vynásobí rychlostí učení a přičte k původní hodnotě parametru. Tento proces se
 opakuje pro všechny parametry sítě. Metoda gradientního sestupu umožňuje větší
-změny parametrů, když jsou daleko od minima - absolutní hodnoty derivací jsou
-větší, a naopak menší změny, když se k němu blíží - derivace se blíží nule.
+změny parametrů, když jsou daleko od minima – absolutní hodnoty derivací jsou
+větší, a naopak menší změny, když se k němu blíží – derivace se blíží nule.
 
 Proces trénování sítě se skládá z opakování dopředného a zpětného průchodu pro
-všechna trénovací data (někdy postupně pro jejich podmnožiny - dávky, ang.
-batches). Po každém průchodu (někdy taky epocha) se upraví parametry sítě podle
+všechna trénovací data (někdy postupně pro jejich podmnožiny – dávky, ang.
+batches). Po každém průchodu (někdy také epocha) se upraví parametry sítě podle
 vypočítaných derivací. Tento proces se opakuje, dokud chyba nespadne na
 požadovanou úroveň, nenastane její konvergence nebo není překročen maximální
 počet iterací.
@@ -362,7 +362,7 @@ směru. To většinou pomůže překonat lokální minima a dosáhnout tak glob�
 minima.
 
 Dalším řešením tohoto problému je využití stochastické aproximace gradientního
-sestupu (ang. stochastic gradient descent - SGD), kde se gradient počítá pro
+sestupu (ang. stochastic gradient descent – SGD), kde se gradient počítá pro
 náhodně vybrané podmnožiny trénovacích dat. Tento postup umožňuje rychlejší
 konvergenci, počítáme totiž gradient jen pro část dat, a zároveň zabraňuje
 zaseknutí v lokálním minimu zavedením šumu do procesu trénování. Tato metoda se
@@ -385,30 +385,30 @@ Další metodou, jak optimalizovat nastavení kroku, je normalizace dat mezi
 vrstvami sítě (ang. batch normalization). Tím se zamezí příliš velkým změnám v
 jednotlivých vrstvách, které někdy destabilizují proces trénování.
 
-U trénování hlubokých sítí se často naráží také na problém přetrénování (taky
+U trénování hlubokých sítí se často naráží také na problém přetrénování (také
 nadměrné přizpůsobení, ang. overfitting). Přetrénování nastává, když se síť
 dobře naučí trénovací data, zároveň ale postrádá schopnost generalizace, a když
 pak dostane nová data, nedosahuje dobrých výsledků. Nejčastěji k problému
 dochází v situacích, kdy se snažíme natrénovat hluboké a komplexni modely, aniž
 bychom měli k tomu dostatečné množství dat. K základním řešením tohoto problému
-tedy patří použití většího množství trénovacích dat - pokud jsou dostupná,
+tedy patří použití většího množství trénovacích dat – pokud jsou dostupná,
 jinak se někdy zavádí umělé variace dat jako rotace či převrácení, jinak je
 třeba někdy zvážit zjednodušení architektury modelu. Dále pak jsou využívány
 techniky regularizace, které upravují samotný proces trénování.
 
 Nejjednodušší regularizační technikou je tzv. předčasné zastavení, tedy
 zastavení trénování v případě, že se chyba na validačních datech začne
-zvyšovat. Další možností je dropout (taky výpadek), kdy se u určitého počtu
+zvyšovat. Další možností je dropout (také výpadek), kdy se u určitého počtu
 náhodně zvolených neuronů v průběhu trénování nastaví na výstupu nula. Tím se
 snižuje závislost sítě na konkrétních neuronech a zvyšuje se tak její schopnost
 generalizace.
 
 Další dvě metody, nazývané L1 a L2 regularizace, přičítají k chybové funkci
-člen, který penalizuje velikost parametrů sítě. L1 regularizace (taky metoda
+člen, který penalizuje velikost parametrů sítě. L1 regularizace (také metoda
 \cite{lasso}, z ang. least absolute shrinkage and selection operator) přičítá k
 chybové funkci součet absolutních hodnot všech parametrů sítě vynásobený
 hyperparametrem, který určuje míru této penalizace. Tato metoda vede k řídké
-síti, ve které je mnoho parametrů nulových. L2 regularizace (taky weight decay)
+síti, ve které je mnoho parametrů nulových. L2 regularizace (také weight decay)
 přičítá k chybové funkci součet druhých mocnin všech parametrů sítě vynásobený
 hyperparametrem $\lambda$ \cite{l2}. Tato metoda vede jednak k menší
 variabilitě parametrů, jednak k pomalejším změnám parametrů v průběhů

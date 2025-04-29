@@ -18,8 +18,8 @@ V kapitole \ref{chap:Pose} jsme pro detekci klíčových bodů zvolili model
 \textit{YOLO pose}. Ten je předtrénovaný na datasetu \textit{COCO}, který pro
 lidské pózy definuje 17 klíčových bodů v dvourozměrném prostoru. To udává
 velikost vstupu do našeho klasifikačního algoritmu. Navrhneme tedy a
-natrénujeme neuronovou síť, jejíž vstupem bude 17 2D klíčových bodů - tedy 34
-čísel - a výstupem bude klasifikace třídy pózy - \textit{normální} a
+natrénujeme neuronovou síť, jejíž vstupem bude 17 2D klíčových bodů – tedy 34
+čísel – a výstupem bude klasifikace třídy pózy – \textit{normální} a
 \textit{upadl}.
 
 V této kapitole se zaměříme na implementaci klasifikačního algoritmu pro
@@ -61,14 +61,14 @@ dopředné sítě pro predikci třídy.
 PyTorch Lightning je wrapper pro PyTorch, který dále usnadňuje vývoj
 neuronových sítí. Stará se za nás o detaily procesu trénování, jako je správa
 epoch, logování či optimalizace kroku učení (ang. learning rate). Podporuje
-taky nativně práci s TensorBoard, což je logovací nástroj umožňující přehledné
+také nativně práci s TensorBoard, což je logovací nástroj umožňující přehledné
 sledování metrik během trénování, včetně grafického zobrazení ve webovém
 prostředí.
 
 Pro implementaci modelu vytvoříme třídu, která dědí z
 $lightning.LightningModule$, a kromě konstruktoru, ve kterém inicializujeme
 jednotlivé vrstvy, definujeme metody $training\_step$ (krok trénování),
-$validation\_step$ - krok validace, $configure\_optimizers$ - definování
+$validation\_step$ – krok validace, $configure\_optimizers$ – definování
 optimalizační techniky a $forward$, která definuje, jak signál prochází
 jednotlivými vrstvami.
 
@@ -162,8 +162,8 @@ class KeypointClassifierFFNN(L.LightningModule):
 
 Abychom mohli tuto síť efektivně trénovat, musíme umožnit jednoduchou změnu
 konfigurace sítě. Třída $KeypointClassifierFFNN$ proto v konstruktoru přijímá
-parametry \textit{layers} - pole čísel reprezentujících velikosti jednotlivých
-vrstev, \textit{activation} - identifikátor vybrané aktivační funkce a
+parametry \textit{layers} – pole čísel reprezentujících velikosti jednotlivých
+vrstev, \textit{activation} – identifikátor vybrané aktivační funkce a
 \textit{dropout} definující velikost dropoutu, viz kód \ref{src:ffnn_params}.
 Jako ztrátovou funkci jsme použili křížovou entropii, tedy
 $nn.BCEWithLogitsLoss()$, která je vhodná pro binární klasifikaci.
@@ -329,7 +329,7 @@ obrázku \ref{graph:fnnactivations}.
     \end{tikzpicture}
 \end{figure}
 
-Obecně větší sítě dosahovaly lepších výsledků - menší ztrátové funkce a vyšší
+Obecně větší sítě dosahovaly lepších výsledků – menší ztrátové funkce a vyšší
 přesnosti na validačních datech, v jistém momentě jsme již ale začali narážet
 na problém se stabilitou trénování. Nejoptimálnějších výsledků dosáhla síť se
 třemi vrstvami o velikostech $128$, $64$ a $32$. Jak můžeme vidět na grafu
@@ -418,7 +418,7 @@ dropout nerelevantní, jelikož se aplikuje mezi vrstvami.
 
 Sítě s více GRU vrstvami většinou než dosáhly optimálního výkonu, začaly
 kolísat a ve validační ztrátě a přesnosti se objevovaly obrovské výkyvy.
-Zkoušeli jsme větší dávky - $8162$, které sice stabilizovaly trénování při
+Zkoušeli jsme větší dávky – $8162$, které sice stabilizovaly trénování při
 stejném počtu epoch, jelikož se ale větší dávka loučí s pomalejším učením,
 nedosahovaly takové přesnosti jako při dávkách velikosti $4096$. Pro dosažení
 podobné přesnosti jsme tedy zkoušeli trénovat ve více epochách, tehdy ale brzy
@@ -492,16 +492,16 @@ trénovací ztráty $0.066$, validační ztráty $0.211$ a přesnosti $93.12\%$ 
 \subsection{LSTM síť}
 
 LSTM sítě jsme trénovali se stejnými hyperparametry a konfiguracemi jako sítě
-GRU. Obecně se taky dá říct, že měly tyto parametry u obou architektur velice
+GRU. Obecně se také dá říct, že měly tyto parametry u obou architektur velice
 podobný vliv na výsledky, a tedy to, co jsme napsali o GRU sítích, by se
-většinou dalo napsat i o LSTM sítích. Taky měly nejlepší výsledky s jednou
+většinou dalo napsat i o LSTM sítích. Také měly nejlepší výsledky s jednou
 vrstvou, podobně se projevovala délka sekvence, a obdobně byl většinou
 optimální dropout velikosti $0.4$.
 
 Obecně ale LSTM sítě byly mnohem méně stabilní, a prakticky v žádné konfiguraci
 se nepodařilo natrénovat síť do požadované přesnosti, aniž by došlo k
 přetrénování anebo by začala validační ztráta extrémně kolísat. Pravděpodobně
-tedy nemáme dostatečný vzorek trénovacích dat pro trénování LSTM sítě. Taky,
+tedy nemáme dostatečný vzorek trénovacích dat pro trénování LSTM sítě. Také,
 sítě LSTM nejsou vhodny pro každou úlohu, spíše vynikají pro delší sekvence.
 
 \section{Testování}
@@ -611,13 +611,13 @@ na robustnost,
 
 % Jak již bylo zmíněno (\ref{sec:TrainingData}), pro naše řešení potřebujeme
 % detekovat pouze třídy \textit{normální} a \textit{upadl}, vyzkoušíme ale
-% natrénovat i modely se třemi třídami - přidáme třídu \textit{padá}. Nemá smysl
+% natrénovat i modely se třemi třídami – přidáme třídu \textit{padá}. Nemá smysl
 % v našem případě implementovat takovou dopřednou neuronovou síť, jelikož
 % klasifikuje snímky bez kontextu předchozích snímků.
 
 % Budeme tedy navíc implementovat sítě GRU a LSTM, s velice podobnou topologií
 % jako sítě s binární klasifikací. Hlavním rozdílem bude velikost výstupní
-% vrstvy, jež bude rovna počtu tříd a použitá ztrátová funkce - nyní použijeme
+% vrstvy, jež bude rovna počtu tříd a použitá ztrátová funkce – nyní použijeme
 % křížovou entropii. Výstup vícetřídní klasifikační sítě pak představuje pole
 % pravděpodobností, že se jedná o danou třídu. Při inferenci pak použijeme
 % jednotku softmax pro převod výstupu na číslo třídy.

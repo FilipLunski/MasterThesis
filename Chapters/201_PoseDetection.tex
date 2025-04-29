@@ -79,7 +79,7 @@ spojit do jednotlivých osob.
 \subsection{Regrese}
 
 Využití heatmap je velmi přesné, nicméně z důvodu nutnosti provádění dvou
-sekvenčních výpočtů je taky trochu pomalé. Taky komplikují proces trénování,
+sekvenčních výpočtů je také trochu pomalé. Také komplikují proces trénování,
 jelikož musíme spolu s trénovacími daty dodat modelu i heatmapy. Některé
 algoritmy se proto snaží formulovat úlohu jako regresi vedoucí přímo k
 souřadnicím klíčových bodů. Tento přístup je ve své podstatě trochu méně
@@ -91,7 +91,7 @@ právě regresi. Také algoritmus YOLO používá regresi pro určení souřadni
 klíčových bodů, nicméně detekce je prováděná pro detekované objekty, nikoliv
 nad celým vstupním obrazem \cite{yolo-pose}.
 
-% , a je součástí poupraveného modelu pro detekci objektů - v posledních
+% , a je součástí poupraveného modelu pro detekci objektů – v posledních
 % vrstvách sítě je kromě regrese definující bounding box a klasifikace určující
 % třídu prováděna regrese pro určení klíčových bodů.
 
@@ -106,13 +106,13 @@ bounding box.
 
 V kapitole \ref{chap:CNN} jsme si popsali základní architekturu konvolučních
 neuronových sítí, ta se ale většinou v praxi používá pro klasifikaci obrázků,
-nikoliv pro detekci objektů - algoritmus tedy pouze určí, o jakou třídu objektu
+nikoliv pro detekci objektů – algoritmus tedy pouze určí, o jakou třídu objektu
 se jedná, a ideálně potřebuje, aby objekt vyplňoval celý vstupní obraz.
 Teoreticky by bylo možné detekci formulovat jako regresní problém a natrénovat
 takovou síť, která by pomocí několika konvolučních vrstev následovaných
 několika plně propojenými vrstvami byla schopna predikovat lokalizaci a třídu
 všech objektů v obraze \cite{szegedy}. Problém detekce je ale velice komplexní
-a taky by vyžadoval velice komplexní síť - více vrstev s mnoha filtry, resp.
+a také by vyžadoval velice komplexní síť – více vrstev s mnoha filtry, resp.
 neurony. Jak již ale bylo zmiňováno, komplexnost sítě zvyšuje její nároky na
 výpočetní výkon a komplikuje nebo úplně znemožňuje její trénování s ohledem na
 pravděpodobnost přetrénování.
@@ -127,7 +127,7 @@ obrázku nebo na mapě příznaků v rámci sítě.
 Metoda sliding window (klouzavé okno), která aplikuje hrubou sílu a projde
 veškeré možné oblasti, je samozřejmě velice neefektivní, a tak se další metody
 snaží buď najít pouze oblasti, ve kterých je pravděpodobné, že se nějaký objekt
-nachází - dvoufázový přístup, anebo rozdělí obrázek do mřížky - jednofázový
+nachází – dvoufázový přístup, anebo rozdělí obrázek do mřížky – jednofázový
 přístup.
 
 Jelikož jsou tyto metody základem pro většinu detektorů klíčových bodů, pojďme
@@ -144,7 +144,7 @@ si několik základních popsat.
 % Tento postup je ale velice pomalý, jelikož je pro každý obrázek zvolený velký
 % počet oblastí, pro které je třeba provést klasifikaci popřípadě regresi. Navíc
 % je většina těchto oblastí prázdná, a dochází tak k plýtvání výpočetním výkonem.
-% Algoritmus se taky potýká s překrývajícími se objekty.
+% Algoritmus se také potýká s překrývajícími se objekty.
 
 % Další metody se tedy snaží redukovat počet oblastí, na které se aplikuje
 % klasifikace, tak, že se vybere pouze oblasti, které pravděpodobně budou
@@ -164,15 +164,15 @@ dané oblasti mapu příznaků, na její základě plně propojené vrstvy predi
 třídu objektu popřípadě jeho bounding box.
 
 Problémem R-CNN je, že výběr oblasti a jejich následná klasifikace jsou
-nezávislé úlohy a jsou nezávisle trénovány. Detekce objektu je taky poměrně
+nezávislé úlohy a jsou nezávisle trénovány. Detekce objektu je také poměrně
 pomalá, protože je extrakce příznaků prováděná pro všechny oblasti zvlášť. Tyto
 problémy se snaží řešit další upravené verze R-CNN.
 
 \subsubsection*{Fast R-CNN}
 První z nich je Fast R-CNN \cite{fast-r-cnn}, která je upravená tak, aby bylo
-možné provádět trénování v jednom kroku. Taky extrahuje příznaky pro celý
+možné provádět trénování v jednom kroku. Také extrahuje příznaky pro celý
 vstupní obraz najednou, pomocí selective search pak identifikuje oblasti zájmu
-(ang. region of interest - RoI), které následně použije pro klasifikaci a
+(ang. region of interest – RoI), které následně použije pro klasifikaci a
 regresi. Tato metoda je přesnější a asi desetkrát rychlejší než původní R-CNN.
 
 \subsubsection*{Faster R-CNN}
@@ -188,7 +188,7 @@ oblasti, ale provést klasifikaci a regresi na předem dané množině oblastí,
 obvykle určené mřížkou.
 
 \subsubsection*{YOLO}
-Prvním takovým algoritmem byl YOLO (taky YOLOv1, z ang. you only look once)
+Prvním takovým algoritmem byl YOLO (také YOLOv1, z ang. you only look once)
 \cite{yolo}. Ten, v původní verzi, rozdělí vstupní obraz do pevně dané mřížky
 velikosti $S \times S$ a v každém z těchto polí určí $B$ bounding boxů a jejich
 třídu. V původní verzi bylo zvoleno $S = 7$ a $B = 2$.
@@ -212,7 +212,7 @@ score) vrátí model $5$ informací o každém bounding boxu. Pro každé pole m
 pak určí společnou informaci o třídě všech objektů v daném poli. Pokud objekt
 není detekován, třída indikuje pozadí a souřadnice bounding boxu jsou
 ignorovány. Velikost výstupního vektoru je tedy $7 \times 7 \times (2 * 5 +
-    C)$, kde $C$ je počet definovaných tříd - v původní verzi pouze 20.
+    C)$, kde $C$ je počet definovaných tříd – v původní verzi pouze 20.
 
 Tento algoritmus, navržený v roce 2015 J. Redmonem et al., byl revolučně
 rychlý, zároveň v porovnání s jinými real-time detekčními algoritmy dosahoval i
@@ -221,17 +221,17 @@ detekce, zejména u menších objektů, byla horší než u dvoufázových algor
 
 Další verze algoritmu YOLO přinesly postupná vylepšení ve formě optimalizace
 trénování a architektury. YOLOv2 \cite{yolo9000} zavedl mj. trénování na
-několika měřítkách a byl natrénován s 9000 třídami (proto taky nazýván
+několika měřítkách a byl natrénován s 9000 třídami (proto také nazýván
 YOLO9000). YOLOv3 \cite{yolov3} přinesl mj. detekci na několika měřítkách.
-Postupně byla taky zvětšována mřížka a měnila se použitá architektura CNN sítě
-sloužící pro extrakci příznaků pro jednotlivá pole mřížky. Postupně taky byly
+Postupně byla také zvětšována mřížka a měnila se použitá architektura CNN sítě
+sloužící pro extrakci příznaků pro jednotlivá pole mřížky. Postupně také byly
 přidávány další funkce jako je segmentace, detekce pózy či sledování objektů
 (ang. tracking).
 
 V 2020 roce firma Ultralytics poprvé implementovala YOLO s využitím populární
 knihovny PyTorch (YOLOv5), což umožnilo snadnější využití YOLO v praxi. Firma
-Ultralytics taky vytvořila framework pro použití různých verzí YOLO (YOLOv3 a
-novější). Taky pracuje na dalších vylepšeních a optimalizacích. Konkrétně
+Ultralytics také vytvořila framework pro použití různých verzí YOLO (YOLOv3 a
+novější). Také pracuje na dalších vylepšeních a optimalizacích. Konkrétně
 vytvořila YOLOv5 (2020), YOLOv8 (2023) a YOLOv11 (2024). Tyto verze nicméně
 nejsou podloženy odbornými články, někteří je tak považují za neoficiální
 verze.
@@ -302,7 +302,7 @@ OpenPose \cite{openpose} je typicky příklad přístupu zdola nahoru. Jeho výh
 je ale možnost vyhledání více osob v jednom snímku. Tento algoritmus, který
 vyvinuli v roce 2019 Zhe Cao et al., nejprve pomocí CNN vytvoří heatmapu pro
 každý typ klíčového bodu. Pro spojení bodů do jednotlivých osob využije pole
-propojení klíčových bodů (ang. part affinity field - PAF). PAF je mapa
+propojení klíčových bodů (ang. part affinity field – PAF). PAF je mapa
 vytvořená pro každou končetinu (myšleno obecně spojení dvou klíčových bodů),
 která v oblasti dané končetiny obsahuje hodnoty určující směr z jednoho bodu do
 druhého. Pokud pak dáme do hromady informace z heatmap a z PAF, jsme schopni
@@ -313,8 +313,8 @@ Stejně jako heatmapy, jsou i PAF součástí trénovacích dat.
 
 Algoritmus OpenPifPaf \cite{openpifpaf}, vyvinutý v roce 2021 Svenem Kreissem
 et al., je v podstatě vylepšenou verzí OpenPose. Jeho název je odvozen od dvou
-stavebních kamenů: PIF (Part Intensity Field) - pole intenzity klíčových bodů,
-a PAF (Part Affinity Field) - pole propojení klíčových bodů. PIF je rozšířením
+stavebních kamenů: PIF (Part Intensity Field) – pole intenzity klíčových bodů,
+a PAF (Part Affinity Field) – pole propojení klíčových bodů. PIF je rozšířením
 heatmap, kdy kromě intenzity pravděpodobnosti klíčového bodu obsahuje i jeho
 posun, zaručující přesnější lokalizaci bodu, a odhadovanou velikost dané části
 těla. PAF v OpenPifPaf je také podobný tomu v OpenPose, navíc ale indikuje
@@ -342,7 +342,7 @@ U OpenPifPaf je k dispozici výběr několika páteřních modelů, jako je ResN
 který je kompromisem mezi výkonem a přesností, v závislosti na konkrétních
 požadavcích aplikace.
 
-\subsection{MediaPipe - BlazePose}
+\subsection{MediaPipe – BlazePose}
 
 MediaPipe je framework vyvinutý společností Google, umožňující jednoduchou
 integraci různých technik strojového učení. Obsahuje různé algoritmy pro řešení
@@ -412,7 +412,7 @@ algoritmus Keypoint R-CNN \cite{keypoint-rcnn}.
 Algoritmus Keypoint R-CNN je založen na stejné myšlence jako Mask R-CNN
 \cite{mask-r-cnn}, a tedy rozšíření Faster R-CNN o další hlavu, která v případě
 Mask R-CNN provádí segmentaci, v případě Keypoint R-CNN detekuje klíčové body.
-V algoritmu je taky upravená pooling vrstva, která zajišťuje, že se výstupy
+V algoritmu je také upravená pooling vrstva, která zajišťuje, že se výstupy
 algoritmu shodují s vstupy s přesností pixelu.
 
 Tuto implementaci budeme testovat zejména z důvodu její jednoduchosti použití a
@@ -433,7 +433,7 @@ grafickou kartou NVIDIA GeForce RTX 3080 s 10 GB VRAM.
 Algoritmy Torchvision a OpenPifPaf byly testovány s použitím GPU, MediaPipe
 pouze s využitím CPU, jelikož nemá podporu GPU v prostředí Windows. Algoritmus
 YOLO jsme testovali na GPU a CPU, abychom porovnali jeho výkon v různých
-podmínkách. Algoritmus YOLO jsme taky vyzkoušeli na GPU s využitím funkce
+podmínkách. Algoritmus YOLO jsme také vyzkoušeli na GPU s využitím funkce
 sledování.
 
 Výstupem testování pro daný algoritmus a jeho variantu je průměrná doba
@@ -459,7 +459,7 @@ V této fázi jsme již zkoušeli trénování neuronové sítě pro klasifikaci
 ověřili jsme, že i v případě hlubších a komplexnějších sítí dosahujeme doby
 inference v řádu nižších jednotek milisekund. Hlavní vliv na výslednou
 rychlost programu tedy bude mít hlavně detekční algoritmus, který musí
-zpracovávat mnohem větší objem dat - stovky tisíc až miliony pixelů oproti
+zpracovávat mnohem větší objem dat – stovky tisíc až miliony pixelů oproti
 např. 17 klíčovým bodům v případě klasifikačního algoritmu.
 
 \subsection{OpenPifPaf}
@@ -514,7 +514,7 @@ přesnosti, v tomto příkladě zejména co se týče detekce nohou.
 
 S ohledem na to, že nemáme k dispozici grafickou akceleraci, je jeho výkon
 velmi dobrý, viz tabulka \ref{tab:mediapipe_performance}. Verze $Lite$ a $Full$
-by tak mohla být v našem řešení použitelná, což by nám taky dávalo možnost
+by tak mohla být v našem řešení použitelná, což by nám také dávalo možnost
 nasazovat výsledný program v mobilních zařízeních či jiných systémech bez
 grafické karty.
 
@@ -615,17 +615,17 @@ pořád ale tři menší varianty dosahují frekvence větší než $30$ FPS.
 Všechny varianty algoritmu YOLO dosahují poměrně kvalitních výsledků. I v
 horších světelných podmínkách vždy detekují osobu, a víceméně přesně určí její
 klíčové body. Obecně je ale vidět, že je model trochu méně robustní (než např.
-MediaPipe) v situacích, kdy není dobře vidět některá končetina - je třebas
-schovaná za jinou částí těla, anebo ve specifických pózách - např. když je
+MediaPipe) v situacích, kdy není dobře vidět některá končetina – je třebas
+schovaná za jinou částí těla, anebo ve specifických pózách – např. když je
 osoba v dřepu nebo je v obraze natočená vzhůru nohama. V takovýchto případech
-dosahuje menší přesnosti pro jednotlivé body - detekuje jiné natočení končetiny
+dosahuje menší přesnosti pro jednotlivé body – detekuje jiné natočení končetiny
 nebo v extrémních případech špatně vyhodnotí natočení celé postavy. Špatně
 viditelné části těla pak často vůbec nedetekuje.
 
 Z pohledu přesnosti je zde výrazně vidět vliv velikosti modelu na přesnost
 detekce. Varianta $Nano$ ve výše zmíněných situacích někdy detekuje body zcela
 špatně, a je tak prakticky nepoužitelná. Varianta $Small$ je znatelně lepší,
-pořád ale v horších podmínkách vyhodnocuje mnoho části těla špatně - např.
+pořád ale v horších podmínkách vyhodnocuje mnoho části těla špatně – např.
 zamění nohy. Varianta $Medium$ je už výrazně lepší. Není sice ideální, ve valné
 většině ale vyhodnotí všechny části těla správně i když ne z přesností několika
 pixelů. Varianty $Large$ a $Xlarge$ jsou pak už velmi přesné, projevuje se to

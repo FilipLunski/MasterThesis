@@ -81,7 +81,9 @@ jako chůze či sednutí. Poměr videí s úpadkem a bez je 50/50.
 Dalším zdrojem pro trénovací data je YouTube video tvůrce Kevina Parryho
 \textit{50 Ways to Fall}. Ve videu autor pády v různých scénářích, jako je
 zakopnutí, omdlení či poražení elektrickým proudem. Vzhledem k zabavné povaze
-videa jsme některé scénáře vypustili, nakonec jsme použili 45 videí. Zde prakticky všechny videa obsahují pád, v některých se ale postava vrátí do normálního stavu (např. kotrmelec).
+videa jsme některé scénáře vypustili, nakonec jsme použili 45 videí. Zde
+prakticky všechny videa obsahují pád, v některých se ale postava vrátí do
+normálního stavu (např. kotrmelec).
 
 \begin{figure}[]
     \centering
@@ -99,25 +101,30 @@ klasifikační algoritmus bude zpracovávat každou osobu zvlášť. Práce s v�
 osobami tak bude úlohou výsledného detektoru, nikoliv trénované klasifikační
 sítě.
 
-Oba datasety jsme rozdělili do tří sad: trénovací, validační a testovací. Rozděleny byly v tomto poměru: trénovací sada 70\%, validační sada 15\% a testovací sada 15\%. Trénovací a validační sada budou použity v procesu trénování - trénovací pro výpočet ztráty a úpravu vah, validační pro průběžné ověřování výkonu, a testovací sada bude na konci použitá pro otestování jednak klasifikačního algoritmu, jednak celkového řešení.
+Oba datasety jsme rozdělili do tří sad: trénovací, validační a testovací.
+Rozděleny byly v tomto poměru: trénovací sada 70\%, validační sada 15\% a
+testovací sada 15\%. Trénovací a validační sada budou použity v procesu
+trénování – trénovací pro výpočet ztráty a úpravu vah, validační pro průběžné
+ověřování výkonu, a testovací sada bude na konci použitá pro otestování jednak
+klasifikačního algoritmu, jednak celkového řešení.
 
 \section{Třídy a jejich anotace}
 Pro videa byly vytvořeny anotace aktuální třídy pózy. Tato anotace není pro
 každý snímek, ale pouze při změně definuje časovou značku a následující třídu.
 
 V anotacích jsme použili 3 třídy, ty odpovídají třem různým třídám pózy, které
-nás mohou zajímat - \textit{normální}, kdy osoba např. chodí, sedí nebo stojí,
-\textit{padá} - přechodný stav padání, definován od započatí pohybu směrem
-dolů, a \textit{upadl} - definován od momentu, kdy se dotkl země trupem nebo
+nás mohou zajímat – \textit{normální}, kdy osoba např. chodí, sedí nebo stojí,
+\textit{padá} – přechodný stav padání, definován od započatí pohybu směrem
+dolů, a \textit{upadl} – definován od momentu, kdy se dotkl země trupem nebo
 všemi končetinami.
 
 %todo
-Pro náš model obecně potřebujeme jenom dvě třídy - \textit{normální} a
+Pro náš model obecně potřebujeme jenom dvě třídy – \textit{normální} a
 \textit{upadl}. Skript tvořící trénovací data proto považuje třídu
-\textit{padá} za třídu \textit{normální}. Nicméně později budeme pro náš model
-experimentovat i se třídou \textit{padá}, která může síti pomoct hlouběji
-pochopit problematiku a přesněji rozeznat některé situace, zejména pak v
-případě využití rekurentních neuronových sítí.
+\textit{padá} za třídu \textit{normální}. Nicméně by se mohlo do budoucna pro pokročilejší
+optimalizaci zkusit experimentovat i se třídou \textit{padá}, která by mohla
+síti pomoct hlouběji pochopit problematiku a přesněji rozeznat některé situace,
+zejména pak v případě využití rekurentních neuronových sítí.
 
 \section{Příprava trénovacích dat pro klasifikační algoritmus}
 
@@ -134,7 +141,7 @@ model by tak dostával v praxi jiná data, než pro jaké byl natrénován.
 Jelikož pro rekurentní neuronové sítě potřebujeme sekvenci snímků, musí být
 trénovací data ještě zpracována. To ale bude již součastí samotného trénovacího
 skriptu, jelikož se konečná podoba dat může lišit hlavně délkou sekvencí, dále
-ale taky dodatečným rozšířením o sekvence vynechávající určité množství snímků,
+ale také dodatečným rozšířením o sekvence vynechávající určité množství snímků,
 což simuluje menší snímkovou frekvenci (FPS).
 
 \endinput

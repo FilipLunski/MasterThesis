@@ -8,10 +8,10 @@ klíčové body všech osob, a klasifikačního algoritmu, který na základě t
 bodů detekuje pád.
 
 V našem případě tedy musíme spojit predikci modelu YOLO11-pose, a jednoho z
-naších vybraných modelů (dopředná nebo GRU síť) pro klasifikaci pádu. Podívame
-se tedy nejprve kratce na práci ve frameworku YOLO. Následně se budeme zabývat
+naších vybraných modelů (dopředná nebo GRU síť) pro klasifikaci pádu. Podíváme
+se tedy nejprve krátce na práci ve frameworku YOLO. Následně se budeme zabývat
 použitím dříve natrénovaných modelů. Zejména se zaměříme na implementaci s
-využitím rekurentní architektury GRU, který přináší více výzev než dopředná
+využitím rekurentní architektury GRU, která přináší více výzev než dopředná
 siť, s ohledem na nutnost uchovávání sekvence pro každého člověka zvlášť.
 Nakonec program otestujeme s oběma klasifikačními modely na několika videích a
 zhodnotíme jejich výkon.
@@ -23,13 +23,13 @@ dispozici také další volitelné funkce. To, které funkce chceme využít,
 definujeme vybraným modelem. V závislosti na něm pak při inferenci model vrací
 patřičné hodnoty. Dostupné jsou tyto modely:
 \begin{itemize}
-    \item \textit{YOLO11<v>-seg }- detekce objektů - bounding boxů
-    \item \textit{YOLO11<v>-cls }- detekce objektů, klíčových bodů a segmentace
-    \item \textit{YOLO11<v>-pose} - detekce klíčových bodů
-    \item \textit{YOLO11<v>-obb }- orientovaná detekce objektů - bounding boxy natočené dle natočení objektů
+    \item \textit{YOLO11<v>-seg } – detekce objektů – bounding boxů
+    \item \textit{YOLO11<v>-cls } – detekce objektů, klíčových bodů a segmentace
+    \item \textit{YOLO11<v>-pose} – detekce klíčových bodů
+    \item \textit{YOLO11<v>-obb } – orientovaná detekce objektů – bounding boxy natočené dle natočení objektů
 \end{itemize}
 
-kde $<v>$ označuje velikost modelu - můžeme vybrat menší modely pro větší výkon
+kde $<v>$ označuje velikost modelu – můžeme vybrat menší modely pro větší výkon
 ale horší přesnost, anebo větší modely, které jsou sice velmi přesné, musíme
 ale počítat s vysokými nároky na výkon. V našem případě jsme zvolili model
 $YOLO11m-pose$. Pro inicializaci modelu musíme specifikovat cestu k němu, pokud
@@ -82,8 +82,8 @@ tedy budou automaticky odstraňovány.
 
 V konstruktoru obdrží tato třída cestu k modelu YOLO (musí být inicializován
 pro každou instanci zvlášť), model pro detekci pádu na základě klíčových bodů,
-délku sekvence předávané tomuto modelu, a informace týkající se
-ukládání videí s pády, jako jsou cesty k souborům a délka videa před a po pádu.
+délku sekvence předávané tomuto modelu, a informace týkající se ukládání videí
+s pády, jako jsou cesty k souborům a délka videa před a po pádu.
 
 Pro práci s jednotlivými osobami používáme třídu $Person$, která uchovává
 hlavně klíčové body z posledních snímků a $id$, dále také bounding boxy,
@@ -94,7 +94,7 @@ Okamžité vymazání zmizelé osoby není žádoucí, jelikož někdy osoba je 
 scéně, ale algoritmus ji i na několik snímků ztratí, zejména v případě okluze
 či špatných světelných podmínek.
 
-V metodě $process_frame$ třídy $FallDetector$ je zpracován vždy jeden snímek.
+V metodě $process\_frame$ třídy $FallDetector$ je zpracován vždy jeden snímek.
 Nejprve se detekují všechny osoby a jejich klíčové body pomocí vybraného
 modelu. Pokud je požadováno uložení anotovaného videa, převezmeme zde anotovaný
 snímek přímo od modelu YOLO, později pouze dopíšeme třídu detekce pádu. Dále
@@ -106,7 +106,48 @@ zapíše se do něj uchované předešlé snímky. Do souboru se pak zapisuje, d
 detekován pád a nevyprší požadovaný počet snímků po pádu.
 
 \section{Testování detekce pádu ve videu}
+\label{sec:FallDetectionTest}
 
+V této sekci otestujeme výsledné řešení na videích z testovacích sad obou
+datasetů. Hlavně ověříme přesnost detekce pádu v různých situacích ve videích.
+Přesnost klasifikačního algoritmu, kterou jsme měřili v minulé kapitole, je
+spíše na úrovní detekce v jednotlivých snímcích. Pokud tedy program detekuje
+pád o několik snímků později, než byl pád anotován, je tato přesnost
+penalizována. Nás ale spíše zajímá přesnost ve smyslu, zda byl každý pád
+detekován, a zda se neobjevovaly falešné detekce pádů.
 
+V testovací sadě datasetu CAUCAFall je 15 videí, z čehož 7 obsahuje pád a 8
+obsahuje jiné činnosti, které by jako pád neměly být vyhodnoceny, zatímco ve
+všech 15 případech testovací sady z videa \textit{50 ways to fall} vystupuje
+pád.
+
+Zjistili jsme, že obecně jsou výsledky sítě GRU mnohém stabilnější než v
+případě dopředné sítě. Pokud tedy osoba spadne a leží na zemi, GRU síť pořád
+klasifikuje pád, zatímco dopředná síť často, zvlášť pokud osoba leží vyrovnaná,
+kolísá mezi třídou \textit{normální} a \textit{upadl}. Stabilita dopředné sítě
+se také zhoršuje v případě špatné viditelnosti osoby, kdy jsou výsledky modelu
+pro detekci pózy více chaotické než v optimálních podmínkách.
+
+Dopředná síť také reaguje na pád mnohem rychleji, většinou už v době padání,
+zatímco GRU detekuje pád až v momentě dopadu nebo o několik snímků později.
+Dopředná síť ale dokáže rychleji reagovat i na situaci kdy se osoba ze stavu
+\textit{upadl} dostane zpátky do stavu \textit{normální}. V jednom z
+testovacích videí osoba dělá kotrmelec, po kterém se vrátila do dřepu. Dopředná
+síť tehdy okamžitě vyhodnotila její stav zpátky jako normální, zatímco GRU síť
+ještě nějakou dobu identifikovala pád.
+
+Hlavní problém s dopřednou síti je ale v její falešné pozitivitě. GRU síť
+všechny testovací videa vyhodnotila správně, a tedy detekovala pád pouze a
+právě ve videích, kde osoba upadla. Dopředná síť detekovala sice pád ve všech
+videích, kde osoba upadla. Z osmi videí, na kterých pád zaznamenán není, ale
+tato síť ve dvou případech pád detekovala. Konkrétně se tak stalo v situacích,
+kdy osoba klečela a kdy se ohnula k zemi. Jelikož v těchto případech
+detekovala pád pouze v několika snímcích, dala by se tato falešná pozitivita
+odfiltrovat tím, že bychom reagovali na pád až po několika snímcích, kdy byl
+soustavně detekován.
+
+Obě sítě tedy fungují poměrně dobře a dokážou detekovat pád v různých
+situacích, z výsledků je ale zjevné, že je rekurentní síť GRU mnohem
+stabilnější a přesnější.
 
 \endinput

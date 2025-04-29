@@ -25,9 +25,9 @@ natrénujeme neuronovou síť, jejíž vstupem bude 17 2D klíčových bodů - t
 V této kapitole se zaměříme na implementaci klasifikačního algoritmu pro
 analýzu pózy. Nejdříve se podíváme na použité technologie a knihovny, které nám
 pomohou s vývojem. Poté rozebereme možné architektury sítě a ukážeme, jak byly
-implementovány. Dále se zaměříme na návrh vnitřní struktury u techto
-architektur, zkusíme je natrénovat v různých konfiguracích a nakonec vybereme
-nejoptimálnější řešení.
+implementovány. Dále se zaměříme na návrh vnitřní struktury u těchto
+architektur, zkusíme je natrénovat v různých konfiguracích a vybereme
+nejoptimálnější řešení. Nakonec toto řešení otestujeme na testovacím datasetu.
 
 \section{Použité technologie}
 
@@ -283,15 +283,15 @@ většinou ale nejlepších výsledků dosahovala $ReLU$. Příkladem je graf p�
 pro trénování sítě se třemi vnitřními vrstvami velikosti $128$, $64$, a $32$ na
 obrázku \ref{graph:fnnactivations}.
 
-\begin{figure}[] % 'htbp' controls figure placement (here, top, bottom, page)
+\begin{figure}[]
     \centering
-    \caption{Graf přesnosti na validačních datech v průbehu trénování pro různé použité aktivační funkce}
+    \caption{Graf přesnosti na validačních datech v průběhu trénování dopředných sítí s různými aktivačními funkcemi}
     \label{graph:fnnactivations}
     \begin{tikzpicture}
         \begin{axis}[
                 xlabel={Epochy},
                 ylabel={Validační ztráta},
-                ymin=0.7,
+                ymin=70,
                 grid=both,
                 width=0.9\textwidth,
                 height=0.4\textheight,
@@ -343,9 +343,9 @@ jsme tři vrstvy o velikostech $128$, $64$ a $32$, dropout $0.3$, normalizaci
 mezi vrstvami, velikost dávky 4096 a aktivační funkci $ReLu$. Dosáhli jsme tak
 validační ztráty $0.18$ a validační přesnosti 93.8%
 
-\begin{figure}[] % 'htbp' controls figure placement (here, top, bottom, page)
+\begin{figure}[]
     \centering
-    \caption{Graf validační ztráty v průběhu trénování hlubší sítě }
+    \caption{Graf validační ztráty v průběhu trénování hlubších dopředných sítí }
     \label{graph:deepffnn}
     \begin{tikzpicture}
         \begin{axis}[
@@ -432,6 +432,63 @@ detekována. Obecně jsme ale zjistili, že vždycky dosahují stabilnějších
 výsledků sítě spíše s kratšími sekvencemi. Zůstali jsme tedy u sekvencí délky
 $50$.
 
+Naší nejlepší konfigurací GRU sítě je tedy jedna GRU vrstva o velikosti $64$ s
+dropoutem $0.15$, násldedována plně propojenou vrstvou s $64$ neurony a
+dropoutem 0.4. Trénována byla na sekvencích o délce $50$ snímků, s velikosti
+dávky $4096$ a s použitím optimalizace Adam. Na obrázku \ref{graph:gru} pak
+můžeme vidět, že jsme dosáhli trénovací ztráty $0.066$, validační ztráty
+$0.211$ a přesnosti $93.12\%$ .
+
+\begin{figure}[] % 'htbp' controls figure placement (here, top, bottom, page)
+    \centering
+    \caption{Graf trénovací a validační ztráty (nahoře) a graf validační přesnosti v průběhu trénování výsledné sítě}
+    \label{graph:gru}
+    \begin{tikzpicture}
+        \begin{axis}[
+                % xlabel={Epochy},
+                ylabel={Ztráta}, grid=both, width=0.9\textwidth, height=0.2\textheight, legend
+                pos=north east, ymax=0.4, ]
+
+            \addplot[
+                color=green,
+                mark=*,
+                no markers
+            ]
+            table {Plots/gru_50_1_64_64_0.15_0.4_t_loss.dat};
+            \addlegendentry{Trénovací ztráta}
+            \addplot[
+                color=orange,
+                mark=*,
+                no markers
+            ]
+            table {Plots/gru_50_1_64_64_0.15_0.4_loss.dat};
+            \addlegendentry{Validační ztráta}
+
+        \end{axis}
+    \end{tikzpicture}
+    \begin{tikzpicture}
+        \begin{axis}[
+                xlabel={Epochy},
+                ylabel={Validační přesnost},
+                grid=both,
+                width=0.9\textwidth,
+                height=0.3\textheight,
+                legend pos=north east,
+                ymin=65,
+            ]
+
+            \addplot[
+                color=green,
+                mark=*,
+                no markers
+            ]
+            table {Plots/gru_50_1_64_64_0.15_0.4_acc.dat};
+            % \addlegendentry{Validační přesnost}
+
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+
 \subsection{LSTM síť}
 
 LSTM sítě jsme trénovali se stejnými hyperparametry a konfiguracemi jako sítě
@@ -446,7 +503,44 @@ se nepodařilo natrénovat síť do požadované přesnosti, aniž by došlo k
 přetrénování anebo by začala validační ztráta extrémně kolísat. Pravděpodobně
 tedy nemáme dostatečný vzorek trénovacích dat pro trénování LSTM sítě.
 
+\section{Testování}
+\label{sec:testing}
 
+Vybrané modely jsme nakonec otestovali na testovacím datasetu. Ověříme jejich
+přesnost a dobu inference. Konkrétně jsme testovali dopřednou neuronovou síť a
+GRU síť, které v další kapitole, až bude naimplementovaný celý detektor pádu,
+otestujeme na reálných datech.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Výsledky testování dopředné a GRU sítě}
+    \label{tab:testing}
+    \begin{tabular}{|c|c|c|cc|}
+        \hline
+        \multirow{2}{*}{} & \multirow{2}{*}{Ztráta} & \multirow{2}{*}{Přesnost} & \multicolumn{2}{c|}{Průměrná doba inference [ms]}         \\ \cline{4-5}
+                          &                         &                           & \multicolumn{1}{c|}{  CPU  }                      & GPU   \\ \hline
+        Dopředná síť      & 0.148                   & 94.43                     & \multicolumn{1}{c|}{0.207}                        & 0.647 \\ \hline
+        GRU síť           & 0.138                   & 96.88                     & \multicolumn{1}{c|}{0.258}                        & 0.613 \\ \hline
+    \end{tabular}
+\end{table}
+
+V tabulce \ref{tab:testing} vidíme, že obě sítě dosahují velmi dobrého výkonu.
+Dopředná síť dosáhla přesnosti $94.43\%$ a ztráty $0.148$, zatímco GRU síť
+dosáhla jak lepší přesnosti $96.88\%$ tak trošku menší ztráty $0.138$. Obě sítě
+by tak mohly být použity pro detekci pádu, jelikož je ale pro klasifikační
+úlohy v konečném řešení důležitější přesnost, GRU síť vypadá jako lepší
+kandidát.
+
+Z pohledu rychlosti jsou obě sítě natolik jednoduché, že ani nelze zaznamenat
+výrazný rozdíl. Zároveň je velmi zajímavé, že je model na CPU asi třikrát
+rychlejší než na GPU. Je to způsobeno tím, že je model malý, nelze tedy plně
+využít potenciál paralelismu, navíc zpracováváme výstupy po jednom. Režie GPU
+tedy převáží nad její výhodami. Ve všech případech se ale u doby inference
+jedná o zlomky milisekund, ve výsledném programu doba prakticky zanedbatelná.
+
+V další kapitole budeme implementovat detektor pádu, tedy program který spojí
+obě fáze detekce. Pomocí něj pak vyzkoušíme tyto dva modely zejména s ohledem
+na robustnost,
 %
 %
 %

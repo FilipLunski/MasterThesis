@@ -457,7 +457,7 @@ karta.
 
 V této fázi jsme již zkoušeli trénování neuronové sítě pro klasifikaci pózy, a
 ověřili jsme, že i v případě hlubších a komplexnějších sítí dosahujeme doby
-interference v řádu nižších jednotek milisekund. Hlavní vliv na výslednou
+inference v řádu nižších jednotek milisekund. Hlavní vliv na výslednou
 rychlost programu tedy bude mít hlavně detekční algoritmus, který musí
 zpracovávat mnohem větší objem dat - stovky tisíc až miliony pixelů oproti
 např. 17 klíčovým bodům v případě klasifikačního algoritmu.
@@ -484,7 +484,7 @@ na kvalitu výsledků použitelné byly, nicméně je jejich výkon příliš n�
     \label{tab:openpifpaf_performance}
     \begin{tabular}{|l|l|l|l|}
         \hline
-        \textbf{Verze}   & \textbf{Interference [ms]} & \textbf{Frekvence [FPS]} \\
+        \textbf{Verze}   & \textbf{inference [ms]} & \textbf{Frekvence [FPS]} \\
         resnet50         & 49,2                       & 20.324                   \\ \hline
         shufflenetv2k16  & 31,3                       & 31.910                   \\ \hline
         shufflenetv2k30  & 58,6                       & 17.070                   \\ \hline
@@ -524,7 +524,7 @@ grafické karty.
     \label{tab:mediapipe_performance}
     \begin{tabular}{|l|l|l|l|}
         \hline
-        \textbf{Verze} & \textbf{Interference [ms]} & \textbf{Frekvence [FPS]} \\
+        \textbf{Verze} & \textbf{inference [ms]} & \textbf{Frekvence [FPS]} \\
         \hline
         lite           & 25.5                       & 39.239                   \\ \hline
         full           & 30.9                       & 32.405                   \\ \hline
@@ -562,7 +562,7 @@ horšími světelnými podmínkami a menším rozlišením obrazu.
     \label{tab:torchvision_performance}
     \begin{tabular}{|l|l|}
         \hline
-        \textbf{Interference [ms]} & \textbf{Frekvence [FPS]} \\
+        \textbf{inference [ms]} & \textbf{Frekvence [FPS]} \\
         \hline
         50.3                       & 19.897                   \\ \hline
     \end{tabular}
@@ -592,7 +592,7 @@ pořád ale tři menší varianty dosahují frekvence větší než $30$ FPS.
     \label{tab:yolo_performance}
     \begin{tabular}{|c|l|l|l|}
         \hline
-                                           & \textbf{Verze} & \textbf{Interference [ms]} & \textbf{Frekvence [FPS]} \\
+                                           & \textbf{Verze} & \textbf{inference [ms]} & \textbf{Frekvence [FPS]} \\
         \hline\hline
         \multirow{3}{*}{CPU}               & nano           & 32.5                       & 30.749                   \\ \cline{2-4}
                                            & small          & 53.9                       & 18.563                   \\ \cline{2-4}

@@ -26,37 +26,40 @@ obrázku \ref{fig:rnn} je tato vrstva reprezentována neurony $c_i$.
 
 Nejjednodušší forma rekurentní neuronové sítě je NN s jednou skrytou vrstvou;
 tato vrstva kromě dat ze vstupní vrstvy přijímá také výstup předchozí iterace
-buď svých vlastních neuronů, anebo z neuronů výstupní vrstvy, viz obrázek
-\ref{fig:rnn}. Obrázek je zjednodušený, v praxi jsou stavová a skrytá vrstva
-plně propojeny. Tyto architektury se jmenují Elmanova síť \cite{elman}, resp.
-Jordanova síť \cite{jordan}, od jejích tvůrců. Tyto sítě jsou taky známé jako
-jednoduché rekurentní sítě (ang. Simple Recurrent Networks - SRN).
+svých vlastních neuronů. Příklady takových sítí jsou Elmanova a Jordanova síť
+\cite{elman} \cite{jordan}, které byly prvními rekurentními sítěmi
+využívajícími backpropagation pro trénování.
+% buď svých vlastních neuronů, anebo z neuronů výstupní vrstvy, viz obrázek
+% \ref{fig:rnn}. Obrázek je zjednodušený, v praxi jsou stavová a skrytá vrstva
+% plně propojeny. Tyto architektury se jmenují Elmanova síť \cite{elman}, resp.
+% Jordanova síť \cite{jordan}, od jejích tvůrců. Tyto sítě jsou taky známé jako
+% jednoduché rekurentní sítě (ang. Simple Recurrent Networks - SRN).
 
-I když pojem rekurentních sítí byl známý už od začátků neuronových sítí jako
-takových a byly i případy jejích použití, právě tyto sítě patřily k prvním,
-které používaly pro trénování algoritmus backpropagation. Jednoduché rekurentní
-sítě uchovávají pouze krátkodobé vzory a jsou vhodné spíše pro jednoduché
-úlohy, jako je např. predikce časových řad.
+% I když pojem rekurentních sítí byl známý už od začátků neuronových sítí jako
+% takových a byly i případy jejích použití, právě tyto sítě patřily k prvním,
+% které používaly pro trénování algoritmus backpropagation. Jednoduché rekurentní
+% sítě uchovávají pouze krátkodobé vzory a jsou vhodné spíše pro jednoduché
+% úlohy, jako je např. predikce časových řad.
 
-\begin{figure}[]
-    \centering
-    \includegraphics[width=0.8\textwidth]{Figures/rnn.png}
-    \caption{Základní architektury RNN \cite{aksoy}}
-    \label{fig:rnn}
-\end{figure}
+% \begin{figure}[]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{Figures/rnn.png}
+%     \caption{Základní architektury RNN \cite{aksoy}}
+%     \label{fig:rnn}
+% \end{figure}
 
 \subsection{Hluboké rekurentní sítě}
 
 Stejně jako u dopředných neuronových sítí, kde se od jednoduchého perceptronu
 přešlo k hlubokým sítím, se i rekurentní sítě rozšířily na více vrstev. V
 hlubokých rekurentních neuronových sítích (ang. deep RNN - DRNN) jsou pak
-jednotlivé vrstvy většinou podobné struktuře Elmanovy sítě - zpětná vazba je
-předávána pouze v rámci jedné vrstvy, nikoliv mezi vrstvami RNN (například z
-výstupní vrstvy do první skryté vrstvy). Má to několik důvodů. Trénování sítě
-se zpětnou vazbou mezi vrstvami by bylo velmi složité a obtížné. Taky, u
-neuronových sítí obecně platí, že každá vrstva sítě se učí pochopit problém na
-jiné úrovni abstrakce, zpětná vazba přes několik vrstev by pak mohla narušit
-stabilitu tohoto procesu a omezit kvalitu učení.
+jednotlivé vrstvy většinou podobné struktuře Elmanovy sítě \cite{elman} -
+zpětná vazba je předávána pouze v rámci jedné vrstvy, nikoliv mezi vrstvami RNN
+(například z výstupní vrstvy do první skryté vrstvy) \cite{deeprnn}. Má to
+několik důvodů. Trénování sítě se zpětnou vazbou mezi vrstvami by bylo velmi
+složité a obtížné. Taky, u neuronových sítí obecně platí, že každá vrstva sítě
+se učí pochopit problém na jiné úrovni abstrakce, zpětná vazba přes několik
+vrstev by pak mohla narušit stabilitu tohoto procesu a omezit kvalitu učení.
 
 \subsection{Trénování rekurentních sítí}
 

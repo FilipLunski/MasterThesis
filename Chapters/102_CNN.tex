@@ -46,7 +46,7 @@ principy konvolučních neuronových sítí.
 
 \section{Konvoluce}
 
-V kontextu počítačové grafiky je konvoluce binární operace, kdy pro daný pixel
+V kontextu práce s obrazovými daty je konvoluce binární operace, kdy pro daný pixel
 v obrazu sečteme hodnoty pixelů v jeho okolí vynásobené váhami vyjádřenými
 maskou, která se nazývá jádro konvoluce (ang. kernel). Výsledný obraz je taky
 nazýván konvoluce. Z matematického pohledu se jedná o diskrétní dvourozměrnou
@@ -61,15 +61,17 @@ kde $h$ je vstupní obraz, $f$ je jádro konvoluce, velikost jádra je $2k+1
 
 Hodnota konvoluce na dané pozici je tedy suma součinů hodnot pixelů vstupního
 obrazu a hodnot váh vyjádřených jádrem konvoluce položeným středem na danou
-pozici, viz obrázek \ref{fig:convolution}. Nejčastěji je velikost jádra lichá,
+pozici.
+% , viz obrázek \ref{fig:convolution}. 
+Nejčastěji je velikost jádra lichá,
 jelikož je pak jednodušší určení středu jádra \cite{cnn_introduction}.
 
-\begin{figure}[]
-    \centering
-    \includegraphics[width=0.8\textwidth]{Figures/convolution.jpg}
-    \caption{Princip diskrétní dvourozměrné konvoluce \cite{convolution}}
-    \label{fig:convolution}
-\end{figure}
+% \begin{figure}[]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{Figures/convolution.jpg}
+%     \caption{Princip diskrétní dvourozměrné konvoluce \cite{convolution}}
+%     \label{fig:convolution}
+% \end{figure}
 
 % V případě více kanálů vstupního obrazu musí být připraveno zvlášť jádro pro
 % každý kanál. Výsledné konvoluce se pak sečtou. Můžeme se na tuto situaci dívat
@@ -81,29 +83,30 @@ jelikož je pak jednodušší určení středu jádra \cite{cnn_introduction}.
 
 Konvoluční jádro může být pevně dáno pro danou úlohu, např. pro detekci hran se
 často používá Sobelův operátor, který využívá dvě jádra - pro vertikální a
-horizontální hrany. Jádra pro detekci hran jsou zobrazena na obrázku
-\ref{fig:sobel}.
+horizontální hrany. 
+% Jádra pro detekci hran jsou zobrazena na obrázku
+% \ref{fig:sobel}.
 
-\begin{figure}[]
-    \centering
-    \begin{equation*}
-        {\displaystyle {
-                \begin{bmatrix}
-                    -1 & 0 & 1 \\
-                    -2 & 0 & 2 \\
-                    -1 & 0 & 1 \\
-                \end{bmatrix}},\ \ \ \ }
-        {\displaystyle {
-                \begin{bmatrix}
-                    -1 & -2 & -1 \\
-                    0  & 0  & 0  \\
-                    1  & 2  & 1  \\
-                \end{bmatrix}},\ \ \ \ }
-    \end{equation*}
+% \begin{figure}[]
+%     \centering
+%     \begin{equation*}
+%         {\displaystyle {
+%                 \begin{bmatrix}
+%                     -1 & 0 & 1 \\
+%                     -2 & 0 & 2 \\
+%                     -1 & 0 & 1 \\
+%                 \end{bmatrix}},\ \ \ \ }
+%         {\displaystyle {
+%                 \begin{bmatrix}
+%                     -1 & -2 & -1 \\
+%                     0  & 0  & 0  \\
+%                     1  & 2  & 1  \\
+%                 \end{bmatrix}},\ \ \ \ }
+%     \end{equation*}
 
-    \caption{Jádro konvoluce pro detekci vertikálních a horizontálních hran využívané pro Sobelův operátor}
-    \label{fig:sobel}
-\end{figure}
+%     \caption{Jádro konvoluce pro detekci vertikálních a horizontálních hran využívané pro Sobelův operátor}
+%     \label{fig:sobel}
+% \end{figure}
 
 Myšlenkou konvolučních neuronových sítí je nahradit část plně propojených
 vrstev konvolučními vrstvami, které z obrazu extrahují vlastnosti relevantní k

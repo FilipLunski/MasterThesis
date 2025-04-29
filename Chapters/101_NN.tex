@@ -11,7 +11,8 @@ hlavně na numerických parametrech, zejména váhách jednotlivých spojů mezi
 neurony, lze funkčnost sítě měnit bez změny programu pouhou změnou těchto
 parametrů, a to i automaticky v procesu trénování modelu.
 
-Nyní krátce projdeme historií vývoje neuronových sítí.
+Jelikož budou neuronové sítě základem prakticky v každé fázi vývoje našeho
+řešení, pojďme se podívat na jejich základní principy.
 
 \section{Historie}
 \label{sec:NN_History}
@@ -27,16 +28,17 @@ Základní jednotku, postavenou na McCulloch-Pittsově modelu, nazval perceptron
 \cite{Rosenblatt1958} Jeho architektura byla podobná modelu znázorněnému na
 obrázku \ref{fig:neuron}, kde aktivační funkce je prahová funkce. Rosenblattův
 stroj - Mark I Perceptron - byl postavený pro rozpoznávání jednoduchých vzorů v
-obrazech. Hlavním omezením tohoto modelu bylo, že byl schopen rozlišovat pouze
-lineárně separovatelné třídy. Samotný model perceptronu je dodnes používán jako
-základ pro mnoho neuronových sítí.
+obrazech.
+% Hlavním omezením tohoto modelu bylo, že byl schopen rozlišovat pouze lineárně separovatelné třídy. 
+Samotný model perceptronu je dodnes používán jako základ pro mnoho neuronových
+sítí.
 
-Další systém - ADALINE (Adaptive Linear Neuron) - byl představen Bernardem
-Widrowem a Tedym Hoffem v roce 1960. Tento model umělého neuronu byl velmi
-podobný perceptronu, na rozdíl od něj ale neobsahoval prahovou ale lineární
-funkci, výstup tedy nebyl binární ale spojitý. Pro učení pak byla využita
-metoda nejmenších čtverců, která minimalizovala chybu mezi skutečným a
-očekávaným výstupem \cite{nn_history}.
+% Další systém - ADALINE (Adaptive Linear Neuron) - byl představen Bernardem
+% Widrowem a Tedym Hoffem v roce 1960. Tento model umělého neuronu byl velmi
+% podobný perceptronu, na rozdíl od něj ale neobsahoval prahovou ale lineární
+% funkci, výstup tedy nebyl binární ale spojitý. Pro učení pak byla využita
+% metoda nejmenších čtverců, která minimalizovala chybu mezi skutečným a
+% očekávaným výstupem \cite{nn_history}.
 
 I když ve svých počátcích přitahoval koncept umělé inteligence mnoho vědců jako
 i sponzorů, v následujících létech zájem ochabl, jelikož nebylo dosaženo
@@ -70,18 +72,18 @@ i když napodobení celé funkčnosti lidského nervového systému by bylo velm
 složité - ne-li nereálné, zejména s ohledem na počet neuronů a způsob jejich
 propojení, je možné simulovat alespoň některé funkce lidské mysli.
 
-Pro provádění výpočtů využívají neuronové sítě distribuovaný, paralelní
-přístup. Informace jsou tedy zpracovány, předávány a ukládány celou sítí,
-nikoliv pomocí určitých paměťových buněk. Většina znalostí je uložena v silách
-vazeb mezi jednotlivými neurony. Vazby, které vedou k úspěšnému řešení
-problému, jsou posilovány, naopak ty, které vedou k neúspěchu, jsou oslabovány.
+% Pro provádění výpočtů využívají neuronové sítě distribuovaný, paralelní
+% přístup. Informace jsou tedy zpracovány, předávány a ukládány celou sítí,
+% nikoliv pomocí určitých paměťových buněk. Většina znalostí je uložena v silách
+% vazeb mezi jednotlivými neurony. Vazby, které vedou k úspěšnému řešení
+% problému, jsou posilovány, naopak ty, které vedou k neúspěchu, jsou oslabovány.
 
 Podstatnou vlastností neuronových sítí je jejich schopnost učení. Tato
 vlastnost způsobuje, že již není nutná algoritmizace řešené úlohy, ale stačí
 neuronové síti opakovaně předložit příklady popisující daný problém, podle
 kterých jsou postupně upravovány síly vazeb v síti. Tato fáze učení pak určuje,
-jakým způsobem bude síť transformovat vstupní data na
-výstupní.\cite{Vondrak1994}
+jakým způsobem bude síť transformovat vstupní data na výstupní
+\cite{Vondrak1994}.
 
 \subsection{Neuron}
 Biologický neuron se skládá ze tří hlavních částí. Dendrity přijímají vstupní
@@ -93,11 +95,9 @@ Lidská mysl pak funguje na principu posilování nebo oslabování těchto spoj
 Umělý neuron se snaží tuto funkčnost napodobit, viz obrázek \ref{fig:neuron}.
 Jeho vstupy $x_i$ jsou násobeny váhami $w_i$, které reprezentují sílu daného
 spoje. Neuron pak tyto vážené vstupy sečte, a na tento součet aplikuje
-aktivační funkci (AF), která definuje hodnotu výstupu $y$. V prvním a základním
-modelu neuronu, perceptronu, je AF prahová funkce s binárním výstupem. Nicméně
-v praxi se dnes využívají většinou reálné hodnoty a AF je obvykle spojitá
-\cite{Vondrak1994}. Existuje mnoho různých AF, některé z nich budou popsány v
-další části.
+aktivační funkci (AF), která definuje hodnotu výstupu $y$. Existuje mnoho
+různých AF, v našem řešení vyzkoušíme například hyperbolický tangens (tanh),
+ReLu či Mish \cite{afreview}. 
 
 Kromě vah jednotlivých vstupů neuron obvykle obsahuje ještě tzv. bias (někdy
 taky práh nebo posun), jehož funkci je posunout vážený součet vstupů tak, aby
@@ -105,19 +105,19 @@ bylo možné modelovat i funkce, které nejsou nulové v počátku souřadnic. J
 reprezentován jako samostatný parametr, nebo jako váha konstantního vstupu s
 hodnotou 1, jako na obrázku \ref{fig:neuron}.
 
-Funkci umělého neuronu lze tedy formálně vyjádřit takto:
+% Funkci umělého neuronu lze tedy formálně vyjádřit takto:
 
-\begin{equation*}
-    y=f\left(\sum_{i=0}^{n}w_{i}x_{i}\right)
-\end{equation*}
+% \begin{equation*}
+%     y=f\left(\sum_{i=0}^{n}w_{i}x_{i}\right)
+% \end{equation*}
 
-kde $w_0$ je bias a $x_0=1$, anebo s osamostatněným biasem takto:
+% kde $w_0$ je bias a $x_0=1$, anebo s osamostatněným biasem takto:
 
-\begin{equation*}
-    y = f\left(\sum_{i=1}^{n} w_i x_i + b\right)
-\end{equation*}
+% \begin{equation*}
+%     y = f\left(\sum_{i=1}^{n} w_i x_i + b\right)
+% \end{equation*}
 
-kde $b$ je bias.
+% kde $b$ je bias.
 
 Obecně tvoří všechny vstupní váhy a bias množinu parametrů, které ovlivňují
 funkčnost celé neuronové sítě. Proces trénování sítě pak spočívá v nalezení
@@ -131,119 +131,120 @@ optimálních hodnot těchto parametrů, které vedou k co nejmenší chybě př
     \label{fig:neuron}
 \end{figure}
 
-\subsection{Základní aktivační funkce}
+% \subsection{Základní aktivační funkce}
 
-AF hraje stěžejní roli v umělých neuronových sítích zavedením nelinearity do
-celého systému a umožňuje tak učení se složitějších vzorců.
+% AF hraje stěžejní roli v umělých neuronových sítích zavedením nelinearity do
+% celého systému a umožňuje tak učení se složitějších vzorců.
 
-V průběhu let bylo vyvinuto mnoho typů AF, a i když jejich úloha se zdá být
-podobná, můžou se od sebe výrazně lišit. Jejich rozdíly spočívají zejména v
-oboru hodnot, spojitosti, monotónnosti, a v tom, zda je závislá na přídavných
-trénovaných parametrech. Ve výsledku se taky liší i jejich využití. Nyní
-projdeme několik základních AF, od kterých se většina ostatních nějakým
-způsobem odvíjí.
+% V průběhu let bylo vyvinuto mnoho typů AF, a i když jejich úloha se zdá být
+% podobná, můžou se od sebe výrazně lišit. Jejich rozdíly spočívají zejména v
+% oboru hodnot, spojitosti, monotónnosti, a v tom, zda je závislá na přídavných
+% trénovaných parametrech. Ve výsledku se taky liší i jejich využití. Nyní
+% projdeme několik základních AF, od kterých se většina ostatních nějakým
+% způsobem odvíjí.
 
-Sigmoida (lineární křivka) funkce transformuje vstup do rozmezí 0 ÷ 1, je tak
-vhodná pro odhad pravděpodobnosti \cite{sigmoidImplementation}. Proto se taky
-někdy používá ve výstupních vrstvách síti, zejména pro binární klasifikaci.
-Její funkčnost lze formálně zapsat takto:
-
-\begin{equation*}
-    f(x)= \frac{1}{1+e^{-x}}
-\end{equation*}
-
-Její nevýhodou je hlavně problém mizejícího gradientu (ang. vanishing
-gradient), kdy zejména ve vícevrstvých sítích se velikost změn váh v
-počátečních a koncových vrstvách významně liší. To pak způsobuje nestabilitu v
-procesu trénování a může jej zpomalit nebo zcela zastavit. Navíc to, že není
-nulová v počátku souřadnic, může způsobit špatnou konvergenci.
-
-Hyperbolický tangens (tanh) je velmi podobný sigmoidě, ale transformuje vstup
-do rozmezí -1 ÷ 1 \cite{afreview}. Řeší tedy poslední zmíněný problém. Nicméně
-se pořád potýká s problémem mizejícího gradientu. Formálně lze tuto AF popsat
-takto:
-
-\begin{equation*}
-    f(x)= \frac{e^x-e^{-x}}{e^x+e^{-x}}
-\end{equation*}
-
-Obě dříve zmíněné funkce představují větší výpočetní nároky. ReLU (Rectified
-Linear Unit, taky někdy rampa) je naopak jednoduchá, zároveň ale velice
-efektivní. Pro kladné hodnoty se chová jako identita, pro záporné je nulová
-\cite{reluAnalysis}.
-
-\begin{equation*}
-    f(x)=\max(0,x)=\begin{cases}x&x>0,\\0&x\leq0,\end{cases}
-\end{equation*}
-
-Jelikož je výpočetně velmi nenáročná, je tato AF velmi oblíbená v hlubokých
-sítích. Její nevýhodou ale je, že nezohledňuje záporné hodnoty, což v jejich
-případě vede k problému mizejícího gradientu a může způsobit tzv. "mrtvé
-neurony". Tento problém řeší různé varianty ReLU, jako například PReLU
-(Parametric ReLU) nebo LReLU (Leaky ReLU). Tyto varianty přidávají parametr $p$
-vynásobený $x$ pro záporné hodnoty:
-
-\begin{equation*}
-    f(x)=\max(0,x)=\begin{cases}x&x>0,\\p \cdot x&x\leq0\end{cases}
-\end{equation*}
-
-LReLU má tento parametr fixně nastavený na $p=0.01$, zatímco v případě PReLU je
-tento parametr trénovaný spolu s jinými parametry sítě.
-
-Další novější alternativou podobnou ReLU je Mish \cite{mishaf}. Její výhoda je,
-že přechod mezi zápornými a kladnými hodnotami je oproti ReLu plynulý. Je to
-ale za cenu vyšší výpočetní náročnosti. Formálně je popsána takto:
-
-\begin{equation*}
-    f(x) = x \cdot \tanh\left( \ln\left(1 + e^{x}\right) \right)
-\end{equation*}
+% Sigmoida (lineární křivka) funkce transformuje vstup do rozmezí 0 ÷ 1, je tak
+% vhodná pro odhad pravděpodobnosti \cite{sigmoidImplementation}. Proto se taky
+% někdy používá ve výstupních vrstvách síti, zejména pro binární klasifikaci.
+% Její funkčnost lze formálně zapsat takto:
 
 % \begin{equation*}
-%     f(x)=\begin{cases}x&x>0,\\a \left(e^{x}-1\right)&x\leq0\end{cases}
+%     f(x)= \frac{1}{1+e^{-x}}
 % \end{equation*}
 
-\begin{center}
-    \begin{tikzpicture}
-        \begin{axis}[
-                axis lines=middle,
-                xlabel={$x$},
-                ylabel={$f(x)$},
-                samples=100,
-                domain=-3:3,
-                legend pos=north west,
-                ymin=-1, ymax=1.5,
-                width=15cm, height=8cm
-            ]
-            % Sigmoid
-            \addplot[orange, semithick] {1/(1+exp(-x))};
-            \addlegendentry{Sigmoid}
+% Její nevýhodou je hlavně problém mizejícího gradientu (ang. vanishing
+% gradient), kdy zejména ve vícevrstvých sítích se velikost změn váh v
+% počátečních a koncových vrstvách významně liší. To pak způsobuje nestabilitu v
+% procesu trénování a může jej zpomalit nebo zcela zastavit. Navíc to, že není
+% nulová v počátku souřadnic, může způsobit špatnou konvergenci.
 
-            % Tanh
-            \addplot[red, semithick] {tanh(x)};
-            \addlegendentry{Tanh}
+% Hyperbolický tangens (tanh) je velmi podobný sigmoidě, ale transformuje vstup
+% do rozmezí -1 ÷ 1 \cite{afreview}. Řeší tedy poslední zmíněný problém. Nicméně
+% se pořád potýká s problémem mizejícího gradientu. Formálně lze tuto AF popsat
+% takto:
 
-            % ReLU
-            \addplot[green, semithick] {x*(x>0)};
-            \addlegendentry{ReLU}
+% \begin{equation*}
+%     f(x)= \frac{e^x-e^{-x}}{e^x+e^{-x}}
+% \end{equation*}
 
-            % % ELU (alpha = 1)
-            % \addplot[blue, semithick] {(x>0) * x + (x<=0) * (exp(x)-1) - 0.01};
-            % \addlegendentry{ELU}
+% Obě dříve zmíněné funkce představují větší výpočetní nároky. ReLU (Rectified
+% Linear Unit, taky někdy rampa) je naopak jednoduchá, zároveň ale velice
+% efektivní. Pro kladné hodnoty se chová jako identita, pro záporné je nulová
+% \cite{reluAnalysis}.
 
-            % % APL (Adaptive Piecewise Linear) - using a simple approximation
-            % \addplot[purple, semithick] {max(0,x) + 0.1*min(0,x+1) - 0.1*min(0,x-1) + 0.01};
-            % \addlegendentry{APL}
+% \begin{equation*}
+%     f(x)=\max(0,x)=\begin{cases}x&x>0,\\0&x\leq0,\end{cases}
+% \end{equation*}
 
-            % % Swish (x * sigmoid(x))
-            % \addplot[cyan, semithick] {x/(1+exp(-x))};
-            % \addlegendentry{Swish}
-            % Mish (x * tanh(ln(1 + exp(x))))
-            \addplot[magenta, semithick] {x * tanh(ln(1 + exp(x)))};
-            \addlegendentry{Mish}
+% Jelikož je výpočetně velmi nenáročná, je tato AF velmi oblíbená v hlubokých
+% sítích. Její nevýhodou ale je, že nezohledňuje záporné hodnoty, což v jejich
+% případě vede k problému mizejícího gradientu a může způsobit tzv. "mrtvé
+% neurony". Tento problém řeší různé varianty ReLU, jako například PReLU
+% (Parametric ReLU) nebo LReLU (Leaky ReLU). Tyto varianty přidávají parametr $p$
+% vynásobený $x$ pro záporné hodnoty:
 
-        \end{axis}
-    \end{tikzpicture}
-\end{center}
+% \begin{equation*}
+%     f(x)=\max(0,x)=\begin{cases}x&x>0,\\p \cdot x&x\leq0\end{cases}
+% \end{equation*}
+
+% LReLU má tento parametr fixně nastavený na $p=0.01$, zatímco v případě PReLU je
+% tento parametr trénovaný spolu s jinými parametry sítě.
+
+% Další novější alternativou podobnou ReLU je nemonotonní aktivační funkce Mish
+% \cite{mishaf}. Její výhoda je, že přechod mezi zápornými a kladnými hodnotami
+% je oproti ReLu plynulý. Je to ale za cenu vyšší výpočetní náročnosti. Formálně
+% je popsána takto:
+
+% \begin{equation*}
+%     f(x) = x \cdot \tanh\left( \ln\left(1 + e^{x}\right) \right)
+% \end{equation*}
+
+% % \begin{equation*}
+% %     f(x)=\begin{cases}x&x>0,\\a \left(e^{x}-1\right)&x\leq0\end{cases}
+% % \end{equation*}
+
+% \begin{center}
+%     \begin{tikzpicture}
+%         \begin{axis}[
+%                 axis lines=middle,
+%                 xlabel={$x$},
+%                 ylabel={$f(x)$},
+%                 samples=100,
+%                 domain=-3:3,
+%                 legend pos=north west,
+%                 ymin=-1, ymax=1.5,
+%                 width=15cm, height=8cm
+%             ]
+%             % Sigmoid
+%             \addplot[orange, semithick] {1/(1+exp(-x))};
+%             \addlegendentry{Sigmoid}
+
+%             % Tanh
+%             \addplot[red, semithick] {tanh(x)};
+%             \addlegendentry{Tanh}
+
+%             % ReLU
+%             \addplot[green, semithick] {x*(x>0)};
+%             \addlegendentry{ReLU}
+
+%             % % ELU (alpha = 1)
+%             % \addplot[blue, semithick] {(x>0) * x + (x<=0) * (exp(x)-1) - 0.01};
+%             % \addlegendentry{ELU}
+
+%             % % APL (Adaptive Piecewise Linear) - using a simple approximation
+%             % \addplot[purple, semithick] {max(0,x) + 0.1*min(0,x+1) - 0.1*min(0,x-1) + 0.01};
+%             % \addlegendentry{APL}
+
+%             % % Swish (x * sigmoid(x))
+%             % \addplot[cyan, semithick] {x/(1+exp(-x))};
+%             % \addlegendentry{Swish}
+%             % Mish (x * tanh(ln(1 + exp(x))))
+%             \addplot[magenta, semithick] {x * tanh(ln(1 + exp(x)))};
+%             \addlegendentry{Mish}
+
+%         \end{axis}
+%     \end{tikzpicture}
+% \end{center}
 
 \subsection{Dělení neuronových sítí}
 
@@ -281,18 +282,18 @@ celé sítě.
 Pokud síť obsahuje pouze vstupní a výstupní vrstvu, mluvíme o jednovrstvé
 neuronové síti. Takové sítě mají velmi omezené možnosti, proto se v praxi
 nepoužívají. Většina neuronových sítí má mezi vstupní a výstupní vrstvou
-alespoň jednu skrytou vrstvu, viz obrázek \ref{fig:layers}.
+alespoň jednu skrytou vrstvu.%, viz obrázek \ref{fig:layers}. 
 
 U většiny klasických dopředných neuronových sítí jsou jednotlivé vrstvy mezi
 sebou plně propojeny, tzn. každý prvek jedné vrstvy je propojen se všemi prvky
 následující vrstvy.
 
-\begin{figure}[]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Figures/layers.png}
-    \caption{Vícevrstvá, plně propojená síť \cite{lagan}}
-    \label{fig:layers}
-\end{figure}
+% \begin{figure}[]
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{Figures/layers.png}
+%     \caption{Vícevrstvá, plně propojená síť \cite{lagan}}
+%     \label{fig:layers}
+% \end{figure}
 
 \section{Proces trénování s využitím backpropagation}
 
@@ -301,14 +302,16 @@ parametrů jednotlivých neuronů. Optimální parametry pak vedou k minimální
 chybě. Chybou rozumíme rozdíl mezi skutečným výstupem sítě a očekávaným
 výstupem. K tomu se nejčastěji používá algoritmus backpropagation (taky
 algoritmus zpětného šíření chyby). Nyní si popíšeme, jak trénování sítě pomocí
-tohoto algoritmu funguje.
+tohoto algoritmu funguje v dopředné neuronové síti. Nicméně se tento algoritmus
+využívá i ve většině jiných architektur, jako jsou konvoluční či rekurentní
+neuronové sítě, které budeme později využívat.
 
 Nejprve se ze vstupních dat vypočítají pomocí aktuálních parametrů sítě reálně
 výstupy sítě. Tento proces se nazývá dopředný průchod (ang. forward pass).
-Následně se pomocí chybové funkce (ang. loss function, taky nákladová funkce -
-ang. loss function) spočítá chyba sítě. Ta vyjadřuje, v jaké míře se skutečné
-výstupy liší od očekávaných. Můžou být použity různé chybové funkce, v
-závislosti na typu úlohy, kterou síť řeší.
+Následně se pomocí chybové funkce (taky nákladová funkce - ang. loss function)
+spočítá chyba sítě. Ta vyjadřuje, v jaké míře se skutečné výstupy liší od
+očekávaných. Můžou být použity různé chybové funkce, v závislosti na typu
+úlohy, kterou síť řeší.
 
 V klasifikačních úlohách je nejčastěji používaná chybová funkce křížové
 entropie, která porovnává rozdělení pravděpodobnosti skutečného výstupu sítě s
@@ -336,9 +339,10 @@ větší, a naopak menší změny, když se k němu blíží - derivace se blí�
 
 Proces trénování sítě se skládá z opakování dopředného a zpětného průchodu pro
 všechna trénovací data (někdy postupně pro jejich podmnožiny - dávky, ang.
-batches). Po každém průchodu se upraví parametry sítě podle vypočítaných
-derivací. Tento proces se opakuje, dokud chyba nedosáhne požadované úrovně,
-nenastane její konvergence nebo není překročen maximální počet iterací.
+batches). Po každém průchodu (někdy taky epocha) se upraví parametry sítě podle
+vypočítaných derivací. Tento proces se opakuje, dokud chyba nespadne na
+požadovanou úroveň, nenastane její konvergence nebo není překročen maximální
+počet iterací.
 
 \section{Optimalizace procesu trénování}
 

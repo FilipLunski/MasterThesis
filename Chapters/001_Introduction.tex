@@ -2,9 +2,9 @@
 \label{chap:Introduction}
 
 Kamerové systémy jsou využívány již mnoho let a jejich využití je stále širší.
-Dnes se odhaduje, že celkový počet bezpečnostních kamer ve světě přesahuje
-miliardu. Využívány jsou v průmyslu, dopravě, obchodě, veřejných prostorech,
-zdravotnictví či domácnostech.
+Již před několika lety se odhadovalo, že celkový počet bezpečnostních kamer ve
+světě přesahuje miliardu \cite{surveillance}. Využívány jsou v průmyslu,
+dopravě, obchodě, veřejných prostorech, zdravotnictví či domácnostech.
 
 Zpočátku bylo možné video sledovat pouze živě, později, s příchodem videokazet,
 bylo možné záznam sledovat až po události. Digitální éra a síťové kamery
@@ -12,7 +12,7 @@ umožnily přístup ke kamerovým záznamům z libovolného místa na světě. V
 době se také začalo nahrazovat živé sledování automatickým zpracováním obrazu a
 detekcí událostí s využitím technik umělé inteligence.
 
-Kamerové systémy se používají zejména ve dvou oblastech: zabezpečení (.
+Kamerové systémy se používají zejména ve dvou oblastech: zabezpečení (ang.
 security), myšleno jako ochrana před úmyslnými hrozbami a protiprávními činy,
 jako jsou krádeže, poškozování majetku, či neoprávněný vstup; a bezpečnost
 (ang. safety), což zahrnuje ochranu před nehodami a náhodnými hrozbami, jako
@@ -25,22 +25,23 @@ zpětnou analýzu incidentů, důkazní materiál pro soudní spory, zjišťová
 nehod, či pro zlepšení bezpečnostních opatření. Živé sledování videa se pak
 snaží incidentům přímo předcházet. Bylo však prokázáno, že schopnost lidského
 pozorovatele detekovat nebezpečí se velmi snižuje s délkou sledování a s počtem
-monitorovaných kamer. Právě proto se s příchodem technik umělé inteligence
-začalo využívat automatické zpracování obrazu a detekce hrozeb, nebezpečí, nebo
-již probíhajících incidentů v jejích počátcích. Tyto techniky pak úplně
-nahrazují lidského pozorovatele, nebo mu pomáhají včas zpozorovat nebezpečí a
-zareagovat.
+monitorovaných kamer \cite{soton371614}. Právě proto se s příchodem technik
+umělé inteligence začalo využívat automatické zpracování obrazu a detekce
+hrozeb, nebezpečí, nebo již probíhajících incidentů v jejích počátcích. Tyto
+techniky pak úplně nahrazují lidského pozorovatele, nebo mu pomáhají včas
+zpozorovat nebezpečí a zareagovat.
 
 Automatická analýza obrazu je používaná již několik desítek let, většinou ale
 spíše pro oblast zabezpečení, než pro bezpečnost. To z toho důvodu, že úlohy,
 jako identifikace neoprávněného vstupu, detekce zbraní, rozpoznávání SPZ nebo
-podezřelých osob jsou pro algoritmy mnohem jednodušší, než například detekce
-pádu, nouzové situace či zdravotního problému. Hlavním problémem těchto
-komplexnějších analýz je vysoká falešná pozitivita, kdy je například těžké
-rozeznat člověka trénujícího běh od člověka utíkajícího před nebezpečím.
-Nicméně rozvoj v oblasti hlubokého učení a konvolučních neuronových sítí, jako
-i vývoj a dostupnost hardwaru podporujícího tyto techniky, umožňuje dneska
-využít je i pro složitější úlohy.
+podezřelých osob dle obličeje jsou pro algoritmy mnohem jednodušší, než
+například detekce pádu, nouzové situace či zdravotního problému. Jedná se zde
+totiž o vysokou míru abstrakce, kdy i člověk může špatně identifikovat některé
+situace. Hlavním problémem těchto komplexnějších analýz je vysoká falešná
+pozitivita, kdy je například těžké rozeznat člověka trénujícího běh od člověka
+utíkajícího před nebezpečím. Nicméně rozvoj v oblasti hlubokého učení a
+konvolučních neuronových sítí, jako i vývoj a dostupnost hardwaru podporujícího
+tyto techniky, umožňuje dneska využít je i pro složitější úlohy.
 
 Ve firmě Linde jsou kamerové systémy používány v mnoha průmyslových provozech,
 nicméně chybí ucelený systém pro automatickou analýzu obrazu a detekci různých
@@ -57,12 +58,12 @@ pokud se na pracovišti nenachází nikdo, kdo by mohl pomoct, a poškozený nen
 schopen sám přivolat pomoc, může vést takový incident k vážným následkům.
 
 V první části práce se budeme zabývat teoretickými základy, jako je obecná
-architektura neuronových sítí či princip konvolučních neuronových sítí. V
-dalších kapitolách se zaměříme na detekci osob a odhad jejich klíčových bodů.
-Projdeme si různé přístupy a otestujeme různé algoritmy s ohledem na výkon,
-možnou hardwarovou akcelerací a preciznost. V další části se budeme zabývat
-samotnou detekcí pádu, tedy algoritmem, který na základě odhadnutých klíčových
-bodů určí, zda došlo k pádu, či nikoliv. V závěru práce se zaměříme na
-otestování výsledného řešení a zhodnocení jeho výkonu.
+architektura neuronových sítí či její pokročilejší architektury jako konvoluční
+nebo rekurentní neuronová síť. V dalších kapitolách se zaměříme na detekci osob
+a odhad jejich klíčových bodů. Projdeme si různé přístupy a otestujeme různé
+algoritmy s ohledem na výkon, možnou hardwarovou akcelerací a preciznost. V
+další části se budeme zabývat samotnou detekcí pádu, tedy algoritmem, který na
+základě odhadnutých klíčových bodů určí, zda došlo k pádu, či nikoliv. V závěru
+práce se zaměříme na otestování výsledného řešení a zhodnocení jeho výkonu.
 
 \endinput

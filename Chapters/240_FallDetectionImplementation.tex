@@ -1,16 +1,27 @@
 \chapter{Implementace kompletního řešení detekce pádu}
-\label{chap:detectionAlgorithm}
+\label{chap:detectionProgram}
 
-V této kapitole se zaměříme na implementaci samotného detekčního algoritmu,
+V této kapitole se zaměříme na implementaci celkového řešení detekce pádu,
 který na základě postupně předávané sekvence snímků bude detekovat, zda došlo k
-pádu.
+pádu. Jedná se tedy o spojení detekčního algoritmu, který ze snímku extrahuje
+klíčové body všech osob, a klasifikačního algoritmu, který na základě těchto
+bodů detekuje pád.
+
+V našem případě tedy musíme spojit predikci modelu YOLO11-pose, a jednoho z
+naších vybraných modelů (dopředná nebo GRU síť) pro klasifikaci pádu. Podívame
+se tedy nejprve kratce na práci ve frameworku YOLO. Následně se budeme zabývat
+použitím dříve natrénovaných modelů. Zejména se zaměříme na implementaci s
+využitím rekurentní architektury GRU, který přináší více výzev než dopředná
+siť, s ohledem na nutnost uchovávání sekvence pro každého člověka zvlášť.
+Nakonec program otestujeme s oběma klasifikačními modely na několika videích a
+zhodnotíme jejich výkon.
 
 \section{Sledování pózy s YOLO11}
 
 V YOLO verze 11 máme kromě již zmíněné detekce objektů i klíčových bodů k
 dispozici také další volitelné funkce. To, které funkce chceme využít,
-definujeme vybraným modelem. V závislosti na něm pak při inferenci model
-vrací patřičné hodnoty. Dostupné jsou tyto modely:
+definujeme vybraným modelem. V závislosti na něm pak při inferenci model vrací
+patřičné hodnoty. Dostupné jsou tyto modely:
 \begin{itemize}
     \item \textit{YOLO11<v>-seg }- detekce objektů - bounding boxů
     \item \textit{YOLO11<v>-cls }- detekce objektů, klíčových bodů a segmentace
@@ -71,7 +82,7 @@ tedy budou automaticky odstraňovány.
 
 V konstruktoru obdrží tato třída cestu k modelu YOLO (musí být inicializován
 pro každou instanci zvlášť), model pro detekci pádu na základě klíčových bodů,
-informaci o délce sekvence předávané tomuto modelu, a informace týkající se
+délku sekvence předávané tomuto modelu, a informace týkající se
 ukládání videí s pády, jako jsou cesty k souborům a délka videa před a po pádu.
 
 Pro práci s jednotlivými osobami používáme třídu $Person$, která uchovává
@@ -91,7 +102,11 @@ jsou na základě detekovaných informací vytvořeny, popřípadě aktualizová
 instance třídy $Person$. Pro každou osobu je také provedena analýza sekvence
 klíčových bodů pro detekci pádu a popřípadě je patřičně anotována ve snímku.
 Pokud je detekován pád a je nastaveno ukládání videa, vytvoří se nový soubor a
-zapíše se do něj uchované předešlé snímky. Do souboru se pak zapisuje, dokud je  
+zapíše se do něj uchované předešlé snímky. Do souboru se pak zapisuje, dokud je
 detekován pád a nevyprší požadovaný počet snímků po pádu.
+
+\section{Testování detekce pádu ve videu}
+
+
 
 \endinput

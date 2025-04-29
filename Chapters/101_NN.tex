@@ -21,13 +21,13 @@ Jelikož budou neuronové sítě základem prakticky v každé fázi vývoje na�
 První matematický model neuronové sítě byl popsán v roce 1943 dvěma
 neurofyziology – Warrenem McCullochem a Walterem Pittsem \cite{McCulloch1943}.
 Model byl založen na síti jednoduchých logických prvků, které provedou vážený
-součet svých vstupů a na výstup odešle signál založený na prahové funkcí.
+součet svých vstupů a na výstup odešlou signál založený na prahové funkci.
 
 V roce 1958 pak Frank Rosenblatt představil elektronický model neuronové sítě.
 Základní jednotku, postavenou na McCulloch-Pittsově modelu, nazval perceptron.
 \cite{Rosenblatt1958} Jeho architektura byla podobná modelu znázorněnému na
 obrázku \ref{fig:neuron}, kde aktivační funkce je prahová funkce. Rosenblattův
-stroj – Mark I Perceptron – byl postavený pro rozpoznávání jednoduchých vzorů v
+stroj - Mark I Perceptron - byl postavený pro rozpoznávání jednoduchých vzorů v
 obrazech.
 % Hlavním omezením tohoto modelu bylo, že byl schopen rozlišovat pouze lineárně separovatelné třídy. 
 Samotný model perceptronu je dodnes používán jako základ pro mnoho neuronových
@@ -41,7 +41,7 @@ sítí.
 % očekávaným výstupem \cite{nn_history}.
 
 I když ve svých počátcích přitahoval koncept umělé inteligence mnoho vědců jako
-i sponzorů, v následujících létech zájem ochabl, jelikož nebylo dosaženo
+i sponzorů, v následujících letech zájem ochabl, jelikož nebylo dosaženo
 předpokládaných výsledků, hlavně s ohledem na tehdejší stav vývoje hardwaru a
 obecně výpočetní techniky. Proto se tomuto období někdy říká Ai Winter.
 Neznamená to ale, že ti, kteří se oboru nadále věnovali, nedosáhli významných
@@ -60,8 +60,8 @@ hlubokému učení. Algoritmus využívá metodu gradientního sestupu v kombina
 minimalizaci chyby.
 
 Vynález backpropagation byl jedním z hlavních důvodů, proč se v 80. letech
-obnovil zájem o neuronové sítě a umělou inteligenci obecně. V roce 1989 také
-umožnil Yann LeCunovi at al. zefektivnit použití konvolučních neuronových sítí
+obnovil zájem o neuronové sítě a umělou inteligenci obecně. V roce 1989 taky
+umožnil Yann LeCunovi et al. zefektivnit použití konvolučních neuronových sítí
 pro rozpoznávání rukou psaných číslic \cite{lecun1989} a položit tak základ
 širokému využití konvolučních sítí v oblasti počítačového vidění.
 
@@ -267,12 +267,12 @@ vstupu k výstupu a nevyskytují se žádné smyčky. Naopak rekurentní sítě 
 zpětnou vazbu z výstupu přivedenou na vstup. To umožňuje reagovat na změny v
 čase.
 
-Další možnosti jejich rozdělení je dle topologie, která zahrnuje jejich
+Další možností jejich rozdělení je dle topologie, která zahrnuje jejich
 hloubku, tzn. počet vrstev, velikost těchto vrstev a jejich vzájemné propojení.
 V další sekci se budeme věnovat právě uspořádání vrstev v neuronových sítích.
 
 \section{Topologie neuronových sítí}
-Nejčastější uspořádání neuronů v neuronových sítích je do vrstev. Neurony dané
+Nejčastějším uspořádáním neuronů v neuronových sítích je uspořádání do vrstev. Neurony dané
 vrstvy jsou spojeny pouze s neurony z předchozí a následující vrstvy. Vrstvy
 pak dělíme na tři typy: vstupní, výstupní a skryté. Vstupní vrstva neobsahuje
 neurony a neprovádí žádné operace, pouze přijímá vnější signály a distribuuje
@@ -302,8 +302,7 @@ parametrů jednotlivých neuronů. Optimální parametry pak vedou k minimální
 chybě. Chybou rozumíme rozdíl mezi skutečným výstupem sítě a očekávaným
 výstupem. K tomu se nejčastěji používá algoritmus backpropagation (také
 algoritmus zpětného šíření chyby). Nyní si popíšeme, jak trénování sítě pomocí
-tohoto algoritmu funguje v dopředné neuronové síti. Nicméně se tento algoritmus
-využívá i ve většině jiných architektur, jako jsou konvoluční či rekurentní
+tohoto algoritmu funguje v dopředné neuronové síti. Tento algoritmus je nicméně využíván i ve většině jiných architektur, jako jsou konvoluční či rekurentní
 neuronové sítě, které budeme později využívat.
 
 Nejprve se ze vstupních dat vypočítají pomocí aktuálních parametrů sítě reálně
@@ -369,8 +368,7 @@ zaseknutí v lokálním minimu zavedením šumu do procesu trénování. Tato me
 využívá nejčastěji pro velké datasety.
 
 Dalším problémem může být nastavení optimálního kroku učení. Pokud je krok
-příliš velký, může dojít k příliš velké změně, která opomine minimum, můžeme
-tak nikdy nedosáhnout konvergence. Naopak, pokud je krok příliš malý, může
+příliš velký, může dojít k příliš velké změně, která opomine minimum, může se tak stát, že nikdy nedosáhneme konvergence. Naopak, pokud je krok příliš malý, může
 trénování trvat příliš dlouho. Řešením může být například adaptivní nastavení
 kroku. Nejznámější taková metoda je RMSProp (ang. root mean square
 propagation), která upravuje krok učení pro každý parametr podle průměrného
@@ -385,11 +383,11 @@ Další metodou, jak optimalizovat nastavení kroku, je normalizace dat mezi
 vrstvami sítě (ang. batch normalization). Tím se zamezí příliš velkým změnám v
 jednotlivých vrstvách, které někdy destabilizují proces trénování.
 
-U trénování hlubokých sítí se často naráží také na problém přetrénování (také
+U trénování hlubokých sítí se často naráží rovněž na problém přetrénování (také
 nadměrné přizpůsobení, ang. overfitting). Přetrénování nastává, když se síť
 dobře naučí trénovací data, zároveň ale postrádá schopnost generalizace, a když
 pak dostane nová data, nedosahuje dobrých výsledků. Nejčastěji k problému
-dochází v situacích, kdy se snažíme natrénovat hluboké a komplexni modely, aniž
+dochází v situacích, kdy se snažíme natrénovat hluboké a komplexní modely, aniž
 bychom měli k tomu dostatečné množství dat. K základním řešením tohoto problému
 tedy patří použití většího množství trénovacích dat – pokud jsou dostupná,
 jinak se někdy zavádí umělé variace dat jako rotace či převrácení, jinak je

@@ -76,12 +76,12 @@ pády osob \cite{caucafall}. Tento dataset obsahuje 100 nahrávek simulovaných
 pádu v různých světelných podmínkách, s různými osobami. Zahrnují širokou škálu
 scénářů, jednak pro různé druhy pádů (v různých směrech či z židle), jednak pro
 situace podobné pádu, jako je kleknutí či, sehnutí se, jednak běžné činnosti
-jako chůze či sednutí.
+jako chůze či sednutí. Poměr videí s úpadkem a bez je 50/50.
 
 Dalším zdrojem pro trénovací data je YouTube video tvůrce Kevina Parryho
 \textit{50 Ways to Fall}. Ve videu autor pády v různých scénářích, jako je
 zakopnutí, omdlení či poražení elektrickým proudem. Vzhledem k zabavné povaze
-videa jsme některé scénáře vypustili, nakonec jsme použili 45 videí.
+videa jsme některé scénáře vypustili, nakonec jsme použili 45 videí. Zde prakticky všechny videa obsahují pád, v některých se ale postava vrátí do normálního stavu (např. kotrmelec).
 
 \begin{figure}[]
     \centering
@@ -98,6 +98,8 @@ detekční algoritmus již natrénovaný na videích s více osobami, a náš
 klasifikační algoritmus bude zpracovávat každou osobu zvlášť. Práce s více
 osobami tak bude úlohou výsledného detektoru, nikoliv trénované klasifikační
 sítě.
+
+Oba datasety jsme rozdělili do tří sad: trénovací, validační a testovací. Rozděleny byly v tomto poměru: trénovací sada 70\%, validační sada 15\% a testovací sada 15\%. Trénovací a validační sada budou použity v procesu trénování - trénovací pro výpočet ztráty a úpravu vah, validační pro průběžné ověřování výkonu, a testovací sada bude na konci použitá pro otestování jednak klasifikačního algoritmu, jednak celkového řešení.
 
 \section{Třídy a jejich anotace}
 Pro videa byly vytvořeny anotace aktuální třídy pózy. Tato anotace není pro

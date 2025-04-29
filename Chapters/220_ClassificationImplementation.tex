@@ -411,9 +411,8 @@ Zjistili jsme, že na rozdíl od dopředných sítí, v případě GRU nejlepš�
 výsledků dosahovaly jednodušší sítě. Většina sítí s jednou GRU vrstvou tak
 dosahovala poměrně stabilních výsledků. Nejvyšší přesnosti jsme pak dosáhli
 sítí s jednou GRU vrstvou o velikosti $64$ a plně propojenou vrstvou o
-velikosti $64$, s dropoutem 0.15 v GRU vrstvě a 0.4 v plně propojené vrstvě. I
-když většinou bylo dosaženo stabilnějších výsledků s větším dropoutem jako je
-0.4, některé jednodušší sítě se lépe trénovaly s menším dropoutem.
+velikosti $64$, s dropoutem 0.4 v plně propojené vrstvě. Co se týče dropout mezi GRU vrstvami, bylo u hlubších sítí
+většinou dosaženo stabilnějších výsledků s větší hodnotou dropoutu jako je 0.4, u jednovrstvých GRU sítí je dropout nerelevantní, jelikož se aplikuje mezi vrstvami.
 
 Sítě s více GRU vrstvami většinou než dosáhly optimálního výkonu, začaly
 kolísat a ve validační ztrátě a přesnosti se objevovaly obrovské výkyvy.
@@ -432,9 +431,8 @@ detekována. Obecně jsme ale zjistili, že vždycky dosahují stabilnějších
 výsledků sítě spíše s kratšími sekvencemi. Zůstali jsme tedy u sekvencí délky
 $50$.
 
-Naší nejlepší konfigurací GRU sítě je tedy jedna GRU vrstva o velikosti $64$ s
-dropoutem $0.15$, násldedována plně propojenou vrstvou s $64$ neurony a
-dropoutem 0.4. Trénována byla na sekvencích o délce $50$ snímků, s velikosti
+Naší nejlepší konfigurací GRU sítě je tedy jedna GRU vrstva o velikosti $64$, následována plně propojenou vrstvou s $64$ neurony a
+dropoutem 0.4. Trénována byla na sekvencích o délce $50$ snímků, s velikostí  
 dávky $4096$ a s použitím optimalizace Adam. Na obrázku \ref{graph:gru} pak
 můžeme vidět, že jsme dosáhli trénovací ztráty $0.066$, validační ztráty
 $0.211$ a přesnosti $93.12\%$ .
@@ -493,7 +491,7 @@ $0.211$ a přesnosti $93.12\%$ .
 
 LSTM sítě jsme trénovali se stejnými hyperparametry a konfiguracemi jako sítě
 GRU. Obecně se taky dá říct, že měly tyto parametry u obou architektur velice
-podobný vliv na výsledky, a tedy to co jsme napsali o GRU sítích, by se většinou
+podobný vliv na výsledky, a tedy to, co jsme napsali o GRU sítích, by se většinou
 dalo napsat i o LSTM sítích. Taky měly nejlepší výsledky s jednou vrstvou,
 podobně se projevovala délka sekvence, a obdobně byl většinou optimální
 dropout velikosti $0.4$.
@@ -526,7 +524,7 @@ otestujeme na reálných datech.
 
 V tabulce \ref{tab:testing} vidíme, že obě sítě dosahují velmi dobrého výkonu.
 Dopředná síť dosáhla přesnosti $94.43\%$ a ztráty $0.148$, zatímco GRU síť
-dosáhla jak lepší přesnosti $96.88\%$ tak trošku menší ztráty $0.138$. Obě sítě
+dosáhla jak lepší přesnosti $96.88\%$, tak trošku menší ztráty $0.138$. Obě sítě
 by tak mohly být použity pro detekci pádu, jelikož je ale pro klasifikační
 úlohy v konečném řešení důležitější přesnost, GRU síť vypadá jako lepší
 kandidát.
@@ -535,11 +533,11 @@ Z pohledu rychlosti jsou obě sítě natolik jednoduché, že ani nelze zaznamen
 výrazný rozdíl. Zároveň je velmi zajímavé, že je model na CPU asi třikrát
 rychlejší než na GPU. Je to způsobeno tím, že je model malý, nelze tedy plně
 využít potenciál paralelismu, navíc zpracováváme výstupy po jednom. Režie GPU
-tedy převáží nad její výhodami. Ve všech případech se ale u doby inference
+tedy převáží nad jejími výhodami. Ve všech případech se ale u doby inference
 jedná o zlomky milisekund, ve výsledném programu doba prakticky zanedbatelná.
 
-V další kapitole budeme implementovat detektor pádu, tedy program který spojí
-obě fáze detekce. Pomocí něj pak vyzkoušíme tyto dva modely zejména s ohledem
+V další kapitole budeme implementovat detektor pádu, tedy program, který spojí
+obě fáze detekce. Pomocí něj pak vyzkoušíme tyto dva modely, zejména s ohledem
 na robustnost,
 %
 %

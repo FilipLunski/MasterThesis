@@ -5,7 +5,7 @@ V této kapitole je stanoven přesný cíl a navržen postup, jak k problému
 přistoupit.
 
 Úkolem bude v reálném čase z videostreamu detekovat pád osoby. Pád osoby
-je definován jako náhle, neúmyslné klesnutí těla z výškové pozice (např. stání,
+je definován jako náhlé, neúmyslné klesnutí těla z výškové pozice (např. stání,
 chůze nebo sezení) na zem nebo jinou nižší úroveň, přičemž tato osoba nemá
 kontrolu nad tímto pohybem. Samozřejmě není vždy možné úplně dobře
 rozeznat, zda se nejedná o úmyslné klesnutí, např. prudké lehnutí.
@@ -20,14 +20,14 @@ mrtvice, záchvaty, mdloby či jiné důvody ztráty vědomí.
 \section{Návrh řešení}
 
 Cílem této práce je navrhnout algoritmus, který bude detekovat, zda je ve
-vstupní sekvenci snímku některá osoba, jejíž pozice je klasifikována jako pád.
+vstupní sekvenci snímku nějaká osoba, jejíž pozice je klasifikována jako pád.
 Hlavním cílem výsledného programu bude alarmovat příslušného pracovníka, pokud
 osoba upadne.
 
-Alarmovat se bude až, pokud osoba zůstane v ležící pozici. To umožní
+Alarmovat se bude až tehdy, když osoba zůstane v ležící pozici. To umožní
 odfiltrovat falešné alarmy v případě sehnutí či pokud bude osoba špatně
 viditelná a algoritmus tak na okamžik špatně vyhodnotí její pohyb. Tímto
-postprocesingem se ale práce nebude zabývat, spíše bude pozornost věnována
+postprocesingem se ale práce nebude zabývat, pozornost bude věnována spíše
 samotné klasifikaci pozice.
 
 Stejně jako u detekce objektů, viz \ref{sec:obj_det}, by bylo možné i pro
@@ -56,8 +56,7 @@ Další alternativou by mohlo být pouze detekovat osoby jako objekty, a na
 základě jejich bounding boxů určit, zda se jedná o pád. Tento postup by byl
 jednodušší na dvou úrovních. Jednak je detekce objektů méně náročná úloha než
 detekce pózy, jednak by ve druhé fázi bylo analyzováno pouze několik parametrů
-bounding boxu (rozměry a velikost) oproti pár desítkám klíčových bodů. Nicméně,
-pokud se nad tím zamyslíme, ne vždy vypovídají parametry bounding boxů o pozici
+bounding boxu (rozměry a velikost) oproti pár desítkám klíčových bodů. Hlubší úvaha však napoví, že parametry bounding boxů ne vždy vypovídají o pozici
 člověka. Tento postup by tak pravděpodobně vedl k mnohem méně přesnému
 výsledku, než analýza klíčových bodů, kdy může síť analyzovat takové vzorce
 jako je např. délka končetin v pohledu či úhel mezi nimi.
@@ -70,10 +69,10 @@ detekujícího pád na základě těchto klíčových bodů.
 \section{Trénovací datasety}
 \label{sec:TrainingData}
 
-Pro trénování vyvíjeného modelu jsme použili necelých 150 krátkých (1 až 15
+Pro trénování vyvíjeného modelu bylo použito necelých 150 krátkých (1 až 15
 sekund) videí ze dvou zdrojů. Prvním je dataset CAUCAFall vytvořený právě pro
 práci s pády osob \cite{caucafall}. Tento dataset obsahuje 100 nahrávek
-simulovaných pádu v různých světelných podmínkách, s různými osobami. Zahrnují
+simulovaných pádů v různých světelných podmínkách, s různými osobami. Zahrnují
 širokou škálu scénářů, jednak pro různé druhy pádů (v různých směrech či z
 židle), jednak pro situace podobné pádu, jako je kleknutí či sehnutí se, jednak
 běžné činnosti jako chůze či sednutí. Poměr videí s úpadkem a bez je 50/50.
@@ -81,7 +80,7 @@ běžné činnosti jako chůze či sednutí. Poměr videí s úpadkem a bez je 5
 Dalším zdrojem pro trénovací data je YouTube video tvůrce Kevina Parryho
 \textit{50 Ways to Fall}. Ve videu autor simuluje pády v různých scénářích,
 jako je zakopnutí, omdlení či poražení elektrickým proudem. Vzhledem k zabavné
-povaze videa byly některé scénáře vypuštěny, nakonec jsme použili 45 videí. Zde
+povaze videa byly některé scénáře vypuštěny, nakonec bylo použito 45 videí. Zde
 prakticky všechny videa obsahují pád, v některých se ale postava vrátí do
 normálního stavu (např. kotrmelec).
 
@@ -117,13 +116,13 @@ každý snímek, ale pouze při změně definuje časovou značku a následujíc
 
 V anotacích byly použity 3 třídy, ty odpovídají třem různým třídám pózy
 relevantním k problému – \textit{normální}, kdy osoba např. chodí, sedí nebo
-stojí, \textit{padá} – přechodný stav padání, definován od započatí pohybu
+stojí, \textit{padá} – přechodný stav padání, definován od započetí pohybu
 směrem dolů, a \textit{upadl} – definován od momentu, kdy se osoba dotkla země
 trupem nebo všemi končetinami.
 
 Pro řešený problém jsou obecně potřebné jenom dvě třídy – \textit{normální} a
 \textit{upadl}. Skript tvořící trénovací data proto považuje třídu
-\textit{padá} za třídu \textit{normální}. Nicméně by se mohlo do budoucna pro
+\textit{padá} za třídu \textit{normální}. Nicméně do budoucna by se mohlo pro
 pokročilejší optimalizaci zkusit experimentovat i se třídou \textit{padá},
 která by mohla síti pomoct hlouběji pochopit problematiku a přesněji rozeznat
 některé situace, zejména pak v případě využití rekurentních neuronových sítí.

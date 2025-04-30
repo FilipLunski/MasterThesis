@@ -19,7 +19,7 @@ jako jsou krádeže, poškozování majetku, či neoprávněný vstup; a bezpeč
 jsou pády, požár, úniky nebezpečných látek, či porušování bezpečnostních
 předpisů.
 
-Jak již bylo zmíněno, lze kamery využívat jednak pro živé sledování, jednak pro
+Jak již bylo zmíněno, kamery lze využívat jednak pro živé sledování, jednak pro
 záznam a jeho analýzu po události. Kamerové záznamy jsou důležité zejména pro
 zpětnou analýzu incidentů, důkazní materiál pro soudní spory, zjišťování příčin
 nehod, či pro zlepšení bezpečnostních opatření. Živé sledování videa se pak
@@ -27,13 +27,13 @@ snaží incidentům přímo předcházet. Bylo však prokázáno, že schopnost 
 pozorovatele detekovat nebezpečí se velmi snižuje s délkou sledování a s počtem
 monitorovaných kamer \cite{soton371614}. Právě proto se s příchodem technik
 umělé inteligence začalo využívat automatické zpracování obrazu a detekce
-hrozeb, nebezpečí, nebo již probíhajících incidentů v jejích počátcích. Tyto
+hrozeb, nebezpečí, nebo již probíhajících incidentů v jejich počátcích. Tyto
 techniky pak úplně nahrazují lidského pozorovatele, nebo mu pomáhají včas
 zpozorovat nebezpečí a zareagovat.
 
 Automatická analýza obrazu je používaná již několik desítek let, většinou ale
 spíše pro oblast zabezpečení, než pro bezpečnost. To z toho důvodu, že úlohy,
-jako identifikace neoprávněného vstupu, detekce zbraní, rozpoznávání SPZ nebo
+jako identifikace neoprávněného vstupu, detekce zbraní, rozpoznávání registračních značek vozidel nebo
 podezřelých osob dle obličeje jsou pro algoritmy mnohem jednodušší, než
 například detekce pádu, nouzové situace či zdravotního problému. Jedná se zde
 totiž o vysokou míru abstrakce, kdy i člověk může špatně identifikovat některé
@@ -41,7 +41,7 @@ situace. Hlavním problémem těchto komplexnějších analýz je vysoká faleš
 pozitivita, kdy je například těžké rozeznat člověka trénujícího běh od člověka
 utíkajícího před nebezpečím. Nicméně rozvoj v oblasti hlubokého učení a
 konvolučních neuronových sítí, jako i vývoj a dostupnost hardwaru podporujícího
-tyto techniky, umožňuje dneska jejich využití i pro složitější úlohy.
+tyto techniky, umožňuje dnes jejich využití i pro složitější úlohy.
 
 Ve firmě Linde jsou kamerové systémy používány v mnoha průmyslových provozech,
 nicméně chybí ucelený systém pro automatickou analýzu obrazu a detekci různých
@@ -51,20 +51,18 @@ místech. Ty budou zahrnovat například detekci pádu, požáru, zdravotních
 problémů, nebo porušování bezpečnostních opatření. Systém pak bude v případě
 rozpoznání nějaké hrozby informovat příslušného pracovníka.
 
-Tato práce je zaměřená pouze na jednu z těchto úloh, a to na detekci pádu. Pád
+Tato práce je zaměřena pouze na jednu z těchto úloh, a to na detekci pádu. Pád
 může mít různé příčiny, ať už je to zdravotní problém jako ztráta vědomí, nebo
 zakopnutí. Někdy se zdá, že samotné zakopnutí je banální problém, nicméně pokud
 se na pracovišti nenachází nikdo, kdo by mohl pomoct, a poškozený není schopen
 sám přivolat pomoc, může vést takový incident k vážným následkům.
 
 První část práce bude věnována teoretickým základům, seznámení z neuronovými
-sítěmi. Kromě obecného popisu neuronových sítí bude pozornost věnována také na
-její pokročilejší architektury, které budou v řešení použity. Další kapitoly se
-zaměří na detekci osob a odhad jejich klíčových bodů. Budou představeny různé
+sítěmi. Kromě obecného popisu neuronových sítí bude pozornost věnována také jejich pokročilejším architekturám, které budou v řešení použity. Další kapitoly budou zaměřeny na detekci osob a odhad jejich klíčových bodů. Budou představeny různé
 přístupy a otestovány různé algoritmy s ohledem na výkon, možnou hardwarovou
 akceleraci a preciznost. Předmětem další části bude samotná detekce pádu, tedy
 algoritmus, který na základě odhadnutých klíčových bodů určí, zda došlo k pádu,
-či nikoliv. Poslední část práce se zaměří na kompletaci a otestování výsledného
+či nikoliv. Poslední část práce bude zaměřena na kompletaci a otestování výsledného
 řešení a zhodnocení jeho výkonu.
 
 \endinput

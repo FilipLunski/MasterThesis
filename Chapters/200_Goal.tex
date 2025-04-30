@@ -101,6 +101,9 @@ klasifikační algoritmus bude zpracovávat každou osobu zvlášť. Práce s v�
 osobami tak bude úlohou výsledného detektoru, nikoliv trénované klasifikační
 sítě.
 
+Videa z datasetu CAUCAFall jsou v rozlišení $720\times480$, zatímco videa z
+datasetu 50 Ways to Fall jsou v rozlišení $1280\times720$. 
+
 Oba datasety jsme rozdělili do tří sad: trénovací, validační a testovací.
 Rozděleny byly v tomto poměru: trénovací sada 70\%, validační sada 15\% a
 testovací sada 15\%. Trénovací a validační sada budou použity v procesu
@@ -121,10 +124,10 @@ všemi končetinami.
 %todo
 Pro náš model obecně potřebujeme jenom dvě třídy – \textit{normální} a
 \textit{upadl}. Skript tvořící trénovací data proto považuje třídu
-\textit{padá} za třídu \textit{normální}. Nicméně by se mohlo do budoucna pro pokročilejší
-optimalizaci zkusit experimentovat i se třídou \textit{padá}, která by mohla
-síti pomoct hlouběji pochopit problematiku a přesněji rozeznat některé situace,
-zejména pak v případě využití rekurentních neuronových sítí.
+\textit{padá} za třídu \textit{normální}. Nicméně by se mohlo do budoucna pro
+pokročilejší optimalizaci zkusit experimentovat i se třídou \textit{padá},
+která by mohla síti pomoct hlouběji pochopit problematiku a přesněji rozeznat
+některé situace, zejména pak v případě využití rekurentních neuronových sítí.
 
 \section{Příprava trénovacích dat pro klasifikační algoritmus}
 

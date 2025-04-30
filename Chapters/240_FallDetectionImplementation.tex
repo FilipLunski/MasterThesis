@@ -174,11 +174,19 @@ rychlosti, je způsoben hlavně režií sekvencí v případě sítě GRU.
 Výše uvedená měření byla provedena provedena bez anotace videí. Pokud jsme
 anotovali videa pouze informací o pádu, doba zpracování se většinou zvýšila
 pouze o zhruba 2 – 3 milisekundy. Pokud jsme ale použili anotaci klíčových bodů
-a bounding boxů integrovanou v modelu YOLO, došlo k zpomalení až o 15 milisekund.
+a bounding boxů integrovanou v modelu YOLO, došlo k zpomalení až o 15
+milisekund.
 
 Obě sítě tedy fungují poměrně dobře a dokážou v reálném čase detekovat pád v
 různých situacích, z výsledků je ale zjevné, že je rekurentní síť GRU mnohem
 stabilnější a přesnější.
 
-
-\endinput
+% \begin{table}[htbp]
+%     \centering
+%     \begin{tabular}{|c|c|c|}
+%         \hline
+%                      & ms   & FPS \\ \hline
+%         Dopředná síť & 25.9 & 39  \\ \hline
+%         GRU síť      & 33   & 30  \\ \hline
+%     \end{tabular}
+% \end{table}

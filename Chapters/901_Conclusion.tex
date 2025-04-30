@@ -2,7 +2,7 @@
 \label{chap:Conclusion}
 
 Cílem práce bylo navrhnout a implementovat řešení pro detekci pádu osoby v toku
-obrázku v reálném čase. V první části byly popsány teoretické základy použitých
+obrázků v reálném čase. V první části byly popsány teoretické základy použitých
 technologií, se zaměřením na neuronové sítě.
 
 V praktické části byl popsán postup návrhu a vývoje výsledného programu. Řešení
@@ -35,17 +35,16 @@ rekurentní a jednou plně propojenou vrstvou, obě velikosti $64$. Tuto síť s
 podařilo natrénovat na přesnost přes 96\% na testovacích datech, zároveň se
 ukázala jako velice stabilní a přesná i při detekci pádu v testovacích videích.
 
-Pokud by se pokračovalo v optimalizaci navrženého řešení, nejvíce prostoru lze
-vidět v množství trénovacích dat. Zejména by bylo vhodné použít videa s více
+Pokud by se pokračovalo v optimalizaci navrženého řešení, nejvíce prostoru pro zlepšení je v množství trénovacích dat. Zejména by bylo vhodné použít videa s více
 úhly natočení vůči zemi a s různými vzdálenostmi osoby od kamery. Větší a
 rozmanitější dataset by umožnil natrénovat i komplexnější architektury, které
 by byly přesnější a robustnější. Pro získání více dat by se mohlo nasadit
 navržený detektor na podnikové kamery, nebo by se pomocí něj dalo zanalyzovat
 starší záznamy. V těchto případech by bylo vhodné nastavit nižší prah detekce
-pro získání také dat s vyšší pravděpodobností falešné pozitivity.
+pro získání dat také s vyšší pravděpodobností falešné pozitivity.
 
 Dalším vylepšením by mohlo být zavedení více tříd do analýzy pózy. V textu byla
-zmíněna třída \textit{padá}, nicméně bylo možné také přidat třídy např. pro
+zmíněna třída \textit{padá}, nicméně bylo by možné přidat také třídy např. pro
 pozici v sedě, ve dřepu, či na kolenou. Model by tak mohl lépe rozeznávat
 některé situace, které se zdají být pádu podobné, a  odstranily by se tak
 potenciální falešné pozitivní detekce pádu.
@@ -53,7 +52,7 @@ potenciální falešné pozitivní detekce pádu.
 Zajímavým rozšířením by také mohlo být propojení více kamer z jedné místnosti
 pro sledování osob z více úhlů. Dávalo by to možnost zasazení postav do
 trojrozměrného prostoru a umožňovalo dosáhnout mnohem kvalitnější detekce pózy.
-Nicméně by bylo obtížnější získat pro takové řešení trénovací data.
+Nicméně bylo by obtížnější získat pro takové řešení trénovací data.
 
 Pro nasazení detektoru pádu v reálném provoze, tedy na obrazovém toku z
 podnikových bezpečnostních kamer, bude ještě třeba vytvořit vhodné rozhraní pro

@@ -10,7 +10,7 @@ detekuje pád.
 Je tedy třeba spojit predikci modelu YOLO11-pose a jednoho z vybraných modelů
 (dopředná nebo GRU síť) pro klasifikaci pádu. Nejprve tedy bude krátce popsána
 práce ve frameworku YOLO. Následující část se bude věnovat využití dříve
-natrénovaných modelů. Zejména bude důraz kladen na implementaci s využitím
+natrénovaných modelů. Důraz bude kladen zejména na implementaci s využitím
 rekurentní architektury GRU, která přináší více výzev než dopředná síť, s
 ohledem na nutnost uchovávání sekvence pro každého člověka zvlášť. Nakonec bude
 program otestován s oběma klasifikačními modely na videích z testovací sady a
@@ -165,15 +165,15 @@ stanovené minimální frekvence $30$ FPS, viz sekce
 \end{table}
 
 Rozdíl rychlosti mezi datasety je způsoben hlavně velikostí snímku. V datasetu
-50 ways to fall, je totiž snímek téměř třikrát větší než v případě CAUCAFall.
+\textit{50 ways to fall}, je totiž snímek téměř třikrát větší než v případě CAUCAFall.
 Pro snímky s větším rozlišením musí YOLO nejprve věnovat více času na
 zredukování velikosti snímku. Předpokládá se ale, že většinou je rozlišení u
 průmyslových kamer spíše menší než HD, v praxi by se tedy mělo dosáhnout spíše
-výsledků jako v případě datasetu CAUCAFall. Mezi oběma modely je taky malý rozdíl v
-rychlosti, je způsoben hlavně režií sekvencí v případě sítě GRU.
+výsledků jako v případě datasetu CAUCAFall. Mezi oběma modely je také malý rozdíl v
+rychlosti, který je způsoben hlavně režií sekvencí v případě sítě GRU.
 
-Výše uvedená měření byla provedena bez anotace videí. Pokud byly videa anotovány pouze informací o pádu, doba zpracování se většinou zvýšila
-pouze o zhruba 2 – 3 milisekundy. Pokud ale byly videa anotovány klíčovými body
+Výše uvedená měření byla provedena bez anotace videí. Pokud byla videa anotována pouze informací o pádu, doba zpracování se většinou zvýšila
+pouze o zhruba 2 – 3 milisekundy. Pokud ale byla videa anotována klíčovými body
 a bounding boxy pomocí nástroje integrovaného v modelu YOLO, došlo ke zpomalení až o 15
 milisekund.
 

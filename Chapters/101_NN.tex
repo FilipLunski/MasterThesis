@@ -47,7 +47,7 @@ sítí.
 I když ve svých počátcích přitahoval koncept umělé inteligence mnoho vědců jako
 i sponzorů, v následujících letech zájem ochabl, jelikož nebylo dosaženo
 předpokládaných výsledků, hlavně s ohledem na tehdejší stav vývoje hardwaru a
-obecně výpočetní techniky. Proto se tomuto období někdy říká Ai Winter.
+obecně výpočetní techniky. Proto se tomuto období někdy říká AI Winter.
 Neznamená to ale, že ti, kteří se oboru nadále věnovali, nedosáhli významných
 výsledků \cite{nn_history}.
 
@@ -64,7 +64,7 @@ hlubokému učení. Algoritmus využívá metodu gradientního sestupu v kombina
 minimalizaci chyby.
 
 Vynález backpropagation byl jedním z hlavních důvodů, proč se v 80. letech
-obnovil zájem o neuronové sítě a umělou inteligenci obecně. V roce 1989 taky
+obnovil zájem o neuronové sítě a umělou inteligenci obecně. V roce 1989 také
 umožnil Yann LeCunovi et al. zefektivnit použití konvolučních neuronových sítí
 pro rozpoznávání rukou psaných číslic \cite{lecun1989} a položit tak základ
 širokému využití konvolučních sítí v oblasti počítačového vidění.
@@ -72,14 +72,14 @@ pro rozpoznávání rukou psaných číslic \cite{lecun1989} a položit tak zák
 \section{Obecná architektura neuronové sítě}
 
 V následující části budou popsány obecné principy fungování neuronových sítí,
-jejich struktura základní optimalizační techniky.
+jejich struktura a základní optimalizační techniky.
 
 \subsection{Struktura neuronové sítě}
 
 Umělé neuronové sítě jsou silně inspirované biologickými neuronovými sítěmi. A
 i když napodobení celé funkčnosti lidského nervového systému by bylo velmi
 složité – ne-li nereálné, zejména s ohledem na počet neuronů a způsob jejich
-propojení, je možné simulovat alespoň některé funkce lidské mysli.
+propojení – je možné simulovat alespoň některé funkce lidské mysli.
 
 % Pro provádění výpočtů využívají neuronové sítě distribuovaný, paralelní
 % přístup. Informace jsou tedy zpracovány, předávány a ukládány celou sítí,
@@ -105,11 +105,11 @@ Umělý neuron se snaží tuto funkčnost napodobit, viz obrázek \ref{fig:neuro
 Jeho vstupy $x_i$ jsou násobeny váhami $w_i$, které reprezentují sílu daného
 spoje. Neuron pak tyto vážené vstupy sečte, a na tento součet aplikuje
 aktivační funkci (AF), která definuje hodnotu výstupu $y$. Existuje mnoho
-různých AF, v našem řešení vyzkoušíme například hyperbolický tangens (tanh),
+různých AF, v navrhovaném řešení budou vyzkoušeny například hyperbolický tangens (tanh),
 ReLU či Mish \cite{afreview}.
 
 Kromě vah jednotlivých vstupů neuron obvykle obsahuje ještě tzv. bias (někdy
-také práh nebo posun), jehož funkci je posunout vážený součet vstupů tak, aby
+také práh nebo posun), jehož funkcí je posunout vážený součet vstupů tak, aby
 bylo možné modelovat i funkce, které nejsou nulové v počátku souřadnic. Je buď
 reprezentován jako samostatný parametr, nebo jako váha konstantního vstupu s
 hodnotou 1, jako na obrázku \ref{fig:neuron}.
@@ -276,10 +276,6 @@ vstupu k výstupu a nevyskytují se žádné smyčky. Naopak rekurentní sítě 
 zpětnou vazbu z výstupu přivedenou na vstup. To umožňuje reagovat na změny v
 čase.
 
-Další možností jejich rozdělení je dle uspořádání, které zahrnuje jejich
-hloubku, tzn. počet vrstev, velikost těchto vrstev a jejich vzájemné propojení.
-Další sekce se věnuje právě uspořádání vrstev v neuronových sítích.
-
 Dalším způsobem rozdělení neuronových sítí je podle jejich uspořádání, které
 zahrnuje hloubku sítě, tzn. počet vrstev, velikost jednotlivých vrstev a způsob
 jejich vzájemného propojení. Následující sekce se věnuje právě této vrstvené
@@ -294,8 +290,8 @@ vrstva neobsahuje neurony a neprovádí žádné operace, pouze přijímá vněj
 signály a distribuuje je do další vrstvy. Výstup z neuronů ve výstupní vrstvě
 pak reprezentuje výstup celé sítě.
 
-Pokud síť obsahuje pouze vstupní a výstupní vrstvu, jedná se o jednovrstvé
-neuronové síti. Takové sítě mají velmi omezené možnosti, proto se v praxi
+Pokud síť obsahuje pouze vstupní a výstupní vrstvu, jedná se o jednovrstvou
+neuronovou síť. Takové sítě mají velmi omezené možnosti, proto se v praxi
 nepoužívají. Většina neuronových sítí má mezi vstupní a výstupní vrstvou
 alespoň jednu skrytou vrstvu.%, viz obrázek \ref{fig:layers}. 
 
@@ -319,9 +315,9 @@ výstupem. K tomu se nejčastěji používá algoritmus backpropagation (také
 algoritmus zpětného šíření chyby). Nyní bude vysvětleno, jak trénování sítě
 pomocí tohoto algoritmu funguje v dopředné neuronové síti. Tento algoritmus je
 nicméně využíván i ve většině jiných architektur, jako jsou konvoluční či
-rekurentní neuronové sítě, které budeme později využívat.
+rekurentní neuronové sítě, které budou později v této práci také využity.
 
-Nejprve se ze vstupních dat vypočítají pomocí aktuálních parametrů sítě reálně
+Nejprve se ze vstupních dat vypočítají pomocí aktuálních parametrů sítě reálné
 výstupy sítě. Tento proces se nazývá dopředný průchod (ang. forward pass).
 Následně se pomocí chybové funkce (také nákladová funkce – ang. loss function)
 spočítá chyba sítě. Ta vyjadřuje, v jaké míře se skutečné výstupy liší od
@@ -338,7 +334,7 @@ skutečnými a očekávanými hodnotami.
 % možností je absolutní chyba (ang. mean absolute error – MAE), která vyjadřuje
 % střední hodnotu absolutních hodnot rozdílů.
 
-Dále je používána metoda gradientního sestupu, k nalezení minima chybové
+Dále je používána metoda gradientního sestupu, která slouží k nalezení minima chybové
 funkce. Za tímto účelem se vypočítají derivace chyby podle jednotlivých
 parametrů sítě. Tyto derivace pak určují, jakým směrem a jak rychle se mají
 dané parametry měnit, aby se chyba minimalizovala. Jelikož se derivace
@@ -422,8 +418,8 @@ snižuje závislost sítě na konkrétních neuronech a zvyšuje se tak její sc
 generalizace.
 
 Další dvě metody, nazývané L1 a L2 regularizace, přičítají k chybové funkci
-člen, který penalizuje velikost parametrů sítě. L1 regularizace (také metoda
-\cite{lasso}, z ang. least absolute shrinkage and selection operator) přičítá k
+člen, který penalizuje velikost parametrů sítě. L1 regularizace (také metoda Lasso, z ang. least absolute shrinkage and selection operator) 
+\cite{lasso} přičítá k
 chybové funkci součet absolutních hodnot všech parametrů sítě vynásobený
 hyperparametrem, který určuje míru této penalizace. Tato metoda vede k řídké
 síti, ve které je mnoho parametrů nulových. L2 regularizace (také weight decay)

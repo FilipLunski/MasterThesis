@@ -1,20 +1,20 @@
 \chapter{Představení problematiky detekce pádu}
 \label{chap:Goal}
 
-V této kapitole stanovíme, co je přesně naším cílem, a zamyslíme se, jak k
-našemu problému přistoupit.
+V této kapitole je stanoven přesný cíl a navržen postup, jak k problému
+přistoupit.
 
-Naším úkolem bude v reálném čase z videostreamu detekovat pád osoby. Pád osoby
-definujeme jako náhle, neúmyslné klesnutí těla z výškové pozice (např. stání,
+Úkolem bude v reálném čase z videostreamu detekovat pád osoby. Pád osoby
+je definován jako náhle, neúmyslné klesnutí těla z výškové pozice (např. stání,
 chůze nebo sezení) na zem nebo jinou nižší úroveň, přičemž tato osoba nemá
-kontrolu nad tímto pohybem. Samozřejmě nejsme vždy schopni úplně dobře
+kontrolu nad tímto pohybem. Samozřejmě není vždy možné úplně dobře
 rozeznat, zda se nejedná o úmyslné klesnutí, např. prudké lehnutí.
 
 Dle některých definic (zejména ve zdravotnictví) se o pád nejedná, pokud jde o
-důsledek závažné vnitřní příhody (např. mrtvice). V našem případě toto
-nerozlišujeme, naopak chceme detekovat jak pády v důsledku ztráty rovnováhy či
-vlivem vnějších faktorů (např. zakopnutí, převrácení těžkým předmětem), tak
-pády v důsledku akutních události vlivem zdravotních problémů, jako jsou např.
+důsledek závažné vnitřní příhody (např. mrtvice). Toto zde nebude rozlišováno,
+naopak bude cílem detekovat jak pády v důsledku ztráty rovnováhy či vlivem
+vnějších faktorů (např. zakopnutí, převrácení těžkým předmětem), tak pády v
+důsledku akutních události vlivem zdravotních problémů, jako jsou např.
 mrtvice, záchvaty, mdloby či jiné důvody ztráty vědomí.
 
 \section{Návrh řešení}
@@ -102,7 +102,7 @@ osobami tak bude úlohou výsledného detektoru, nikoliv trénované klasifikač
 sítě.
 
 Videa z datasetu CAUCAFall jsou v rozlišení $720\times480$, zatímco videa z
-datasetu 50 Ways to Fall jsou v rozlišení $1280\times720$. 
+datasetu 50 Ways to Fall jsou v rozlišení $1280\times720$.
 
 Oba datasety jsme rozdělili do tří sad: trénovací, validační a testovací.
 Rozděleny byly v tomto poměru: trénovací sada 70\%, validační sada 15\% a

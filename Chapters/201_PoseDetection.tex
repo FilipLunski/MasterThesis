@@ -5,9 +5,9 @@ Jelikož je dnes dostupných mnoho různých algoritmů či natrénovaných mode
 detekci pózy osob v obrázku či videu, nemá smysl pro navrhované řešení
 implementovat takovýto algoritmus od nuly. Možné by to samozřejmě bylo, i
 vzhledem k dostupnosti otevřených trénovacích dat (např. dataset COCO
-\cite{coco}), nicméně by pravděpodobně nebylo dosaženo kvalitních výsledků,
+\cite{coco}), nicméně by pravděpodobně nebylo dosaženo tak kvalitních výsledků,
 jako řešení, která jsou výsledkem mnoholetých výzkumů. Hlavně pak by bylo těžko
-dosáhnout výkonů těchto řešení, a ten je pro navrhované řešení stěžejní,
+dosáhnout výkonu těchto řešení, a ten je pro navrhované řešení stěžejní,
 jelikož je potřeba video zpracovávat v reálném čase.
 
 V následující kapitole budou popsány obecné principy detekce osob a jejich pózy
@@ -81,7 +81,7 @@ spojit do jednotlivých osob.
 \subsubsection*{Regrese}
 
 Využití heatmap je velmi přesné, nicméně z důvodu nutnosti provádění dvou
-sekvenčních výpočtů je také trochu pomalé. Heatmapy také komplikují proces
+sekvenčních výpočtů je trochu pomalé. Heatmapy také komplikují proces
 trénování, jelikož je třeba spolu s trénovacími daty dodat modelu i heatmapy.
 Některé algoritmy se proto snaží formulovat úlohu jako regresi vedoucí přímo k
 souřadnicím klíčových bodů. Tento přístup je ve své podstatě trochu méně
@@ -162,12 +162,12 @@ search) pro vygenerování navržených oblastí (region proposals), které
 pravděpodobně obsahují nějaký objekt. Tyto metody jsou nezávislé na třídě
 objektů. Algoritmus tedy vygeneruje zhruba 2000 oblastí, vzniklé obrázky jsou
 následně upraveny na velikost požadovanou CNN v další fázi. CNN extrahuje z
-dané oblasti mapu příznaků, na její základě plně propojené vrstvy predikují
+dané oblasti mapu příznaků, na jejímž základě plně propojené vrstvy predikují
 třídu objektu popřípadě jeho bounding box.
 
 Problémem R-CNN je, že výběr oblasti a jejich následná klasifikace jsou
 nezávislé úlohy a jsou nezávisle trénovány. Detekce objektu je také poměrně
-pomalá, protože je extrakce příznaků prováděná pro všechny oblasti zvlášť. Tyto
+pomalá, protože je extrakce příznaků prováděna pro všechny oblasti zvlášť. Tyto
 problémy se snaží řešit další upravené verze R-CNN.
 
 \subsubsection*{Fast R-CNN}
@@ -242,7 +242,7 @@ verze.
 \subsubsection*{SSD}
 Dalším populárním algoritmem, který používá jednofázový přístup, je SSD (z ang.
 single shot detector) \cite{szegedy:ssd}. Ten rozdělí vstupní obraz do několika
-mřížek o různé velikosti. Postup je takový, že nejprve projde obraz konvoluční
+mřížek o různé velikosti. Postup je takový, že nejprve obraz projde konvoluční
 sítí, konkrétně sítí VGG16, která extrahuje mapu příznaků. Tu se postupně
 dalšími konvolučními vrstvami zmenšuje, výstup každého stádia zmenšení,
 reprezentující mřížku dané velikosti, se spolu s původní mapou dále zpracovává
@@ -256,7 +256,7 @@ plně propojenou sítí.
 
 Výstupní bounding boxy nejsou, jako v případě YOLO, pouze výsledkem regrese,
 ale pro každé pole dané mřížky je definováno několik výchozích oblastí (ang.
-default box), ze kterých jsou vybrány ty, které obsahují objekt. K ním je
+default box), ze kterých jsou vybrány ty, které obsahují objekt. K nim je
 predikována třída objektu a posun i změna velikosti výchozí oblasti,
 upřesňující výsledný bounding box.
 
@@ -334,7 +334,7 @@ příznaků, která je výsledkem vstupní CNN, je udržována v mezipaměti, do
 kromě klíčových bodů v každém snímku a jejich propojení tvořící kostru, jsou i
 propojení mezi klíčovými body z jednotlivých snímků, viz
 \ref{fig:pipaf-tracking}. Algoritmus si pak udržuje ID sledovaných osob, pokud
-k dříve nalezené osobě je nalezena nová pozice, je jí přiřazeno stejné ID.
+je k dříve nalezené osobě nalezena nová pozice, je jí přiřazeno stejné ID.
 Pokud je nalezena nová osoba, je jí přiřazeno nové ID.
 
 \begin{figure}[]
@@ -365,8 +365,8 @@ algoritmu je, že detekuje 33 bodů v postavě, což je podstatně více, než v
 ostatních algoritmů, umožňuje tak přesnější analýzu některých situací, např.
 podle natočení tváře, dlaní či stop.
 
-Framework MediaPipe implementuje BlazePose spolu s detekcí více osob (použije v
-první fáze detektor objektů). Výhodou tohoto frameworku je jeho kontinuální
+Framework MediaPipe implementuje BlazePose spolu s detekcí více osob (v
+první fázi používá detektor objektů). Výhodou tohoto frameworku je jeho kontinuální
 vývoj a jednoduchost integrace. Nevýhodou ale je, že pro systémy Windows není
 implementována podpora GPU. Jelikož výsledný produkt bude spouštěn primárně na
 Windows zařízeních, je tato vlastnost rozhodující. Model je dostupný ve třech
@@ -382,10 +382,10 @@ Algoritmus sice vyhledává klíčové body spolu s bounding boxy osob, nicmén�
 v jednom kroku. Samotná detekce klíčových bodů využívá regresi, což
 zjednodušuje proces trénování, jelikož není třeba tvořit heatmapy.
 
-Architektura použita v YOLO-Pose se ale liší od architektury používané v
+Architektura použitá v YOLO-Pose se ale liší od architektury používané v
 pozdějších verzích. V YOLO-Pose jsou na konci řetězce umístěny hlavy pro různá
 měřítka, jejich výstupem jsou bounding boxy a klíčové body, oba tvořené spolu.
-V pozdějších verzích je architektura YOLO koncipována universálněji pro různé
+V pozdějších verzích je architektura YOLO koncipována univerzálněji pro různé
 úlohy. Obsahuje tak tři fáze\cite{yolov11}: páteř (ang. backbone), která
 extrahuje mapu příznaků, krk (ang. neck), který přizpůsobuje mapu příznaků pro
 různá měřítka, a hlavy (ang. head), které paralelně zpracovávají výstupy pro
@@ -420,7 +420,7 @@ Algoritmus Keypoint R-CNN je založen na stejné myšlence jako Mask R-CNN
 \cite{mask-r-cnn}, a tedy rozšíření Faster R-CNN o další hlavu, která v případě
 Mask R-CNN provádí segmentaci, v případě Keypoint R-CNN detekuje klíčové body
 \cite{keypoint-rcnn}. V algoritmu je také upravená pooling vrstva, která
-zajišťuje, že se výstupy algoritmu shodují s vstupy s přesností pixelu.
+zajišťuje, že se výstupy algoritmu shodují se vstupy s přesností pixelu.
 
 Tato implementace bude testována zejména z důvodu její jednoduchosti použití a
 integrace do frameworku PyTorch, který bude použitý i v další části řešení. Na
@@ -430,7 +430,7 @@ dispozici pouze jeden model, nikoliv více velikostních variant.
 \section{Testování a porovnání vybraných algoritmů pro detekci pózy}
 
 Pro testování byly vybrány čtyři algoritmy pro detekci pózy, zejména na základě
-jejich jednoduchosti implementace, aktualizované podpory a požadovaných funkcí.
+jednoduchosti jejich implementace, aktualizované podpory a požadovaných funkcí.
 Testovány tedy budou algoritmy Torchvision, OpenPifPaf, MediaPipe BlazePose a
 YOLO v nejnovější verzi 11. Testy byly provedeny na 25 videích ze stejného
 datasetu jako byl použit později pro trénování algoritmu pro analýzu klíčových
@@ -438,12 +438,12 @@ bodů. Testování probíhalo na počítači s procesorem Intel Core i7, 32 GB R
 grafickou kartou NVIDIA GeForce RTX 3080 s 10 GB VRAM.
 
 Algoritmy Torchvision a OpenPifPaf byly testovány s použitím GPU, MediaPipe
-pouze s využitím CPU, jelikož nemá podporu GPU v prostředí Windows. Algoritmus
+pouze s využitím CPU, jelikož v prostředí Windows nemá podporu GPU. Algoritmus
 YOLO byl testován na GPU a CPU, pro porovnání jeho výkonu v různých podmínkách.
 Algoritmus YOLO byl také vyzkoušen na GPU s využitím funkce sledování.
 
 Výstupem testování pro daný algoritmus a jeho variantu je průměrná doba
-zpracování jednoho snímku a videa s vykreslením klíčových bodů. Tyto videa
+zpracování jednoho snímku a videa s vykreslením klíčových bodů. Tato videa
 dovolují ověřit schopnost detekce klíčových bodů v různých situacích a její
 přesnost.
 
@@ -463,7 +463,7 @@ předpokládá, že v prostředí, kde bude program nasazen, bude dostupná graf
 karta.
 
 V této fázi již bylo zkoušeno trénování neuronové sítě pro klasifikaci pózy, a
-ověřilo se, že i v případě hlubších a komplexnějších sítí je dosaženo doby
+bylo ověřeno, že i v případě hlubších a komplexnějších sítí je dosaženo doby
 inference v řádu nižších jednotek milisekund. Hlavní vliv na výslednou rychlost
 programu tedy bude mít hlavně detekční algoritmus, který musí zpracovávat
 mnohem větší objem dat – stovky tisíc až miliony pixelů oproti např. 17
@@ -623,7 +623,7 @@ tři menší varianty dosahují frekvence větší než $30$ FPS.
 Všechny varianty algoritmu YOLO dosahují poměrně kvalitních výsledků. I v
 horších světelných podmínkách vždy detekují osobu, a víceméně přesně určí její
 klíčové body. Obecně je ale vidět, že je model trochu méně robustní (než např.
-MediaPipe) v situacích, kdy není dobře vidět některá končetina – je třebas
+MediaPipe) v situacích, kdy není dobře vidět některá končetina – je třeba
 schovaná za jinou částí těla, anebo ve specifických pózách – např. když je
 osoba v dřepu nebo je v obraze natočená vzhůru nohama. V takovýchto případech
 dosahuje menší přesnosti pro jednotlivé body – detekuje jiné natočení končetiny
@@ -661,19 +661,18 @@ detekují osobu, BlazePose zcela selhává. Ve snímku na obrázku
 Z výše popsaného testování bylo zjištěno, že modely OpenPifPaf a Torchvision
 jsou natrénované spíše pro detekci postavy, když je osoba v běžnějších pózách,
 jako je ve stoje či chůze. Stejně i u menších variant YOLO přesnost prudce
-klesá v méně typických pózách či natočeních v obraze. Jelikož ale je naše práce
-postavena právě na detekování více netypické postavy, je pro nás důležité
+klesá v méně typických pózách či natočeních v obraze. Jelikož ale je navrhované řešení zaměřeno právě na detekování spíše netypické postavy, je pro nás důležité
 detekovat pozici ve všech situacích.
 
 Naopak algoritmus BlazePose je velmi přesný, strádá ale při horší viditelnosti
 osoby. Nehodí se tak pro naše využití s kamerami s horším rozlišením a vysokou
-vzdáleností od osob. Ostatní algoritmy v tomto ohledu jsou mnohem robustnější,
+vzdáleností od osob. Ostatní algoritmy jsou v tomto ohledu mnohem robustnější,
 nejlépe si s horšími podmínkami poradí algoritmus YOLO.
 
-Optimální cesta se tedy zdá být algoritmus YOLO ve verzi $Medium$, kdy dosahuje
+Optimální cesta se tedy zdá být algoritmus YOLO ve verzi $Medium$, který dosahuje
 dostatečné rychlosti i při sledování osob, zároveň dostatečně přesně detekuje
 pózy ve všech pozicích i podmínkách. Pokud by nebyla pro analýzu pózy použitá
-rekurentní neuronovou síť, nemuselo by být nutné používat funkci sledování a
+rekurentní neuronová síť, nemuselo by být nutné používat funkci sledování a
 bylo by tak možné použít i větší variantu YOLO, což by mohlo zlepšit přesnost
 detekce.
 

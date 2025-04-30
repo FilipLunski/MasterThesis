@@ -1,7 +1,7 @@
 \chapter{Závěr}
 \label{chap:Conclusion}
 
-Cílem práce bylo navrhnut a implementovat řešení pro detekci pádu osoby v toku
+Cílem práce bylo navrhnout a implementovat řešení pro detekci pádu osoby v toku
 obrázku v reálném čase. V první části byly popsány teoretické základy použitých
 technologií, se zaměřením na neuronové sítě.
 
@@ -10,7 +10,7 @@ jsme dosáhli spojením volně dostupného modelu pro detekci pózy ve formě
 klíčových bodů a neuronové sítě pro klasifikaci těchto bodů do třídy
 \textit{normální} nebo \textit{upadl}.
 
-Prozkoumali jsme několik detekčních algoritmu – vysvětlili jsme si zásadu
+Prozkoumali jsme několik detekčních algoritmů – vysvětlili jsme si zásady
 funkčnosti detekce klíčových bodů a otestovali jsme jednotlivé algoritmy na
 testovacích datech. Pro detekci pózy jsme nakonec zvolili model YOLO11-pose pro
 jeho vysokou rychlost, zejména při využití grafické akcelerace, a přesnost i
@@ -18,16 +18,16 @@ při horší viditelnosti. Tento model také v sobě integruje funkci sledován�
 osob, která nám umožňuje provádět následnou analýzu pro každou osobu zvlášť i v
 kontextu více snímků.
 
-Pro klasifikaci pózy jsme zkoušeli natrénovat modely postavené na tří
+Pro klasifikaci pózy jsme zkoušeli natrénovat modely postavené na třech  
 architekturách: dopředná neuronová síť a dvě rekurentní architektury – LSTM a
-GRU. LSTM síť se nám nepodařilo efektivně natrénovat, pravděpodobné pro
+GRU. LSTM síť se nám nepodařilo efektivně natrénovat, pravděpodobně pro
 nedostatek dat a její nevhodnost pro náš problém.
 
 Dopřednou síť a GRU síť jsme po nalezení optimální konfigurace a natrénování
 otestovali na testovacích datech. Následně jsme je použili v implementaci
 detektoru pádu. Ten jsme dále v obou verzích otestovali na videích z testovací
 sady. Dopředná síť se ukázala jako znatelně méně přesná, zejména při méně
-kvalitní detekci pózy v situacích s horší viditelnosti. Také projevovala
+kvalitní detekci pózy v situacích s horší viditelností. Také projevovala
 falešné pozitivní detekce pádu.
 
 Pro klasifikaci pózy jsme tedy zvolili rekurentní architekturu GRU s jednou
@@ -35,8 +35,8 @@ rekurentní a jednou plně propojenou vrstvou, obě velikosti $64$. Tuto síť s
 nám podařilo natrénovat na přesnost přes 96\% na testovacích datech, zároveň se
 ukázala jako velice stabilní a přesná i při detekci pádu v testovacích videích.
 
-Pokud bychom chtěli pokračovat v optimalizaci našeho řešení, asi nejvíce
-prostoru vidíme v počtu trénovacích dat. Zejména by bylo vhodné použit videa s
+Pokud bychom chtěli pokračovat v optimalizaci našeho řešení, nejvíce
+prostoru vidíme v množství trénovacích dat. Zejména by bylo vhodné použít videa s
 více úhly natočení vůči zemi a s různými vzdálenostmi osoby od kamery. Větší a
 rozmanitější dataset by nám umožnil natrénovat i komplexnější architektury,
 které by byly přesnější a robustnější. Pro získání více dat by se mohlo nasadit
@@ -44,22 +44,22 @@ náš detektor na podnikové kamery, nebo by se pomocí něj dalo zanalyzovat st
 záznamy. V těchto případech by bylo vhodné nastavit nižší prah detekce, abychom
 získali i data s vyšší pravděpodobností falešné pozitivity.
 
-Další vylepšení by mohlo být zavedení více tříd do analýzy pózy. V textu byla
+Dalším vylepšením by mohlo být zavedení více tříd do analýzy pózy. V textu byla
 zmíněna třída \textit{padá}, nicméně bychom mohli také přidat třídy např. pro
 pozici v sedě, ve dřepu, či na kolenou. Model by tak mohl lépe rozeznávat
-některé situace, které se zdají být pádu podobné, odstranili bychom tak
+některé situace, které se zdají být pádu podobné, a tak bychom odstranili
 potenciální falešné pozitivní detekce pádu.
-
-Pro nasazení detektoru pádu v reálném provoze, tedy na obrazovém toku z
-podnikových bezpečnostních kamer bude ještě třeba vytvořit vhodné rozhraní pro
-správné čtení různých protokolů a formátů videa. Pro zasazení do komplexnějšího
-programu, ve kterém by probíhalo více analýz videa, by bylo vhodné zvážit
-jednak jejich paralelní zpracování, jednak sdílení určitých získaných dat mezi
-jednotlivými analyzátory.
 
 Zajímavým rozšířením by také mohlo být propojení více kamer z jedné místnosti
 pro sledování osob z více úhlů. Dávalo by to možnost zasazení postav do
-trojrozměrného prostoru, bylo by pak možné dosáhnout mnohem kvalitnější detekce
+trojrozměrného prostoru a umožňovalo dosáhnout mnohem kvalitnější detekce
 pózy. Nicméně by bylo obtížnější získat pro takové řešení trénovací data.
+
+Pro nasazení detektoru pádu v reálném provoze, tedy na obrazovém toku z
+podnikových bezpečnostních kamer, bude ještě třeba vytvořit vhodné rozhraní pro
+správné čtení různých protokolů a formátů videa. Pro integraci do komplexnějšího
+programu, ve kterém by probíhalo více analýz videa, by bylo vhodné zvážit
+jednak jejich paralelní zpracování, jednak sdílení určitých dat mezi
+jednotlivými analyzátory.
 
 \endinput

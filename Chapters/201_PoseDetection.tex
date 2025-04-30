@@ -226,10 +226,9 @@ trénování a architektury. YOLOv2 \cite{yolo9000} zavedl mj. trénování na
 několika měřítkách a byl natrénován s 9000 třídami (proto také nazýván
 YOLO9000). YOLOv3 \cite{yolov3} přinesl mj. detekci na několika měřítkách.
 Postupně byla také zvětšována mřížka a měnila se použitá architektura CNN sítě
-sloužící pro extrakci příznaků pro jednotlivá pole mřížky. Postupně také byly
-přidávány další funkce jako je segmentace, detekce pózy či sledování objektů
-(ang. tracking).
-%todo cite
+sloužící pro extrakci příznaků pro jednotlivá pole mřížky \cite{yoloversions}.
+Postupně také byly přidávány další funkce jako je segmentace, detekce pózy či
+sledování objektů (ang. tracking).
 
 V 2020 roce firma Ultralytics poprvé implementovala YOLO s využitím populární
 knihovny PyTorch (YOLOv5), což umožnilo snadnější využití YOLO v praxi. Firma
@@ -262,8 +261,7 @@ upřesňující výsledný bounding box.
 
 V době svého vzniku byl SSD rychlejší a přesnější než YOLO, ale novější verze
 YOLO jej už předběhly. Nicméně některé principy SSD, jako výchozí oblasti či
-použití různých měřítek, byly převzaty do novějších verzí YOLO.
-%todo cite
+použití různých měřítek, byly převzaty do novějších verzí YOLO \cite{szegedy:ssd}.
 
 \section{Charakteristiky vybraných implementací pro detekci pózy}
 
@@ -365,8 +363,8 @@ algoritmu je, že detekuje 33 bodů v postavě, což je podstatně více, než v
 ostatních algoritmů, umožňuje tak přesnější analýzu některých situací, např.
 podle natočení tváře, dlaní či stop.
 
-Framework MediaPipe implementuje BlazePose spolu s detekcí více osob (v
-první fázi používá detektor objektů). Výhodou tohoto frameworku je jeho kontinuální
+Framework MediaPipe implementuje BlazePose spolu s detekcí více osob (v první
+fázi používá detektor objektů). Výhodou tohoto frameworku je jeho kontinuální
 vývoj a jednoduchost integrace. Nevýhodou ale je, že pro systémy Windows není
 implementována podpora GPU. Jelikož výsledný produkt bude spouštěn primárně na
 Windows zařízeních, je tato vlastnost rozhodující. Model je dostupný ve třech
@@ -661,19 +659,20 @@ detekují osobu, BlazePose zcela selhává. Ve snímku na obrázku
 Z výše popsaného testování bylo zjištěno, že modely OpenPifPaf a Torchvision
 jsou natrénované spíše pro detekci postavy, když je osoba v běžnějších pózách,
 jako je ve stoje či chůze. Stejně i u menších variant YOLO přesnost prudce
-klesá v méně typických pózách či natočeních v obraze. Jelikož ale je navrhované řešení zaměřeno právě na detekování spíše netypické postavy, je pro nás důležité
-detekovat pozici ve všech situacích.
+klesá v méně typických pózách či natočeních v obraze. Jelikož ale je navrhované
+řešení zaměřeno právě na detekování spíše netypické postavy, je pro nás
+důležité detekovat pozici ve všech situacích.
 
 Naopak algoritmus BlazePose je velmi přesný, strádá ale při horší viditelnosti
 osoby. Nehodí se tak pro naše využití s kamerami s horším rozlišením a vysokou
 vzdáleností od osob. Ostatní algoritmy jsou v tomto ohledu mnohem robustnější,
 nejlépe si s horšími podmínkami poradí algoritmus YOLO.
 
-Optimální cesta se tedy zdá být algoritmus YOLO ve verzi $Medium$, který dosahuje
-dostatečné rychlosti i při sledování osob, zároveň dostatečně přesně detekuje
-pózy ve všech pozicích i podmínkách. Pokud by nebyla pro analýzu pózy použitá
-rekurentní neuronová síť, nemuselo by být nutné používat funkci sledování a
-bylo by tak možné použít i větší variantu YOLO, což by mohlo zlepšit přesnost
-detekce.
+Optimální cesta se tedy zdá být algoritmus YOLO ve verzi $Medium$, který
+dosahuje dostatečné rychlosti i při sledování osob, zároveň dostatečně přesně
+detekuje pózy ve všech pozicích i podmínkách. Pokud by nebyla pro analýzu pózy
+použitá rekurentní neuronová síť, nemuselo by být nutné používat funkci
+sledování a bylo by tak možné použít i větší variantu YOLO, což by mohlo
+zlepšit přesnost detekce.
 
 \endinput

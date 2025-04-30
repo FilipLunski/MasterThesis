@@ -4,7 +4,7 @@
 Problematika vyhodnocování situací ve videu je velmi široká a přináší mnoho problémů. Ostatně i
 člověk někdy může špatně interpretovat chování druhé osoby. Například pokud
 někdo skáče do postele či jinak prudce lehá, může to vypadat jako nebezpečná
-situace. Stejně tak se v počítačovém vidění nelze vyhnout falešným poplachům, nicméně součástí této práce je snaha o zapojení různých technik pro zlepšení přesnosti detekce.
+situace. Stejně tak se v počítačovém vidění nelze vyhnout falešným poplachům. Součástí této práce tedy je snaha o zapojení různých technik pro zlepšení přesnosti detekce.
 
 Úkolem je nyní vytvořit algoritmus, který pro danou pózu (reprezentovanou
 klíčovými body), resp. sekvenci takových póz (získané pro jednu osobu ze
@@ -16,7 +16,7 @@ V kapitole \ref{chap:Pose} byl pro detekci klíčových bodů zvolen model
 \textit{YOLO pose}. Ten je předtrénovaný na datasetu \textit{COCO}, který pro
 lidské pózy definuje 17 klíčových bodů v dvourozměrném prostoru. To udává
 velikost vstupu do našeho klasifikačního algoritmu. Bude tedy navrhnuta a
-natrénována neuronová síť, jejíž vstupem bude 17 2D klíčových bodů – tedy 34
+natrénována neuronová síť, jejímž vstupem bude 17 2D klíčových bodů – tedy 34
 čísel – a výstupem bude klasifikace třídy pózy – \textit{normální} a
 \textit{upadl}.
 
@@ -199,8 +199,8 @@ dnešní době je nejpoužívanější rekurentní architekturou GRU (Gated Recu
 Unit).
 
 Příklad implementace GRU sítě je uveden v kódu \ref{src:gru}, kde je definována
-GRU jednotka s jednou vrstvou, velikosti vstupního vektoru $34$ a skrytým
-stavem velikosti $128$, následována dvouvrstvou dopřednou plně propojenou sítí
+GRU jednotka s jednou vrstvou, velikostí vstupního vektoru $34$ a skrytým
+stavem o velikosti $128$, následována dvouvrstvou dopřednou plně propojenou sítí
 ze $128$ neurony v první vrstvě a s jedním neuronem ve druhé vrstvě.
 
 \begin{lstlisting}[language=Python, label=src:gru, caption={Ukázka implementace GRU sítě v PyTorch Lightning}]
@@ -229,7 +229,7 @@ kód \ref{src:params}. Jedná se o velikost vstupního vektoru, velikost skryté
 stavu sítě GRU, počet vrstev GRU, velikost první plně propojené vrstvy,
 velikost výstupní vrstvy (pro binární klasifikaci vždy $1$, potřebné pro
 pozdější optimalizace) a dropout pro GRU i plně propojené vrstvy. Všechny tyto
-hyperparametry se budou ladit v další části.
+hyperparametry budou laděny v další části.
 
 \begin{lstlisting}[language=Python, label=src:params, caption={Parametry konstruktoru třídy $KeypointClassifierGRU$ definující hyperparametry sítě}]
 class KeypointClassifierGRU(L.LightningModule):
@@ -262,23 +262,23 @@ architektury byly natrénovány v různých konfiguracích a celý postup tréno
 byl zapisován pomocí logovacího nástroje TensorBoard. Nyní na základě grafů
 základních metrik, jako jsou ztrátová funkce či přesnost, bude zhodnocen výkon
 vybraných architektur. Zároveň bude analyzován vliv jednotlivých hyperparametrů
-na proces trénování a výsledný výkon. Nakonec vybereme nejoptimálnější
-variantu.
+na proces trénování a výsledný výkon. Nakonec bude vybrána nejoptimálnější
+varianta.
 
-K hyperparametrům, které se zkoušely, patří počet vrstev a jejich velikost a
+K hyperparametrům, které byly vyzkoušeny, patří počet vrstev a jejich velikost a
 velikost dropoutu. U dopředných sítí byly navíc zkoušeny i různé aktivační
-funkce, u rekurentních sítí pak velikost skrytého stavu. Pro optimalizaci váh
+funkce, u rekurentních sítí pak velikost skrytého stavu. Pro optimalizaci vah
 během trénování byl použit optimalizační algoritmus Adam \cite{adam}, jehož
 výhodou je rychlost a efektivita.
 
 \subsection{Dopředná neuronová síť}
 
-Nejprve bylo zkoušeno trénování dopředné neuronové sítě. Zkoušelo se od dvou do
+Nejprve bylo zkoušeno trénování dopředné neuronové sítě. Bylo vyzkoušeno od dvou do
 čtyř vnitřních vrstev, ve velikostech od $32$ do $512$ neuronů, vždy mocniny
 dvou. Nyní budou postupně rozebrány jednotlivé hyperparametry a jejich vliv na
 výkon modelu.
 
-U dopředných sítí se nejlépe ověřila velikost dávky $4096$. Síť se lépe
+U dopředných sítí se nejlépe osvědčila velikost dávky $4096$. Síť se lépe
 trénovala s použitím normalizace (modul $nn.BatchNorm1d$) a dropoutu. Pro
 většinu konfigurací byla velikost dropoutu $0.4$ nejoptimálnější.
 
@@ -290,7 +290,7 @@ obrázku \ref{graph:fnnactivations}.
 
 \begin{figure}[]
     \centering
-    \caption{Graf přesnosti na validačních datech v průběhu trénování dopředných sítí s různými aktivačními funkcemi}
+    \caption{Graf závislosti přesnosti na validačních datech v průběhu trénování dopředných sítí s různými aktivačními funkcemi}
     \label{graph:fnnactivations}
     \begin{tikzpicture}
         \begin{axis}[
@@ -340,7 +340,7 @@ na problém se stabilitou trénování. Nejoptimálnějších výsledků dosáhl
 třemi vrstvami o velikostech $128$, $64$ a $32$. Jak lze vidět na grafu
 \ref{graph:deepffnn}, sítě s větší šířkou nebo hloubkou sice dosahují lepších
 výsledků, začínají ale brzy výrazně kolísat. V těchto případech byla zkoušena i
-L2 regularizaci (parametr $weight\_decay$), to ale neřešilo problém. Pro
+L2 regularizace (parametr $weight\_decay$), to ale neřešilo problém. Pro
 komplexnější sítě by pravděpodobně bylo potřebné větší množství dat.
 
 Nejoptimálnější konfigurace tedy je tato: tří vrstvy o velikostech $128$, $64$

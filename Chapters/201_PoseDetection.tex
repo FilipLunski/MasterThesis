@@ -231,7 +231,6 @@ přidávány další funkce jako je segmentace, detekce pózy či sledování ob
 (ang. tracking).
 %todo cite
 
-
 V 2020 roce firma Ultralytics poprvé implementovala YOLO s využitím populární
 knihovny PyTorch (YOLOv5), což umožnilo snadnější využití YOLO v praxi. Firma
 Ultralytics také vytvořila framework pro použití různých verzí YOLO (YOLOv3 a
@@ -313,9 +312,9 @@ každý typ klíčového bodu. Pro spojení bodů do jednotlivých osob využije
 propojení klíčových bodů (ang. part affinity field – PAF). PAF je mapa
 vytvořená pro každou končetinu (myšleno obecně spojení dvou klíčových bodů),
 která v oblasti dané končetiny obsahuje hodnoty určující směr z jednoho bodu do
-druhého. Pokud jsou pak spojené informace z heatmap a z PAF, je možné
-poměrně jednoznačně zkompletovat jednotlivé klíčové body do celých postav.
-Stejně jako heatmapy, jsou i PAF součástí trénovacích dat.
+druhého. Pokud jsou pak spojené informace z heatmap a z PAF, je možné poměrně
+jednoznačně zkompletovat jednotlivé klíčové body do celých postav. Stejně jako
+heatmapy, jsou i PAF součástí trénovacích dat.
 
 \subsection{OpenPifPaf}
 
@@ -367,11 +366,11 @@ ostatních algoritmů, umožňuje tak přesnější analýzu některých situac�
 podle natočení tváře, dlaní či stop.
 
 Framework MediaPipe implementuje BlazePose spolu s detekcí více osob (použije v
-první fáze detektor objektů). Výhodou tohoto frameworku je jeho
-kontinuální vývoj a jednoduchost integrace. Nevýhodou ale je, že pro systémy
-Windows není implementována podpora GPU. Jelikož výsledný produkt bude
-spouštěn primárně na Windows zařízeních, je tato vlastnost rozhodující.
-Model je dostupný ve třech velikostních variantách: $Lite$, $Full$ a $Heavy$.
+první fáze detektor objektů). Výhodou tohoto frameworku je jeho kontinuální
+vývoj a jednoduchost integrace. Nevýhodou ale je, že pro systémy Windows není
+implementována podpora GPU. Jelikož výsledný produkt bude spouštěn primárně na
+Windows zařízeních, je tato vlastnost rozhodující. Model je dostupný ve třech
+velikostních variantách: $Lite$, $Full$ a $Heavy$.
 
 \subsection{YOLO}
 
@@ -419,13 +418,13 @@ algoritmus Keypoint R-CNN \cite{keypoint-rcnn}.
 
 Algoritmus Keypoint R-CNN je založen na stejné myšlence jako Mask R-CNN
 \cite{mask-r-cnn}, a tedy rozšíření Faster R-CNN o další hlavu, která v případě
-Mask R-CNN provádí segmentaci, v případě Keypoint R-CNN detekuje klíčové body \cite{keypoint-rcnn}.
-V algoritmu je také upravená pooling vrstva, která zajišťuje, že se výstupy
-algoritmu shodují s vstupy s přesností pixelu.
+Mask R-CNN provádí segmentaci, v případě Keypoint R-CNN detekuje klíčové body
+\cite{keypoint-rcnn}. V algoritmu je také upravená pooling vrstva, která
+zajišťuje, že se výstupy algoritmu shodují s vstupy s přesností pixelu.
 
 Tato implementace bude testována zejména z důvodu její jednoduchosti použití a
-integrace do frameworku PyTorch, který bude použitý i v další části řešení.
-Na druhou stranu je oproti jiným frameworkům, jako je YOLO či MediaPipe, k
+integrace do frameworku PyTorch, který bude použitý i v další části řešení. Na
+druhou stranu je oproti jiným frameworkům, jako je YOLO či MediaPipe, k
 dispozici pouze jeden model, nikoliv více velikostních variant.
 
 \section{Testování a porovnání vybraných algoritmů pro detekci pózy}
@@ -440,19 +439,18 @@ grafickou kartou NVIDIA GeForce RTX 3080 s 10 GB VRAM.
 
 Algoritmy Torchvision a OpenPifPaf byly testovány s použitím GPU, MediaPipe
 pouze s využitím CPU, jelikož nemá podporu GPU v prostředí Windows. Algoritmus
-YOLO byl testován na GPU a CPU, pro porovnání jeho výkonu v různých
-podmínkách. Algoritmus YOLO byl také vyzkoušen na GPU s využitím funkce
-sledování.
+YOLO byl testován na GPU a CPU, pro porovnání jeho výkonu v různých podmínkách.
+Algoritmus YOLO byl také vyzkoušen na GPU s využitím funkce sledování.
 
 Výstupem testování pro daný algoritmus a jeho variantu je průměrná doba
 zpracování jednoho snímku a videa s vykreslením klíčových bodů. Tyto videa
 dovolují ověřit schopnost detekce klíčových bodů v různých situacích a její
 přesnost.
 
-Následující část se věnuje výsledkům testování jednotlivých algoritmů. Pro každý
-algoritmus budou porovnány jednotlivé varianty s ohledem na rychlost a přesnost a
-budou vyhodnoceny jeho výhody či nevýhody oproti ostatním algoritmům. Nakonec bude zvolen
-model, který bude použitý v další části vývoje.
+Následující část se věnuje výsledkům testování jednotlivých algoritmů. Pro
+každý algoritmus budou porovnány jednotlivé varianty s ohledem na rychlost a
+přesnost a budou vyhodnoceny jeho výhody či nevýhody oproti ostatním
+algoritmům. Nakonec bude zvolen model, který bude použitý v další části vývoje.
 
 \subsection{Výkonové požadavky}
 \label{sec:performance_requirements}
@@ -473,9 +471,9 @@ klíčovým bodům v případě klasifikačního algoritmu.
 
 \subsection{OpenPifPaf}
 
-Algoritmus OpenPifPaf jsme zkoušeli v několika variantách, postavených na síti
+Algoritmus OpenPifPaf byl zkoušen v několika variantách, postavených na síti
 \textit{ResNet 50} a \textit{ShuffleNet V2} \cite{shufflenetv2}. V tabulce
-\ref{tab:openpifpaf_performance} vidíme, že většina variant ani zdaleka
+\ref{tab:openpifpaf_performance} je vidět, že většina variant ani zdaleka
 nedosahuje požadovaného výkonu.
 
 Tento algoritmus je poměrně robustní z pohledu světelných podmínek a rozlišení
@@ -483,9 +481,10 @@ Tento algoritmus je poměrně robustní z pohledu světelných podmínek a rozli
 algoritmů. Kromě nedetekování části těla, které nejsou vidět (jsou např.
 schovány za jinou částí těla), totiž často nedetekuje člověka vůbec, nejčastěji
 pak když člověk padá nebo leží, což jsou situace pro nás stěžejní. Hlavně tento
-problém vystupuje ve variantě $resnet50$ a $shufflenetv2k16$, jsou tak pro nás
-nepoužitelné. Varianty $shufflenetv2k30$ a $tshufflenetv2k30$ by sice s ohledem
-na kvalitu výsledků použitelné byly, nicméně je jejich výkon příliš nízký.
+problém vystupuje ve variantě $resnet50$ a $shufflenetv2k16$, jsou tak pro
+řešení nepoužitelné. Varianty $shufflenetv2k30$ a $tshufflenetv2k30$ by sice s
+ohledem na kvalitu výsledků použitelné byly, nicméně je jejich výkon příliš
+nízký.
 
 \begin{table}[htbp]
     \centering
@@ -503,7 +502,7 @@ na kvalitu výsledků použitelné byly, nicméně je jejich výkon příliš n�
 
 \subsection{MediaPipe BlazePose}
 
-Algoritmus BlazePose z knihovny MediaPipe jsme testovali ve třech variantách:
+Algoritmus BlazePose z knihovny MediaPipe byl testován ve třech variantách:
 $Lite$, $Full$ a $Heavy$. Ve všech variantách tento algoritmus dosahoval velmi
 přesných výsledků, asi nejlepších ze všech testovaných algoritmů. Na rozdíl od
 jiných algoritmů totiž, pokud detekoval osobu, vždy velmi přesně označil
@@ -544,9 +543,9 @@ grafické karty.
 Algoritmus si ale velice špatně radí s horšími světelnými podmínkami či menším
 rozlišením obrazu. Ve většině případů sice detekuje klíčové body velmi přesně,
 pokud je ale osoba hůř viditelná, nedetekuje ji vůbec. Tento problém se
-projevuje ve všech variantách podobně. Jelikož bude náš výsledný program
-nasazován spíše právě v podmínkách s horším osvětlením a ve větší vzdálenosti
-od osob, pravděpodobně se pro naši aplikaci nebude hodit.
+projevuje ve všech variantách podobně. Jelikož bude výsledný program nasazován
+spíše právě v podmínkách s horším osvětlením a ve větší vzdálenosti od osob,
+pravděpodobně se pro aplikaci nebude hodit.
 
 \subsection{Torchvision Keypoint R-CNN}
 
@@ -555,7 +554,7 @@ Torchvision Keypoint R-CNN nedosáhla ani dostatečného výkonu, viz tabulka
 \textit{OpenPifPaf} má totiž problém, když osoba padá anebo leží. V tomto
 případě osobu často detekuje, ale naprosto ztrácí přesnost detekovaných
 klíčových bodů, nejčastěji záměnou jednotlivých bodů, viz obrázek
-\ref{fig:torchvision_bad}. Zároveň oproti BlazePose nemá takový problém d
+\ref{fig:torchvision_bad}. Zároveň oproti BlazePose nemá takový problém s
 horšími světelnými podmínkami a menším rozlišením obrazu.
 
 \begin{figure}[]
@@ -579,21 +578,21 @@ horšími světelnými podmínkami a menším rozlišením obrazu.
 
 \subsection{YOLO}
 
-Algoritmus YOLO ve verzi 11 jsme testovali v pěti variantách: $Nano$, $Small$,
+Algoritmus YOLO ve verzi 11 byl testován v pěti variantách: $Nano$, $Small$,
 $Medium$, $Large$ a $Xlarge$. Všechny varianty byly testovány na GPU i CPU.
 
-V tabulce \ref{tab:yolo_performance} vidíme, že na CPU dosahuje tento
-algoritmus poměrně špatných výsledků. Jediný použitelný by pro nás mohl být v
-takové situaci model $Nano$. YOLO je ale velice kvalitně optimalizováno pro
-grafické karty, můžeme tak pozorovat, že na GPU je výkon výrazně vyšší. Pro
-naše potřeby by tak byly použitelné prakticky všechny varianty.
+V tabulce \ref{tab:yolo_performance} je vidět, že na CPU dosahuje tento
+algoritmus poměrně špatných výsledků. Jediný použitelný by mohl být v takové
+situaci model $Nano$. YOLO je ale velice kvalitně optimalizováno pro grafické
+karty, lze tak pozorovat, že na GPU je výkon výrazně vyšší. Pro potřeby řešení
+by tak byly použitelné prakticky všechny varianty.
 
 Jelikož pro analýzu více osob v jednom snímku je potřeba, zejména v případě
 použití rekurentní neuronové sítě, jednotlivé osoby od sebe oddělit a
-identifikovat i mezi snímky, bude pro nás velmi užitečná funkce sledování
-objektu. Proto jsme otestovali algoritmus YOLO i s touto funkcí. Jak je vidět v
-tabulce \ref{tab:yolo_performance}, je výkon sice horší než bez sledování,
-pořád ale tři menší varianty dosahují frekvence větší než $30$ FPS.
+identifikovat i mezi snímky, bude velmi užitečná funkce sledování objektu.
+Proto byl otestován algoritmus YOLO i s touto funkcí. Jak je vidět v tabulce
+\ref{tab:yolo_performance}, je výkon sice horší než bez sledování, pořád ale
+tři menší varianty dosahují frekvence větší než $30$ FPS.
 
 \begin{table}[htbp]
     \centering
@@ -659,10 +658,10 @@ detekují osobu, BlazePose zcela selhává. Ve snímku na obrázku
 
 \subsection{Shrnutí a výběr modelu}
 
-Z našeho testování jsme zjistili, že modely OpenPifPaf a Torchvision jsou
-natrénované spíše pro detekci postavy, když je osoba v běžnějších pózách, jako
-je ve stoje či chůze. Stejně i u menších variant YOLO přesnost prudce klesá v
-méně typických pózách či natočeních v obraze. Jelikož ale je naše práce
+Z výše popsaného testování bylo zjištěno, že modely OpenPifPaf a Torchvision
+jsou natrénované spíše pro detekci postavy, když je osoba v běžnějších pózách,
+jako je ve stoje či chůze. Stejně i u menších variant YOLO přesnost prudce
+klesá v méně typických pózách či natočeních v obraze. Jelikož ale je naše práce
 postavena právě na detekování více netypické postavy, je pro nás důležité
 detekovat pozici ve všech situacích.
 
@@ -671,10 +670,11 @@ osoby. Nehodí se tak pro naše využití s kamerami s horším rozlišením a v
 vzdáleností od osob. Ostatní algoritmy v tomto ohledu jsou mnohem robustnější,
 nejlépe si s horšími podmínkami poradí algoritmus YOLO.
 
-Optimální cesta se tedy zdá být algoritmus YOLO ve verzi medium, kdy dosahuje
-dostatečné rychlosti i při sledování osob, zároveň dostatečně přesně detekuji
-pózy ve všech pozicích i podmínkách. Pokud bychom nevyužívali pro analýzu pózy
-rekurentní neuronovou síť, nemuseli bychom používat funkci sledování a mohli
-bychom tak použít i větší variantu YOLO, což by mohlo zlepšit přesnost detekce.
+Optimální cesta se tedy zdá být algoritmus YOLO ve verzi $Medium$, kdy dosahuje
+dostatečné rychlosti i při sledování osob, zároveň dostatečně přesně detekuje
+pózy ve všech pozicích i podmínkách. Pokud by nebyla pro analýzu pózy použitá
+rekurentní neuronovou síť, nemuselo by být nutné používat funkci sledování a
+bylo by tak možné použít i větší variantu YOLO, což by mohlo zlepšit přesnost
+detekce.
 
 \endinput

@@ -1,4 +1,4 @@
-\chapter{Neuronové sítě}
+\chapter{Krátké seznámení s neuronovými sítěmi}
 \label{chap:NN}
 
 Umělá neuronová síť (ang. artificial neural network – ANN) nebo jen neuronová
@@ -11,15 +11,17 @@ hlavně na numerických parametrech, zejména váhách jednotlivých spojů mezi
 neurony, lze funkčnost sítě měnit bez změny programu pouhou změnou těchto
 parametrů, a to i automaticky v procesu trénování modelu.
 
-Jelikož budou neuronové sítě základem prakticky v každé fázi vývoje našeho
-řešení, pojďme se podívat na jejich základní principy.
-
-% todo napsat proč cnn a rnn
+Jelikož budou neuronové sítě základem prakticky v každé fázi vývoje
+navrhovaného řešení, budou v následující kapitole popsány její základní
+principy. Dále bude pozornost věnována dvěma pokročilejším architekturam
+neuronových sítí: konvolučním neuronovým sítím, na kterých jsou postaveny
+algoritmy pro detekci klíčových osob v obraze, a rekurentním neuronovým sítím,
+jež budou použity pro analýzu klíčových bodů v sekvencích snímků.
 
 \section{Historie}
 \label{sec:NN_History}
 
-\subsection*{Prvopočátky}
+\subsubsection*{Prvopočátky}
 První matematický model neuronové sítě byl popsán v roce 1943 dvěma
 neurofyziology – Warrenem McCullochem a Walterem Pittsem \cite{McCulloch1943}.
 Model byl založen na síti jednoduchých logických prvků, které provedou vážený
@@ -49,7 +51,7 @@ obecně výpočetní techniky. Proto se tomuto období někdy říká Ai Winter.
 Neznamená to ale, že ti, kteří se oboru nadále věnovali, nedosáhli významných
 výsledků \cite{nn_history}.
 
-\subsection*{Backpropagation}
+\subsubsection*{Backpropagation}
 Významným milníkem v historii neuronových sítí byl objev algoritmu
 backpropagation, zvaného také algoritmus zpětného šíření chyby. Tento
 algoritmus byl vyvinut v roce 1974 Paulem Werbosem, popularitu ale dosáhl až po
@@ -67,7 +69,12 @@ umožnil Yann LeCunovi et al. zefektivnit použití konvolučních neuronových 
 pro rozpoznávání rukou psaných číslic \cite{lecun1989} a položit tak základ
 širokému využití konvolučních sítí v oblasti počítačového vidění.
 
-\section{Struktura neuronové sítě}
+\section{Obecná architektura neuronové sítě}
+
+V následující části budou popsány obecné principy fungování neuronových sítí,
+jejich struktura základní optimalizační techniky.
+
+\subsection{Struktura neuronové sítě}
 
 Umělé neuronové sítě jsou silně inspirované biologickými neuronovými sítěmi. A
 i když napodobení celé funkčnosti lidského nervového systému by bylo velmi
@@ -99,7 +106,7 @@ Jeho vstupy $x_i$ jsou násobeny váhami $w_i$, které reprezentují sílu dané
 spoje. Neuron pak tyto vážené vstupy sečte, a na tento součet aplikuje
 aktivační funkci (AF), která definuje hodnotu výstupu $y$. Existuje mnoho
 různých AF, v našem řešení vyzkoušíme například hyperbolický tangens (tanh),
-ReLU či Mish \cite{afreview}. 
+ReLU či Mish \cite{afreview}.
 
 Kromě vah jednotlivých vstupů neuron obvykle obsahuje ještě tzv. bias (někdy
 také práh nebo posun), jehož funkci je posunout vážený součet vstupů tak, aby
@@ -255,34 +262,39 @@ různých úloh, nicméně neexistuje jediný typ sítě, který by dokázal ře
 všechny. V průběhu let proto bylo vyvinuto mnoho různých architektur sítí,
 každá pro jiné využití.
 
-Jedním ze základních způsobů, jak můžeme neuronové sítě rozdělit, je podle typu
+Jedním ze základních způsobů, jak lze neuronové sítě rozdělit, je podle typu
 učení: učení s učitelem (supervised) a učení bez učitele (unsupervised). V
-případě učení s učitelem, předkládáme síti dvojice vstupů a očekávaných
+případě učení s učitelem, jsou síti předkládány dvojice vstupů a očekávaných
 výstupů, na jejichž základě se síť snaží minimalizovat chybu úpravou svých
 parametrů. Oproti tomu, u učení bez učitele nemá síť k dispozici očekávané
-výstupy, ale snaží se najít nějaké struktury v datech, například shluky. V
-další části se budeme věnovat hlavně neuronovým sítím pro učení s učitelem.
+výstupy, ale snaží se najít nějaké struktury v datech, například shluky. Další
+část práce se věnuje hlavně neuronovým sítím pro učení s učitelem.
 
-Dále můžeme neuronové sítě rozdělit na dopředné (feedforward NN – FFNN) a
+Dále lze neuronové sítě rozdělit na dopředné (feedforward NN – FFNN) a
 rekurentní (recurrent NN – RNN). U dopředných sítí se informace šíří pouze ze
 vstupu k výstupu a nevyskytují se žádné smyčky. Naopak rekurentní sítě obsahují
 zpětnou vazbu z výstupu přivedenou na vstup. To umožňuje reagovat na změny v
 čase.
 
-Další možností jejich rozdělení je dle topologie, která zahrnuje jejich
+Další možností jejich rozdělení je dle uspořádání, které zahrnuje jejich
 hloubku, tzn. počet vrstev, velikost těchto vrstev a jejich vzájemné propojení.
-V další sekci se budeme věnovat právě uspořádání vrstev v neuronových sítích.
+Další sekce se věnuje právě uspořádání vrstev v neuronových sítích.
 
-\section{Topologie neuronových sítí}
+Dalším způsobem rozdělení neuronových sítí je podle jejich uspořádání, které
+zahrnuje hloubku sítě, tzn. počet vrstev, velikost jednotlivých vrstev a způsob
+jejich vzájemného propojení. Následující sekce se věnuje právě této vrstvené
+struktuře neuronových sítí.
+
+\subsection{Vrstvená architektura neuronových sítí}
 % todo rozepsat
-Nejčastějším uspořádáním neuronů v neuronových sítích je uspořádání do vrstev. Neurony dané
-vrstvy jsou spojeny pouze s neurony z předchozí a následující vrstvy. Vrstvy
-pak dělíme na tři typy: vstupní, výstupní a skryté. Vstupní vrstva neobsahuje
-neurony a neprovádí žádné operace, pouze přijímá vnější signály a distribuuje
-je do další vrstvy. Výstup z neuronů ve výstupní vrstvě pak reprezentuje výstup
-celé sítě.
+Nejčastějším uspořádáním neuronů v neuronových sítích je uspořádání do vrstev.
+Neurony dané vrstvy jsou spojeny pouze s neurony z předchozí a následující
+vrstvy. Vrstvy lze rozdělit do tří typů: vstupní, výstupní a skryté. Vstupní
+vrstva neobsahuje neurony a neprovádí žádné operace, pouze přijímá vnější
+signály a distribuuje je do další vrstvy. Výstup z neuronů ve výstupní vrstvě
+pak reprezentuje výstup celé sítě.
 
-Pokud síť obsahuje pouze vstupní a výstupní vrstvu, mluvíme o jednovrstvé
+Pokud síť obsahuje pouze vstupní a výstupní vrstvu, jedná se o jednovrstvé
 neuronové síti. Takové sítě mají velmi omezené možnosti, proto se v praxi
 nepoužívají. Většina neuronových sítí má mezi vstupní a výstupní vrstvou
 alespoň jednu skrytou vrstvu.%, viz obrázek \ref{fig:layers}. 
@@ -298,15 +310,16 @@ následující vrstvy.
 %     \label{fig:layers}
 % \end{figure}
 
-\section{Proces trénování s využitím backpropagation}
+\subsection{Proces trénování s využitím backpropagation}
 
 Jak již bylo řečeno, proces trénování NN spočívá v nalezení optimálních hodnot
 parametrů jednotlivých neuronů. Optimální parametry pak vedou k minimální
 chybě. Chybou rozumíme rozdíl mezi skutečným výstupem sítě a očekávaným
 výstupem. K tomu se nejčastěji používá algoritmus backpropagation (také
-algoritmus zpětného šíření chyby). Nyní si popíšeme, jak trénování sítě pomocí
-tohoto algoritmu funguje v dopředné neuronové síti. Tento algoritmus je nicméně využíván i ve většině jiných architektur, jako jsou konvoluční či rekurentní
-neuronové sítě, které budeme později využívat.
+algoritmus zpětného šíření chyby). Nyní bude vysvětleno, jak trénování sítě
+pomocí tohoto algoritmu funguje v dopředné neuronové síti. Tento algoritmus je
+nicméně využíván i ve většině jiných architektur, jako jsou konvoluční či
+rekurentní neuronové sítě, které budeme později využívat.
 
 Nejprve se ze vstupních dat vypočítají pomocí aktuálních parametrů sítě reálně
 výstupy sítě. Tento proces se nazývá dopředný průchod (ang. forward pass).
@@ -316,12 +329,14 @@ očekávaných. Můžou být použity různé chybové funkce, v závislosti na 
 úlohy, kterou síť řeší.
 
 V klasifikačních úlohách je nejčastěji používaná chybová funkce křížové
-entropie, která porovnává rozdělení pravděpodobnosti skutečného výstupu sítě s
-očekávaným rozdělením pravděpodobnosti. Pro regresní úlohy se používá například
-střední kvadratická chyba (ang. mean squared error – MSE) vyjadřující střední
-hodnotu druhých mocnin rozdílů mezi skutečnými a očekávanými hodnotami. Další
-možností je absolutní chyba (ang. mean absolute error – MAE), která vyjadřuje
-střední hodnotu absolutních hodnot rozdílů.
+entropie \cite{crossentropy}, která porovnává rozdělení pravděpodobnosti
+skutečného výstupu sítě s očekávaným rozdělením pravděpodobnosti. Pro regresní
+úlohy se používá například střední kvadratická chyba (ang. mean squared error –
+MSE) \cite{mse} vyjadřující střední hodnotu druhých mocnin rozdílů mezi
+skutečnými a očekávanými hodnotami.
+% Další
+% možností je absolutní chyba (ang. mean absolute error – MAE), která vyjadřuje
+% střední hodnotu absolutních hodnot rozdílů.
 
 Dále je používána metoda gradientního sestupu, k nalezení minima chybové
 funkce. Za tímto účelem se vypočítají derivace chyby podle jednotlivých
@@ -346,12 +361,12 @@ vypočítaných derivací. Tento proces se opakuje, dokud chyba nespadne na
 požadovanou úroveň, nenastane její konvergence nebo není překročen maximální
 počet iterací.
 
-\section{Optimalizace procesu trénování}
+\subsection{Optimalizace procesu trénování}
 
 V základní verzi algoritmu backpropagation se využívá výše popsaný gradientní
 sestup. Ten ale může mít některé problémy, které mohou zpomalit proces
-trénování nebo jej někdy zcela znemožnit. Nyní si popíšeme některé z těchto
-problémů a jejich možná řešení.
+trénování nebo jej někdy zcela znemožnit. Nyní tedy budou popsány některé z
+těchto problémů a jejich možná řešení.
 
 Jedním z podstatných problémů gradientního sestupu je, že se může lehce
 zaseknout v lokálním minimu, kde je derivace nulová. To může způsobit, že se
@@ -366,14 +381,15 @@ minima.
 Dalším řešením tohoto problému je využití stochastické aproximace gradientního
 sestupu (ang. stochastic gradient descent – SGD), kde se gradient počítá pro
 náhodně vybrané podmnožiny trénovacích dat. Tento postup umožňuje rychlejší
-konvergenci, počítáme totiž gradient jen pro část dat, a zároveň zabraňuje
+konvergenci, gradient je totiž počítán jen pro část dat, zároveň zabraňuje
 zaseknutí v lokálním minimu zavedením šumu do procesu trénování. Tato metoda se
 využívá nejčastěji pro velké datasety.
 
 Dalším problémem může být nastavení optimálního kroku učení. Pokud je krok
-příliš velký, může dojít k příliš velké změně, která opomine minimum, může se tak stát, že nikdy nedosáhneme konvergence. Naopak, pokud je krok příliš malý, může
-trénování trvat příliš dlouho. Řešením může být například adaptivní nastavení
-kroku. Nejznámější taková metoda je RMSProp (ang. root mean square
+příliš velký, může dojít k příliš velké změně, která opomine minimum, může se
+tak stát, že nikdy nedosáhneme konvergence. Naopak, pokud je krok příliš malý,
+může trénování trvat příliš dlouho. Řešením může být například adaptivní
+nastavení kroku. Nejznámější taková metoda je RMSProp (ang. root mean square
 propagation), která upravuje krok učení pro každý parametr podle průměrného
 druhého momentu gradientu \cite{RMSProp}. Další možností je v průběhu trénování
 postupně snižovat krok (ang. learning rate decay).
@@ -383,19 +399,20 @@ estimation, v překladu adaptivní odhad momentu), který kombinuje zavedení
 momentu a adaptivního nastavení kroku pomocí RMSProp \cite{adam}.
 
 Další metodou, jak optimalizovat nastavení kroku, je normalizace dat mezi
-vrstvami sítě (ang. batch normalization). Tím se zamezí příliš velkým změnám v
-jednotlivých vrstvách, které někdy destabilizují proces trénování.
+vrstvami sítě (ang. batch normalization) \cite{batchnorm}. Tím se zamezí příliš
+velkým změnám v jednotlivých vrstvách, které někdy destabilizují proces
+trénování.
 
 U trénování hlubokých sítí se často naráží rovněž na problém přetrénování (také
 nadměrné přizpůsobení, ang. overfitting). Přetrénování nastává, když se síť
 dobře naučí trénovací data, zároveň ale postrádá schopnost generalizace, a když
 pak dostane nová data, nedosahuje dobrých výsledků. Nejčastěji k problému
-dochází v situacích, kdy se snažíme natrénovat hluboké a komplexní modely, aniž
-bychom měli k tomu dostatečné množství dat. K základním řešením tohoto problému
-tedy patří použití většího množství trénovacích dat – pokud jsou dostupná,
-jinak se někdy zavádí umělé variace dat jako rotace či převrácení, jinak je
-třeba někdy zvážit zjednodušení architektury modelu. Dále pak jsou využívány
-techniky regularizace, které upravují samotný proces trénování.
+dochází v situacích, když jsou trénovány hluboké a komplexní modely, aniž by
+bylo k tomu k dispozici dostatečné množství dat. K základním řešením tohoto
+problému tedy patří použití většího množství trénovacích dat – pokud jsou
+dostupná, jinak se někdy zavádí umělé variace dat jako rotace či převrácení,
+jinak je třeba někdy zvážit zjednodušení architektury modelu. Dále pak jsou
+využívány techniky regularizace, které upravují samotný proces trénování.
 
 Nejjednodušší regularizační technikou je tzv. předčasné zastavení, tedy
 zastavení trénování v případě, že se chyba na validačních datech začne

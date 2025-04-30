@@ -343,9 +343,9 @@ L2 regularizace (parametr $weight\_decay$), to ale neřešilo problém. Pro
 komplexnější sítě by pravděpodobně bylo potřebné větší množství dat.
 
 Nejoptimálnější konfigurace tedy je tato: tří vrstvy o velikostech $128$, $64$
-a $32$, dropout $0.3$, normalizaci mezi vrstvami, velikost dávky 4096 a
-aktivační funkci $ReLU$. Bylo tak dosaženo validační ztráty $0.18$ a validační
-přesnosti 93.8%
+a $32$, dropout $0.3$, normalizace mezi vrstvami, velikost dávky 4096 a
+aktivační funkce $ReLU$. Bylo tak dosaženo validační ztráty $0.18$ a validační
+přesnosti 93.8.%
 
 \begin{figure}[]
     \centering
@@ -411,7 +411,7 @@ výstupní vrstva. Velikosti GRU vrstev byla zvolena v rozsahu od 64 do 256, u
 plně propojené vrstvy bylo zvoleno mezi 32 a 128 neurony. Většinou byly použity
 dávky o velikosti $4096$, menší dávky velice destabilizovaly trénování.
 
-Zjistilo se, že na rozdíl od dopředných sítí, v případě GRU nejlepších výsledků
+Bylo zjištěno, že na rozdíl od dopředných sítí, v případě GRU nejlepších výsledků
 dosahovaly jednodušší sítě. Většina sítí s jednou GRU vrstvou tak dosahovala
 poměrně stabilních výsledků. Nejvyšší přesnosti bylo dosaženo u sítě s jednou
 GRU vrstvou o velikosti $64$ a plně propojenou vrstvou o velikosti $64$, s
@@ -431,9 +431,9 @@ brzy docházelo k přetrénování.
 RNN sítě obecně můžou přijímat sekvence libovolné délky, je ale efektivnější,
 pokud je síť trénovaná na jednotné délce, tato délka sekvence je pak použitá i
 v případě inferencí. Bylo tedy testováno trénování sítě na sekvencích o délce
-$50$ a $100$ snímků a s neomezenou délkou – modelu předáváme klíčové body z
-celé sekvence snímků, na kterých byla daná osoba detekována. Obecně se ale
-zjistilo, že vždycky dosahují stabilnějších výsledků sítě spíše s kratšími
+$50$ a $100$ snímků a s neomezenou délkou – modelu byly předány klíčové body z
+celé sekvence snímků, na kterých byla daná osoba detekována. Obecně bylo ale
+zjištěno, že vždycky dosahují stabilnějších výsledků sítě se spíše kratšími
 sekvencemi. Pro další práci tedy byla zvolena délka sekvence $50$.
 
 Nejlepší konfigurací GRU sítě je tedy jedna GRU vrstva o velikosti $64$,
@@ -505,13 +505,13 @@ Obecně ale LSTM sítě byly mnohem méně stabilní, a prakticky v žádné kon
 se nepodařilo natrénovat síť do požadované přesnosti, aniž by došlo k
 přetrénování anebo by začala validační ztráta extrémně kolísat. Pravděpodobně
 tedy není k dispozici dostatečně velký vzorek trénovacích dat pro trénování
-LSTM sítě. Také, sítě LSTM nejsou vhodny pro každou úlohu, spíše vynikají pro
+LSTM sítě. Sítě LSTM nejsou také vhodné pro každou úlohu, spíše vynikají pro
 delší sekvence.
 
 \section{Testování}
 \label{sec:testing}
 
-Vybrané klasifikační modely nakonec byly otestovány na testovacím sadě (tedy
+Vybrané klasifikační modely nakonec byly otestovány na testovací sadě (tedy
 datech vytvořených z testovacích videí, viz sekce \ref{sec:TrainingDataPrep}).
 Nyní bude provedena analýza jejich přesnosti a doby inference. Konkrétně byly
 testovány dopředná neuronová síť a GRU síť, které v další kapitole, až bude

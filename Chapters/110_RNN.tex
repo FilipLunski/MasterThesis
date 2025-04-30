@@ -53,7 +53,7 @@ využívajícími backpropagation pro trénování.
 Stejně jako u dopředných neuronových sítí, kde se od jednoduchého perceptronu
 přešlo k hlubokým sítím, se i rekurentní sítě rozšířily na více vrstev. V
 hlubokých rekurentních neuronových sítích (ang. deep RNN – DRNN) jsou pak
-jednotlivé vrstvy většinou podobné struktuře Elmanovy sítě \cite{elman} -
+jednotlivé vrstvy většinou podobné struktuře Elmanovy sítě \cite{elman} –
 zpětná vazba je předávána pouze v rámci jedné vrstvy, nikoliv mezi vrstvami RNN
 (například z výstupní vrstvy do první skryté vrstvy) \cite{deeprnn}. Má to
 několik důvodů. Trénování sítě se zpětnou vazbou mezi vrstvami by bylo velmi
@@ -157,8 +157,8 @@ výstupní bráně se pomocí tangenciální aktivační funkce vytvoří na zá
 buňky $c_t$ kandidátní skrytý stav. Pak se určí, které z těchto informací budou
 tvořit nový skrytý stav $h_t$.
 
-V každé bráně tedy máme informace, u nichž se určuje, zda je poslat dále či
-nikoliv, budou zde označovány jako propouštěný obsah (předchozí stav buňky,
+V každé bráně tedy jsou informace, u nichž se určuje, zda je poslat dále či
+nikoliv. Tyto informace zde budou označovány jako propouštěný obsah (předchozí stav buňky,
 kandidátní stav buňky či kandidátní skrytý stav). Toto určení se provádí vždy
 pomocí neuronové vrstvy se sigmoidní aktivační funkcí. Do těchto vrstev
 vstupuje vždy předchozí skrytý stav $h_{t-1}$ a aktuální vstup $x_t$. Výstupem

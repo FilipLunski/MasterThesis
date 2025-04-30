@@ -15,7 +15,7 @@ snaží zredukovat rozměr vstupních dat pomocí konvolučních vrstev, které 
 schopny efektivně zpracovávat obrazová data, a extrahovat z nich důležité
 vlastnosti, jež následně můžeme zpracovat pomocí poměrně jednoduché NN.
 
-Jelikož je základem navrhovaného problému automatizovaná analýza obrazových
+Jelikož je základem navrhovaného řešení automatizovaná analýza obrazových
 dat, budou pravděpodobně použity právě konvoluční sítě, minimálně v první fázi,
 kdy z obrazu extrahujeme klíčové body osob. Tato sekce se proto zaměří na
 základní principy konvolučních neuronových sítí.
@@ -123,7 +123,7 @@ backpropagation stejně jako váhy neuronů v plně propojených vrstvách.
 Takový přístup má mnoho výhod. Konvoluce se dá velmi dobře paralelizovat a
 zajistit tak vysokou efektivitu výpočtů. Oproti plně propojeným vrstvám má vždy
 konvoluce počet vah pouze rovný počtu prvků ve všech jádrech. I v případě
-provedení mnoha konvolucí je počet váh výrazně menší než v případě potřebného
+provedení mnoha konvolucí je počet vah výrazně menší než v případě potřebného
 počtu a velikosti plně propojených vrstev. Zároveň lze pomocí konvolucí
 efektivně extrahovat různé vlastnosti ze vstupního obrazu, ty pak pomocí plně
 propojených vrstev zpracovat a využít k řešení problému. Proto se také výstupu
@@ -168,12 +168,12 @@ aktivační funkce. Namísto plného propojení s neurony následující vrstvy 
 aplikována konvoluce na vstupní data. K výstupní mapě je přičten bias a
 následně může být aplikována aktivační funkce.
 
-Jedná vrstva může mít několik konvolučních jader, každé s vlastními váhami a
+Jedna vrstva může mít několik konvolučních jader, každé s vlastními váhami a
 biasem. Je třeba zároveň pamatovat, že každé jádro musí mít hloubku rovnou
 počtu vstupních map, resp. počtu kanálu vstupního obrazu v případě vstupní
-vrstvy. Konvoluci je pak aplikována zvlášť pro každé jádro, počet výstupních map
+vrstvy. Konvoluce je pak aplikována zvlášť pro každé jádro, počet výstupních map
 příznaků tedy bude roven počtu jader v dané vrstvě. V praxi bude každé jádro
-vyjadřovat jinou vlastnost, kterou jke třeba ze vstupního obrazu extrahovat.
+vyjadřovat jinou vlastnost, kterou je třeba ze vstupního obrazu extrahovat.
 
 Množinu parametrů dané konvoluční vrstvy tedy tvoří hodnoty jader a jejích
 příslušné biasy. K hyperparametrům pak patří počet jader a jejich velikost,
@@ -181,10 +181,10 @@ aktivační funkce, krok a padding.
 
 \subsection{Poolovací vrstva}
 Jak již bylo zmíněno, v konvolučních vrstvách vzniká vícero map příznaků
-vyjadřující různé vlastnosti. Tím se ale množství dat zvětšuje, což porušuje
+vyjadřujících různé vlastnosti. Tím se ale množství dat zvětšuje, což porušuje
 samotnou myšlenku konvolučních sítí, která je založena na snaze zredukovat
 rozměr dat. Proto je cílem zmenšit rozměr map příznaků. Jak již bylo
-zmíněno, dojde k redukci rozměrů v konvoluční vrstvě, pokud použijeme krok $k >
+zmíněno, k redukci rozměrů v konvoluční vrstvě dojde, pokud použijeme krok $k >
     1$. Častěji ale je k tomuto účelu prováděno podvzorkování dat v tzv.
 poolovacích vrstvách (z ang. pooling layer) \cite{rawat2017deep}.
 
@@ -203,7 +203,7 @@ Konvoluční neuronové sítě se většinou skládají ze dvou částí – kon
 propojené části.
 
 Konvoluční část se skládá z několika konvolučních vrstev proplétaných s
-poolovacími vrstvami. V této části se pracuje s mapami příznaků. Její výstupem
+poolovacími vrstvami. V této části se pracuje s mapami příznaků. Jejím výstupem
 je soubor map příznaků, resp. mapa příznaků s větší hloubkou, která vyjadřuje
 různé vlastnosti vstupního obrazu.
 

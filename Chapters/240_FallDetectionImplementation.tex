@@ -1,4 +1,4 @@
-\chapter{Implementace kompletního řešení detekce pádu}
+\chapter{Kompletace finálního řešení detekce pádu}
 \label{chap:detectionProgram}
 
 V této kapitole se zaměříme na implementaci celkového řešení detekce pádu,
@@ -158,26 +158,27 @@ stanovené minimální frekvence, viz sekce \ref{sec:performance_requirements}.
         \hline
                      & \multicolumn{2}{l|}{50 ways to fall} & \multicolumn{2}{l|}{CAUCAFall}                                   \\ \hline
                      & \multicolumn{1}{l|}{ms}              & FPS                            & \multicolumn{1}{l|}{ms}   & FPS \\ \hline
-        Dopředná síť & \multicolumn{1}{l|}{23.7}            & 42                             & \multicolumn{1}{l|}{24.5} & 41  \\ \hline
-        GRU síť      & \multicolumn{1}{l|}{31.9}            & 31                             & \multicolumn{1}{l|}{25.1} & 40  \\ \hline
+        Dopředná síť & \multicolumn{1}{l|}{25.6}            & 39                             & \multicolumn{1}{l|}{24.2} & 41  \\ \hline
+        GRU síť      & \multicolumn{1}{l|}{27}              & 37                             & \multicolumn{1}{l|}{25.9} & 39  \\ \hline
     \end{tabular}
 \end{table}
-\endinput
 
-Rozdíl rychlosti mezi datasety je způsoben hlavně velikostí snímku. Pro snímky
-s větším rozlišením musí YOLO nejprve věnovat více času na zredukování
-velikosti snímku. Mezi oběma modely je taky rozdíl v rychlosti, je způsoben
-hlavně režií sekvencí v případě sítě GRU. Opět je rozdíl výraznější v případě
-datasetu 50 ways to fall, kde je snímek téměř třikrát větší než v případě
-CAUCAFall. Předpokládáme ale, že většinou je rozlišení u průmyslových kamer
-spíše menší než HD, měli bychom tedy dosáhnout spíše výsledků jako v případě
-datasetu CAUCAFall.
+Rozdíl rychlosti mezi datasety je způsoben hlavně velikostí snímku. V datasetu
+50 ways to fall, je totiž snímek téměř třikrát větší než v případě CAUCAFall.
+Pro snímky s větším rozlišením musí YOLO nejprve věnovat více času na
+zredukování velikosti snímku. V Předpokládáme ale, že většinou je rozlišení u
+průmyslových kamer spíše menší než HD, měli bychom tedy dosáhnout spíše
+výsledků jako v případě datasetu CAUCAFall. Mezi oběma modely je taky rozdíl v
+rychlosti, je způsoben hlavně režií sekvencí v případě sítě GRU.
 
 Výše uvedená měření byla provedena provedena bez anotace videí. Pokud jsme
 anotovali videa pouze informací o pádu, doba zpracování se většinou zvýšila
-pouze o zhruba 2 - 3 milisekundy. Pokud jsme ale použili anotaci klíčových bodů
-a bounding boxů integrovanou v modelu YOLO, došlo k zpomalení až 15 milisekund.
+pouze o zhruba 2 – 3 milisekundy. Pokud jsme ale použili anotaci klíčových bodů
+a bounding boxů integrovanou v modelu YOLO, došlo k zpomalení až o 15 milisekund.
 
 Obě sítě tedy fungují poměrně dobře a dokážou v reálném čase detekovat pád v
 různých situacích, z výsledků je ale zjevné, že je rekurentní síť GRU mnohem
 stabilnější a přesnější.
+
+
+\endinput

@@ -14,10 +14,12 @@ parametrů, a to i automaticky v procesu trénování modelu.
 Jelikož budou neuronové sítě základem prakticky v každé fázi vývoje našeho
 řešení, pojďme se podívat na jejich základní principy.
 
+% todo napsat proč cnn a rnn
+
 \section{Historie}
 \label{sec:NN_History}
 
-\subsection{Prvopočátky}
+\subsection*{Prvopočátky}
 První matematický model neuronové sítě byl popsán v roce 1943 dvěma
 neurofyziology – Warrenem McCullochem a Walterem Pittsem \cite{McCulloch1943}.
 Model byl založen na síti jednoduchých logických prvků, které provedou vážený
@@ -27,7 +29,7 @@ V roce 1958 pak Frank Rosenblatt představil elektronický model neuronové sít
 Základní jednotku, postavenou na McCulloch-Pittsově modelu, nazval perceptron.
 \cite{Rosenblatt1958} Jeho architektura byla podobná modelu znázorněnému na
 obrázku \ref{fig:neuron}, kde aktivační funkce je prahová funkce. Rosenblattův
-stroj - Mark I Perceptron - byl postavený pro rozpoznávání jednoduchých vzorů v
+stroj – Mark I Perceptron – byl postavený pro rozpoznávání jednoduchých vzorů v
 obrazech.
 % Hlavním omezením tohoto modelu bylo, že byl schopen rozlišovat pouze lineárně separovatelné třídy. 
 Samotný model perceptronu je dodnes používán jako základ pro mnoho neuronových
@@ -47,7 +49,7 @@ obecně výpočetní techniky. Proto se tomuto období někdy říká Ai Winter.
 Neznamená to ale, že ti, kteří se oboru nadále věnovali, nedosáhli významných
 výsledků \cite{nn_history}.
 
-\subsection{Backpropagation}
+\subsection*{Backpropagation}
 Významným milníkem v historii neuronových sítí byl objev algoritmu
 backpropagation, zvaného také algoritmus zpětného šíření chyby. Tento
 algoritmus byl vyvinut v roce 1974 Paulem Werbosem, popularitu ale dosáhl až po
@@ -228,11 +230,11 @@ optimálních hodnot těchto parametrů, které vedou k co nejmenší chybě př
 %             \addlegendentry{ReLU}
 
 %             % % ELU (alpha = 1)
-%             % \addplot[blue, semithick] {(x>0) * x + (x<=0) * (exp(x)-1) - 0.01};
+%             % \addplot[blue, semithick] {(x>0) * x + (x<=0) * (exp(x)-1) – 0.01};
 %             % \addlegendentry{ELU}
 
 %             % % APL (Adaptive Piecewise Linear) – using a simple approximation
-%             % \addplot[purple, semithick] {max(0,x) + 0.1*min(0,x+1) - 0.1*min(0,x-1) + 0.01};
+%             % \addplot[purple, semithick] {max(0,x) + 0.1*min(0,x+1) – 0.1*min(0,x-1) + 0.01};
 %             % \addlegendentry{APL}
 
 %             % % Swish (x * sigmoid(x))
@@ -272,6 +274,7 @@ hloubku, tzn. počet vrstev, velikost těchto vrstev a jejich vzájemné propoje
 V další sekci se budeme věnovat právě uspořádání vrstev v neuronových sítích.
 
 \section{Topologie neuronových sítí}
+% todo rozepsat
 Nejčastějším uspořádáním neuronů v neuronových sítích je uspořádání do vrstev. Neurony dané
 vrstvy jsou spojeny pouze s neurony z předchozí a následující vrstvy. Vrstvy
 pak dělíme na tři typy: vstupní, výstupní a skryté. Vstupní vrstva neobsahuje

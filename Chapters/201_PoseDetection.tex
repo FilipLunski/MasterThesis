@@ -1,4 +1,4 @@
-\chapter{Výběr algoritmu pro detekci pózy}
+\chapter{Výběr algoritmu pro detekci klíčových bodů}
 \label{chap:Pose}
 
 Jelikož je dnes dostupných mnoho různých algoritmů či natrénovaných modelů pro
@@ -59,7 +59,7 @@ osoby v obraze, v jejich rámci pak detekuje klíčové body.
 %todo 
 \section{Detekce klíčových bodů}
 
-\subsection{Heatmapy}
+\subsubsection*{Heatmapy}
 
 U obou výše zmíněných přístupů se nejčastěji provádí vyhledání všech klíčových
 bodů pomocí tzv. heatmap. Je to 2D mapa pravděpodobnosti, že se v daném bodě
@@ -76,7 +76,7 @@ V dalším kroku jsou z heatmap vygenerovány, nejčastěji s pomocí algoritmu
 argmax, souřadnice klíčových bodů. V případě vícero osob je pak třeba tyto body
 spojit do jednotlivých osob.
 
-\subsection{Regrese}
+\subsubsection*{Regrese}
 
 Využití heatmap je velmi přesné, nicméně z důvodu nutnosti provádění dvou
 sekvenčních výpočtů je také trochu pomalé. Také komplikují proces trénování,
@@ -280,8 +280,9 @@ velké množství času a zdrojů (zejména výpočetních), hlavně by také by
 potřebná hlubší znalost problematiky. Někdy je možné řešení použít za cenu
 kompromisu ve formě použití starších verzí knihoven či Pythonu, může to ale
 představovat bezpečnostní rizika. Také některé algoritmy jsou sice volně
-dostupné, ale jejich implementace jsou součástí komerčních produktů. %todo citace
-
+dostupné, ale jejich implementace jsou součástí komerčních produktů, např.
+OpenPose, jež je mj. součástí produktu Viso Suite od viso.ai
+\cite{visoai_openpose}.
 \subsection{DeepPose}
 DeepPose je historicky první algoritmus pro detekci pózy využívající hluboké
 učení. Vyvinuli jej Alexander Toshev a Christian Szegedy ze společnosti Google
@@ -458,10 +459,10 @@ karta.
 
 V této fázi jsme již zkoušeli trénování neuronové sítě pro klasifikaci pózy, a
 ověřili jsme, že i v případě hlubších a komplexnějších sítí dosahujeme doby
-inference v řádu nižších jednotek milisekund. Hlavní vliv na výslednou
-rychlost programu tedy bude mít hlavně detekční algoritmus, který musí
-zpracovávat mnohem větší objem dat – stovky tisíc až miliony pixelů oproti
-např. 17 klíčovým bodům v případě klasifikačního algoritmu.
+inference v řádu nižších jednotek milisekund. Hlavní vliv na výslednou rychlost
+programu tedy bude mít hlavně detekční algoritmus, který musí zpracovávat
+mnohem větší objem dat – stovky tisíc až miliony pixelů oproti např. 17
+klíčovým bodům v případě klasifikačního algoritmu.
 
 \subsection{OpenPifPaf}
 
@@ -486,10 +487,10 @@ na kvalitu výsledků použitelné byly, nicméně je jejich výkon příliš n�
     \begin{tabular}{|l|l|l|l|}
         \hline
         \textbf{Verze}   & \textbf{inference [ms]} & \textbf{Frekvence [FPS]} \\
-        resnet50         & 49,2                       & 20.324                   \\ \hline
-        shufflenetv2k16  & 31,3                       & 31.910                   \\ \hline
-        shufflenetv2k30  & 58,6                       & 17.070                   \\ \hline
-        tshufflenetv2k30 & 70,0                       & 14.281                   \\ \hline
+        resnet50         & 49,2                    & 20.324                   \\ \hline
+        shufflenetv2k16  & 31,3                    & 31.910                   \\ \hline
+        shufflenetv2k30  & 58,6                    & 17.070                   \\ \hline
+        tshufflenetv2k30 & 70,0                    & 14.281                   \\ \hline
     \end{tabular}
 \end{table}
 
@@ -527,9 +528,9 @@ grafické karty.
         \hline
         \textbf{Verze} & \textbf{inference [ms]} & \textbf{Frekvence [FPS]} \\
         \hline
-        lite           & 25.5                       & 39.239                   \\ \hline
-        full           & 30.9                       & 32.405                   \\ \hline
-        heavy          & 68.2                       & 14.655                   \\ \hline
+        lite           & 25.5                    & 39.239                   \\ \hline
+        full           & 30.9                    & 32.405                   \\ \hline
+        heavy          & 68.2                    & 14.655                   \\ \hline
     \end{tabular}
 \end{table}
 
@@ -565,7 +566,7 @@ horšími světelnými podmínkami a menším rozlišením obrazu.
         \hline
         \textbf{inference [ms]} & \textbf{Frekvence [FPS]} \\
         \hline
-        50.3                       & 19.897                   \\ \hline
+        50.3                    & 19.897                   \\ \hline
     \end{tabular}
 \end{table}
 
@@ -595,21 +596,21 @@ pořád ale tři menší varianty dosahují frekvence větší než $30$ FPS.
         \hline
                                            & \textbf{Verze} & \textbf{inference [ms]} & \textbf{Frekvence [FPS]} \\
         \hline\hline
-        \multirow{3}{*}{CPU}               & nano           & 32.5                       & 30.749                   \\ \cline{2-4}
-                                           & small          & 53.9                       & 18.563                   \\ \cline{2-4}
-                                           & medium         & 114.1                      & 8.763                    \\ \cline{2-4}
-                                           & large          & 143.4                      & 6.973                    \\ \cline{2-4}
-                                           & xlarge         & 833.2                      & 1.200                    \\ \hline\hline
-        \multirow{3}{*}{GPU}               & nano           & 15.1                       & 66.323                   \\ \cline{2-4}
-                                           & small          & 15.2                       & 65.972                   \\ \cline{2-4}
-                                           & medium         & 17.4                       & 57.500                   \\ \cline{2-4}
-                                           & large          & 24.4                       & 41.026                   \\ \cline{2-4}
-                                           & xlarge         & 24.4                       & 41.005                   \\ \hline\hline
-        \multirow{3}{*}{GPU se sledováním} & nano           & 27.4                       & 36.500                   \\ \cline{2-4}
-                                           & small          & 27.7                       & 36.148                   \\ \cline{2-4}
-                                           & medium         & 29.5                       & 33.882                   \\ \cline{2-4}
-                                           & large          & 37.5                       & 26.664                   \\ \cline{2-4}
-                                           & xlarge         & 40.5                       & 24.695                   \\ \hline
+        \multirow{3}{*}{CPU}               & nano           & 32.5                    & 30.749                   \\ \cline{2-4}
+                                           & small          & 53.9                    & 18.563                   \\ \cline{2-4}
+                                           & medium         & 114.1                   & 8.763                    \\ \cline{2-4}
+                                           & large          & 143.4                   & 6.973                    \\ \cline{2-4}
+                                           & xlarge         & 833.2                   & 1.200                    \\ \hline\hline
+        \multirow{3}{*}{GPU}               & nano           & 15.1                    & 66.323                   \\ \cline{2-4}
+                                           & small          & 15.2                    & 65.972                   \\ \cline{2-4}
+                                           & medium         & 17.4                    & 57.500                   \\ \cline{2-4}
+                                           & large          & 24.4                    & 41.026                   \\ \cline{2-4}
+                                           & xlarge         & 24.4                    & 41.005                   \\ \hline\hline
+        \multirow{3}{*}{GPU se sledováním} & nano           & 27.4                    & 36.500                   \\ \cline{2-4}
+                                           & small          & 27.7                    & 36.148                   \\ \cline{2-4}
+                                           & medium         & 29.5                    & 33.882                   \\ \cline{2-4}
+                                           & large          & 37.5                    & 26.664                   \\ \cline{2-4}
+                                           & xlarge         & 40.5                    & 24.695                   \\ \hline
     \end{tabular}
 \end{table}
 

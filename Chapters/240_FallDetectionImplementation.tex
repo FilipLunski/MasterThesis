@@ -151,6 +151,7 @@ Pojďme se nyní ještě podívat na výslednou rychlost detektoru. V tabulce
 stanovené minimální frekvence, viz sekce \ref{sec:performance_requirements}.
 
 \begin{table}[htbp]
+    \centering
     \caption{Rychlost detekce pádu}
     \label{tab:detectorSpeed}
     \begin{tabular}{|c|cc|cc|}
@@ -168,17 +169,15 @@ s větším rozlišením musí YOLO nejprve věnovat více času na zredukován�
 velikosti snímku. Mezi oběma modely je taky rozdíl v rychlosti, je způsoben
 hlavně režií sekvencí v případě sítě GRU. Opět je rozdíl výraznější v případě
 datasetu 50 ways to fall, kde je snímek téměř třikrát větší než v případě
-CAUCAFall. 
-% Předpokládáme ale, že většinou je rozlišení u průmyslových kamer
-% spíše menší, rychlost
+CAUCAFall. Předpokládáme ale, že většinou je rozlišení u průmyslových kamer
+spíše menší než HD, měli bychom tedy dosáhnout spíše výsledků jako v případě
+datasetu CAUCAFall.
 
 Výše uvedená měření byla provedena provedena bez anotace videí. Pokud jsme
 anotovali videa pouze informací o pádu, doba zpracování se většinou zvýšila
 pouze o zhruba 2 - 3 milisekundy. Pokud jsme ale použili anotaci klíčových bodů
-a bounding boxů integrovanou v modelu YOLO, došlo k zpomalení až 15 milisekund. 
+a bounding boxů integrovanou v modelu YOLO, došlo k zpomalení až 15 milisekund.
 
-
-
-Obě sítě tedy fungují poměrně dobře a dokážou v reálném čase detekovat pád v různých
-situacích, z výsledků je ale zjevné, že je rekurentní síť GRU mnohem
+Obě sítě tedy fungují poměrně dobře a dokážou v reálném čase detekovat pád v
+různých situacích, z výsledků je ale zjevné, že je rekurentní síť GRU mnohem
 stabilnější a přesnější.

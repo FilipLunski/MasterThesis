@@ -24,13 +24,13 @@ vstupní sekvenci snímku některá osoba, jejíž pozice je klasifikována jako
 Hlavním cílem výsledného programu bude alarmovat příslušného pracovníka, pokud
 osoba upadne.
 
-Alarmovat budeme až, pokud osoba zůstane v ležící pozici. To nám dá možnost
+Alarmovat se bude až, pokud osoba zůstane v ležící pozici. To umožní
 odfiltrovat falešné alarmy v případě sehnutí či pokud bude osoba špatně
 viditelná a algoritmus tak na okamžik špatně vyhodnotí její pohyb. Tímto
-postprocesingem se ale teď nebudeme zabývat, spíše se zaměříme na samotnou
-klasifikaci pozice.
+postprocesingem se ale práce nebude zabývat, spíše bude pozornost věnována
+samotné klasifikaci pozice.
 
-Stejně jako u detekce objektů, viz \ref{sec:obj_det}, bychom mohli i pro
+Stejně jako u detekce objektů, viz \ref{sec:obj_det}, by bylo možné i pro
 detekci pádu vytvořit vhodnou konvoluční síť, která by přímo z obrázku
 definovala, zda se jedná o pád nebo ne. U detekce se už dnes sice s ohledem na
 pokrok hardwaru tento přístup používá, nicméně se jedná o velmi náročný úkol,
@@ -38,14 +38,14 @@ který vyžaduje rozsáhlou optimalizaci, pokročilou architekturu a velké mno�
 trénovacích dat. Nicméně, pokud by se podařilo takovouto síť natrénovat, mohla
 by lépe detekovat některé situace např. podle výrazu tváře.
 
-V našem případě tedy budeme v prvním kroku pomocí vhodné předtrénované
-neuronové sítě detekovat pozici osoby ve formě klíčových bodů, tuto část
-nazvěme \textit{detekční algoritmus}. Na základě těchto bodů pak další
-neuronová síť vyhodnotí, zda se jedná o pád, tuto část nazvěme
+V navrženém řešení tedy bude v prvním kroku pomocí vhodné předtrénované
+neuronové sítě detekována pozice osoby ve formě klíčových bodů, tato část bude
+nazývána \textit{detekční algoritmus}. Na základě těchto bodů pak další
+neuronová síť vyhodnotí, zda se jedná o pád, tato část bude nazývána
 \textit{klasifikační algoritmus}. To úlohu velice zjednoduší, jelikož místo
-analyzování tisíců pixelů, budeme analyzovat pár desítek klíčových bodů. Další
-výhodou je, že u takového postupu jsme schopní použít techniky, kdy sledujeme
-změny pózy v čase, což by bylo mnohem složitější s jednofázovou konvoluční
+analyzování tisíců pixelů, bude algoritmus analyzovat pár desítek klíčových bodů. Další
+výhodou je, že u takového postupu je možné použít techniky, kdy je sledována
+změna pózy v čase, což by bylo mnohem složitější s jednofázovou konvoluční
 síti.
 
 Detekční algoritmus dostane na vstup celý snímek a může detekovat několik osob.
@@ -55,7 +55,7 @@ zvlášť.
 Další alternativou by mohlo být pouze detekovat osoby jako objekty, a na
 základě jejich bounding boxů určit, zda se jedná o pád. Tento postup by byl
 jednodušší na dvou úrovních. Jednak je detekce objektů méně náročná úloha než
-detekce pózy, jednak bychom ve druhé fázi analyzovali pouze několik parametrů
+detekce pózy, jednak by ve druhé fázi bylo analyzováno pouze několik parametrů
 bounding boxu (rozměry a velikost) oproti pár desítkám klíčových bodů. Nicméně,
 pokud se nad tím zamyslíme, ne vždy vypovídají parametry bounding boxů o pozici
 člověka. Tento postup by tak pravděpodobně vedl k mnohem méně přesnému

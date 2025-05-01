@@ -1,26 +1,26 @@
-\chapter{Implementace kompletního řešení detekce pádu}
+\chapter{Kompletace finálního řešení detekce pádu}
 \label{chap:detectionProgram}
 
-V této kapitole se zaměříme na implementaci celkového řešení detekce pádu,
-který na základě postupně předávané sekvence snímků bude detekovat, zda došlo k
-pádu. Jedná se tedy o spojení detekčního algoritmu, který ze snímku extrahuje
-klíčové body všech osob, a klasifikačního algoritmu, který na základě těchto
-bodů detekuje pád.
+Tato kapitola bude zaměřena na kompletaci celkového řešení detekce pádu, který
+na základě postupně předávané sekvence snímků bude detekovat, zda došlo k pádu.
+Jedná se tedy o spojení detekčního algoritmu, který ze snímku extrahuje klíčové
+body všech osob, a klasifikačního algoritmu, který na základě těchto bodů
+detekuje pád.
 
-V našem případě tedy musíme spojit predikci modelu YOLO11-pose, a jednoho z
-naších vybraných modelů (dopředná nebo GRU síť) pro klasifikaci pádu. Podíváme
-se tedy nejprve krátce na práci ve frameworku YOLO. Následně se budeme zabývat
-použitím dříve natrénovaných modelů. Zejména se zaměříme na implementaci s
-využitím rekurentní architektury GRU, která přináší více výzev než dopředná
-siť, s ohledem na nutnost uchovávání sekvence pro každého člověka zvlášť.
-Nakonec program otestujeme s oběma klasifikačními modely na několika videích a
-zhodnotíme jejich výkon.
+Je tedy třeba spojit predikci modelu YOLO11-pose a jednoho z vybraných modelů
+(dopředná nebo GRU síť) pro klasifikaci pádu. Nejprve tedy bude krátce popsána
+práce ve frameworku YOLO. Následující část se bude věnovat využití dříve
+natrénovaných modelů. Důraz bude kladen zejména na implementaci s využitím
+rekurentní architektury GRU, která přináší více výzev než dopředná síť, s
+ohledem na nutnost uchovávání sekvence pro každého člověka zvlášť. Nakonec bude
+program otestován s oběma klasifikačními modely na videích z testovací sady a
+bude zhodnocen jejich výkon.
 
 \section{Sledování pózy s YOLO11}
 
-V YOLO verze 11 máme kromě již zmíněné detekce objektů i klíčových bodů k
-dispozici také další volitelné funkce. To, které funkce chceme využít,
-definujeme vybraným modelem. V závislosti na něm pak při inferenci model vrací
+V YOLO verze 11 jsou kromě již zmíněné detekce objektů i klíčových bodů k
+dispozici také další volitelné funkce. To, které funkce mají být využity, se
+definuje vybraným modelem. V závislosti na něm pak při inferenci model vrací
 patřičné hodnoty. Dostupné jsou tyto modely:
 \begin{itemize}
     \item \textit{YOLO11<v>-seg } – detekce objektů – bounding boxů
@@ -29,37 +29,37 @@ patřičné hodnoty. Dostupné jsou tyto modely:
     \item \textit{YOLO11<v>-obb } – orientovaná detekce objektů – bounding boxy natočené dle natočení objektů
 \end{itemize}
 
-kde $<v>$ označuje velikost modelu – můžeme vybrat menší modely pro větší výkon
-ale horší přesnost, anebo větší modely, které jsou sice velmi přesné, musíme
-ale počítat s vysokými nároky na výkon. V našem případě jsme zvolili model
-$YOLO11m-pose$. Pro inicializaci modelu musíme specifikovat cestu k němu, pokud
-není nalezen, knihovna automaticky stáhne předtrénovaný model.
+kde $<v>$ označuje velikost modelu – lze vybrat menší modely pro větší výkon
+ale horší přesnost, nebo větší modely, které jsou sice velmi přesné, je třeba
+ale počítat s vysokými nároky na výkon. V navrženém řešení byl zvolen model
+$YOLO11m-pose$. Pro inicializaci modelu je třeba specifikovat cestu k němu,
+pokud není nalezen, knihovna automaticky stáhne předtrénovaný model.
 
 \begin{lstlisting}[language=Python, label=src:params, caption={Inicializace modelu $YOLO11m-pose$}]    
     from ultralytics import YOLO    
     pose_model = YOLO("./models_pose/yolo11m-pose.pt")
 \end{lstlisting}
 
-Dále můžeme každý z těchto modelů používat v několika režimech. Režim
-specifikujeme tím, jakou metodu modelu použijeme. Pokud chceme model natrénovat
-na vlastních datech, použijeme režimy \textit{trénování} (metoda $train()$) a
-\textit{validace} (metoda $val()$). Pokud chceme používat již natrénovaný
-model, máme k dispozici dva režimy: \textit{predikce} (přímé použití modelu,
-např. $pose_model()$) pro vyhodnocení každého vstupního snímku zvlášť a
+Dále lze každý z těchto modelů používat v několika režimech. Režim se
+specifikuje tím, jakou metodu modelu použijeme. V případě trénování modelu na
+vlastních datech jsou využívány režimy \textit{trénování} (metoda $train()$) a
+\textit{validace} (metoda $val()$). Pro práci s již natrénovaným modelem jsou k
+dispozici tyto dva režimy: \textit{predikce} (přímé použití modelu, např.
+$pose_model()$) pro vyhodnocení každého vstupního snímku zvlášť a
 \textit{sledování} (metoda $track()$).
 
 Režim \textit{sledování} vrací stejné informace jako režim \textit{predikce},
 navíc ale sleduje pohyb objektů mezi jednotlivými snímky a přiřazuje jim $id$.
-V našem případě tedy kromě bounding boxu a klíčových bodů dostaneme i $id$
-každé osoby.
+V případě použitého modelu tedy kromě bounding boxu a klíčových bodů bude
+vracet i $id$ každé osoby.
 
-YOLO11 dokáže zpracovat širokou škálu vstupních dat, včetně videí, kdy nám je
+YOLO11 dokáže zpracovat širokou škálu vstupních dat, včetně videí, kdy je
 vráceno pole výsledků, datových proudů (je třeba specifikovat příznak
-$stream$), kdy nám je vrácen iterátor, nebo obrázků, kdy dostaneme výsledek pro
-daný snímek. Pokud chceme použít režim \textit{sledování} na jednotlivé snímky,
-musíme specifikovat příznak $persist$, který zajistí, že mezi jednotlivými
-snímky bude uchovávána informace o sledovaných objektech. Zde můžeme vidět
-použití metody $track()$ v našem programu (příznaky $show$ a $verbose$
+$stream$), kdy nám je vrácen iterátor, nebo obrázků, kdy je vrácen výsledek pro
+daný snímek. Pokud se používá režim \textit{sledování} na jednotlivé snímky, je
+třeba specifikovat příznak $persist$, který zajistí, že mezi jednotlivými
+snímky bude uchovávána informace o sledovaných objektech. Níže lze vidět
+použití metody $track()$ ve výsledném programu (příznaky $show$ a $verbose$
 specifikují, zda se má zobrazit výsledek každého snímku a zda má model do
 konzoly vypisovat ladící informace)
 
@@ -71,12 +71,12 @@ konzoly vypisovat ladící informace)
 \section{Struktura třídy FallDetector}
 
 Třída $FallDetector$ slouží pro detekci pádu v sekvenci postupně předávaných
-snímků. Můžeme ji tak použít jak pro analýzu uloženého videa, tak pro detekci
+snímků. Je ji tak možné použít jak pro analýzu uloženého videa, tak pro detekci
 pádu v živém přenosu v reálném čase. Mezi jednotlivými snímky uchovává pro
 každou osobu klíčové body z $x$ posledních snímků pro predikci na základě
 sekvence snímků. Dále dle nastavení uchovává $n$ posledních snímků, popřípadě i
 anotovaných, pro uložení videa včetně několika sekund před a po pádu. Pro
-ukládání těchto informací používáme kolekci typu $deque$, která umožňuje
+ukládání těchto informací je použita kolekce typu $deque$, která umožňuje
 specifikovat její maximální délku, nerelevantní informace ze starších snímků
 tedy budou automaticky odstraňovány.
 
@@ -85,7 +85,7 @@ pro každou instanci zvlášť), model pro detekci pádu na základě klíčový
 délku sekvence předávané tomuto modelu, a informace týkající se ukládání videí
 s pády, jako jsou cesty k souborům a délka videa před a po pádu.
 
-Pro práci s jednotlivými osobami používáme třídu $Person$, která uchovává
+Pro práci s jednotlivými osobami je použita třída $Person$, která uchovává
 hlavně klíčové body z posledních snímků a $id$, dále také bounding boxy,
 detekovaný stav a confidence score této detekce pro poslední snímek, kdy byla
 osoba detekována. V případě, že daná osoba již není detekována, obsahuje
@@ -96,59 +96,60 @@ scéně, ale algoritmus ji i na několik snímků ztratí, zejména v případě
 
 V metodě $process\_frame$ třídy $FallDetector$ je zpracován vždy jeden snímek.
 Nejprve se detekují všechny osoby a jejich klíčové body pomocí vybraného
-modelu. Pokud je požadováno uložení anotovaného videa, převezmeme zde anotovaný
-snímek přímo od modelu YOLO, později pouze dopíšeme třídu detekce pádu. Dále
-jsou na základě detekovaných informací vytvořeny, popřípadě aktualizovány
-instance třídy $Person$. Pro každou osobu je také provedena analýza sekvence
-klíčových bodů pro detekci pádu a popřípadě je patřičně anotována ve snímku.
-Pokud je detekován pád a je nastaveno ukládání videa, vytvoří se nový soubor a
-zapíše se do něj uchované předešlé snímky. Do souboru se pak zapisuje, dokud je
-detekován pád a nevyprší požadovaný počet snímků po pádu.
+detekčního modelu. Pokud je požadováno uložení anotovaného videa, převezme se
+zde anotovaný snímek přímo od modelu YOLO, později je pouze ke každé osobě
+dopsána její třída detekce pádu. Dále jsou na základě detekovaných informací
+vytvořeny, popřípadě aktualizovány instance třídy $Person$. Pro každou osobu je
+následně provedena analýza sekvence klíčových bodů pro detekci pádu. Pokud je
+detekován pád a je nastaveno ukládání videa, vytvoří se nový soubor a zapíše se
+do něj uchované předešlé snímky. Do souboru se pak zapisuje, dokud je detekován
+pád a nevyprší požadovaný počet snímků po pádu.
 
 \section{Testování detekce pádu ve videu}
 \label{sec:FallDetectionTest}
 
-V této sekci otestujeme výsledné řešení na videích z testovacích sad obou
-datasetů. Hlavně ověříme přesnost detekce pádu v různých situacích ve videích.
-Přesnost klasifikačního algoritmu, kterou jsme měřili v minulé kapitole, je
-spíše na úrovní detekce v jednotlivých snímcích. Pokud tedy program detekuje
-pád o několik snímků později, než byl pád anotován, je tato přesnost
-penalizována. Nás ale spíše zajímá přesnost ve smyslu, zda byl každý pád
-detekován, a zda se neobjevovaly falešné detekce pádů.
+V této sekci bude otestováno výsledné řešení na videích z testovacích sad obou
+datasetů. Hlavně bude ověřena přesnost detekce pádu v různých situacích ve
+videích. Přesnost klasifikačního algoritmu, která byla měřena v minulé
+kapitole, je spíše na úrovni detekce v jednotlivých snímcích. Pokud tedy
+program detekuje pád o několik snímků později, než byl pád anotován, je tato
+přesnost penalizována. Zde je klíčovým ukazatelem přesnost ve smyslu schopnosti
+detekovat každý výskyt pádu a současně minimalizovat výskyt falešných detekcí.
 
 V testovací sadě datasetu CAUCAFall je 15 videí, z čehož 7 obsahuje pád a 8
 obsahuje jiné činnosti, které by jako pád neměly být vyhodnoceny, kdežto ve
 všech 15 případech testovací sady z videa \textit{50 ways to fall} vystupuje
 pád.
 
-Zjistili jsme, že obecně jsou výsledky sítě GRU mnohém stabilnější než v
+Bylo zjištěno, že obecně jsou výsledky sítě GRU mnohém stabilnější než v
 případě dopředné sítě. Pokud tedy osoba spadne a leží na zemi, GRU síť pořád
 klasifikuje pád, zatímco dopředná síť často, zvlášť pokud osoba leží vyrovnaná,
 kolísá mezi třídou \textit{normální} a \textit{upadl}. Stabilita dopředné sítě
 se také zhoršuje v případě špatné viditelnosti osoby, kdy jsou výsledky modelu
 pro detekci pózy více chaotické než v optimálních podmínkách.
 
-Dopředná síť také reaguje na pád mnohem rychleji, většinou už v době padání.
-Oproti tomu GRU síť detekuje pád až v momentě dopadu nebo o několik snímků
-později. Dopředná síť ale dokáže rychleji reagovat i na situaci kdy se osoba ze
-stavu \textit{upadl} dostane zpátky do stavu \textit{normální}. V jednom z
-testovacích videí osoba dělá kotrmelec, po kterém se vrátila do dřepu. Dopředná
+Dopředná síť reaguje na pád mnohem rychleji, většinou už v době padání. Oproti
+tomu GRU síť detekuje pád až v momentě dopadu nebo o několik snímků později.
+Dopředná síť ale dokáže rychleji reagovat i na situaci kdy se osoba ze stavu
+\textit{upadl} dostane zpátky do stavu \textit{normální}. V jednom z
+testovacích videí osoba dělá kotrmelec, po kterém se vrací do dřepu. Dopředná
 síť tehdy okamžitě vyhodnotila její stav zpátky jako normální, kdežto GRU síť
 ještě nějakou dobu identifikovala pád.
 
 Hlavní problém s dopřednou síti je ale v její falešné pozitivitě. GRU síť
 všechny testovací videa vyhodnotila správně, a tedy detekovala pád pouze a
 právě ve videích, kde osoba upadla. Dopředná síť detekovala sice pád ve všech
-videích, kde osoba upadla. Z osmi videí, na kterých pád zaznamenán není, ale
+videích, kde osoba upadla. Z osmi videí, na kterých pád zaznamenán není ale
 tato síť ve dvou případech pád detekovala. Konkrétně se tak stalo v situacích,
 kdy osoba klečela a kdy se ohnula k zemi. Jelikož v těchto případech detekovala
 pád pouze v několika snímcích, dala by se tato falešná pozitivita odfiltrovat
-tím, že bychom reagovali na pád až po několika snímcích, kdy byl soustavně
+tím, že by se na pád reagovalo až po několika snímcích, kdy byl soustavně
 detekován.
 
-Pojďme se nyní ještě podívat na výslednou rychlost detektoru. V tabulce
-\ref{tab:detectorSpeed} vidíme, že se nám ve všech případech podařilo dosáhnout
-stanovené minimální frekvence, viz sekce \ref{sec:performance_requirements}.
+Co se týče výsledné celkové rychlosti detektoru, lze v tabulce
+\ref{tab:detectorSpeed} vidět, že se ve všech případech podařilo dosáhnout
+stanovené minimální frekvence $30$ FPS, viz sekce
+\ref{sec:performance_requirements}.
 
 \begin{table}[htbp]
     \centering
@@ -158,26 +159,34 @@ stanovené minimální frekvence, viz sekce \ref{sec:performance_requirements}.
         \hline
                      & \multicolumn{2}{l|}{50 ways to fall} & \multicolumn{2}{l|}{CAUCAFall}                                   \\ \hline
                      & \multicolumn{1}{l|}{ms}              & FPS                            & \multicolumn{1}{l|}{ms}   & FPS \\ \hline
-        Dopředná síť & \multicolumn{1}{l|}{23.7}            & 42                             & \multicolumn{1}{l|}{24.5} & 41  \\ \hline
-        GRU síť      & \multicolumn{1}{l|}{31.9}            & 31                             & \multicolumn{1}{l|}{25.1} & 40  \\ \hline
+        Dopředná síť & \multicolumn{1}{l|}{25.6}            & 39                             & \multicolumn{1}{l|}{24.2} & 41  \\ \hline
+        GRU síť      & \multicolumn{1}{l|}{27}              & 37                             & \multicolumn{1}{l|}{25.9} & 39  \\ \hline
     \end{tabular}
 \end{table}
-\endinput
 
-Rozdíl rychlosti mezi datasety je způsoben hlavně velikostí snímku. Pro snímky
-s větším rozlišením musí YOLO nejprve věnovat více času na zredukování
-velikosti snímku. Mezi oběma modely je taky rozdíl v rychlosti, je způsoben
-hlavně režií sekvencí v případě sítě GRU. Opět je rozdíl výraznější v případě
-datasetu 50 ways to fall, kde je snímek téměř třikrát větší než v případě
-CAUCAFall. Předpokládáme ale, že většinou je rozlišení u průmyslových kamer
-spíše menší než HD, měli bychom tedy dosáhnout spíše výsledků jako v případě
-datasetu CAUCAFall.
+Rozdíl rychlosti mezi datasety je způsoben hlavně velikostí snímku. V datasetu
+\textit{50 ways to fall}, je totiž snímek téměř třikrát větší než v případě CAUCAFall.
+Pro snímky s větším rozlišením musí YOLO nejprve věnovat více času na
+zredukování velikosti snímku. Předpokládá se ale, že většinou je rozlišení u
+průmyslových kamer spíše menší než HD, v praxi by se tedy mělo dosáhnout spíše
+výsledků jako v případě datasetu CAUCAFall. Mezi oběma modely je také malý rozdíl v
+rychlosti, který je způsoben hlavně režií sekvencí v případě sítě GRU.
 
-Výše uvedená měření byla provedena bez anotace videí. Pokud jsme
-anotovali videa pouze informací o pádu, doba zpracování se většinou zvýšila
-pouze o zhruba 2 - 3 milisekundy. Pokud jsme ale použili anotaci klíčových bodů
-a bounding boxů integrovanou v modelu YOLO, došlo k zpomalení až 15 milisekund.
+Výše uvedená měření byla provedena bez anotace videí. Pokud byla videa anotována pouze informací o pádu, doba zpracování se většinou zvýšila
+pouze o zhruba 2 – 3 milisekundy. Pokud ale byla videa anotována klíčovými body
+a bounding boxy pomocí nástroje integrovaného v modelu YOLO, došlo ke zpomalení až o 15
+milisekund.
 
 Obě sítě tedy fungují poměrně dobře a dokážou v reálném čase detekovat pád v
 různých situacích, z výsledků je ale zjevné, že je rekurentní síť GRU mnohem
 stabilnější a přesnější.
+
+% \begin{table}[htbp]
+%     \centering
+%     \begin{tabular}{|c|c|c|}
+%         \hline
+%                      & ms   & FPS \\ \hline
+%         Dopředná síť & 25.9 & 39  \\ \hline
+%         GRU síť      & 33   & 30  \\ \hline
+%     \end{tabular}
+% \end{table}

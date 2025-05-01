@@ -1,4 +1,4 @@
-\chapter{Rekurentní neuronové sítě}
+\section{Rekurentní neuronové sítě}
 \label{chap:RNN}
 
 Rekurentní neuronové sítě (ang. Recurrent Neural Networks – RNN) je kategorie
@@ -11,18 +11,18 @@ predikce časových řad) a zpracování kontextuálních informací jako je nap
 přirozený jazyk.
 
 Jelikož v případě pádu se nejedná o statickou informaci, ale o jistý druh
-pohybu, mohly by právě rekurentní sítě stanovit optimální cestu pro naše řešení
-\cite{dhruv2020image}. Pojďme se tedy nyní podívat na to, jak rekurentní
+pohybu, mohly by právě rekurentní sítě stanovit optimální cestu pro předkládané
+řešení \cite{dhruv2020image}. Nyní tedy bude vysvětleno, jak rekurentní
 neuronové sítě fungují a jaké jsou jejich nejpoužívanější architektury.
 
-\section{Základní principy}
+\subsection{Základní principy}
 
-Data, která v aktuální iteraci přebíráme z předchozí iterace, se často označují
-jako skrytý stav (ang. hidden state). Je to forma paměti, která se s každou
-iterací aktualizuje. Často je reprezentován jako stavová vrstva (ang. state
-layer nebo context layer), která přijímá hodnoty z výstupu neuronů, uchovává je
-mezi iteracemi a předává je spolu se vstupními daty na vstup neuronů. Na
-obrázku \ref{fig:rnn} je tato vrstva reprezentována neurony $c_i$.
+Data, která jsou v aktuální iteraci přebírané z předchozí iterace, se často
+označují jako skrytý stav (ang. hidden state). Je to forma paměti, která se s
+každou iterací aktualizuje. Často je reprezentován jako stavová vrstva (ang.
+state layer nebo context layer), která přijímá hodnoty z výstupu neuronů,
+uchovává je mezi iteracemi a předává je spolu se vstupními daty na vstup
+neuronů. %Na obrázku \ref{fig:rnn} je tato vrstva reprezentována neurony $c_i$.
 
 Nejjednodušší forma rekurentní neuronové sítě je NN s jednou skrytou vrstvou;
 tato vrstva kromě dat ze vstupní vrstvy přijímá také výstup předchozí iterace
@@ -48,12 +48,12 @@ využívajícími backpropagation pro trénování.
 %     \label{fig:rnn}
 % \end{figure}
 
-\subsection{Hluboké rekurentní sítě}
+\subsubsection*{Hluboké rekurentní sítě}
 
 Stejně jako u dopředných neuronových sítí, kde se od jednoduchého perceptronu
 přešlo k hlubokým sítím, se i rekurentní sítě rozšířily na více vrstev. V
 hlubokých rekurentních neuronových sítích (ang. deep RNN – DRNN) jsou pak
-jednotlivé vrstvy většinou podobné struktuře Elmanovy sítě \cite{elman} -
+jednotlivé vrstvy většinou podobné struktuře Elmanovy sítě \cite{elman} –
 zpětná vazba je předávána pouze v rámci jedné vrstvy, nikoliv mezi vrstvami RNN
 (například z výstupní vrstvy do první skryté vrstvy) \cite{deeprnn}. Má to
 několik důvodů. Trénování sítě se zpětnou vazbou mezi vrstvami by bylo velmi
@@ -61,16 +61,16 @@ složité a obtížné. Také, u neuronových sítí obecně platí, že každá
 se učí pochopit problém na jiné úrovni abstrakce, zpětná vazba přes několik
 vrstev by pak mohla narušit stabilitu tohoto procesu a omezit kvalitu učení.
 
-\subsection{Trénování rekurentních sítí}
+\subsubsection*{Trénování rekurentních sítí}
 
 Pro pochopení rekurentních neuronových sítí je třeba si vysvětlit, jak se
 trénují. Pro vizualizaci trénování RNN se tyto sítě takzvaně rozbaluje v čase
-(ang. unrolling). Znamená to, že jednotlivé iterace vizualizujeme jako sekvenci
-stejných sítí (stejné váhy), které v čase $t$ přijímají vstup $x_t$ a vracejí
-výstup $y_t$, viz obrázek \ref{fig:bptt}. Zároveň místo smyček znázorňujících
-zpětnou vazbu přijímá skrytá vrstva v čase $t$ stav $c_{t-1}$ z předchozí
-iterace. Takto je propojená mezi iteracemi každá skrytá vrstva (na obrázku
-\ref{fig:bptt} vizualizováno propojení přes stavovou vrstvu).
+(ang. unrolling). Znamená to, že jednotlivé iterace jsou vizualizovány jako
+sekvence stejných sítí (stejné váhy), které v čase $t$ přijímají vstup $x_t$ a
+vracejí výstup $y_t$, viz obrázek \ref{fig:bptt}. Zároveň místo smyček
+znázorňujících zpětnou vazbu přijímá skrytá vrstva v čase $t$ stav $c_{t-1}$ z
+předchozí iterace. Takto je propojená mezi iteracemi každá skrytá vrstva (na
+obrázku \ref{fig:bptt} vizualizováno propojení přes stavovou vrstvu).
 
 \begin{figure}[]
     \centering
@@ -81,14 +81,14 @@ iterace. Takto je propojená mezi iteracemi každá skrytá vrstva (na obrázku
 
 Při trénování se pak používá algoritmus zpětného šíření chyby v čase (ang.
 backpropagation through time – BPTT). Algoritmus funguje stejně jako klasický
-backpropagation, šíří se ale nejenom vrstvami, ale i iteracemi. Unrolling nám
+backpropagation, šíří se ale nejenom vrstvami, ale i iteracemi. Unrolling
 pomáhá backpropagation pochopit, jednotlivé iterace totiž jsou naskládány jako
 vrstvy a celou síť řešíme jako klasickou dopřednou NN.
 
-\subsection{Problémy mizejícího a explodujícího gradientu}
+\subsubsection*{Problémy mizejícího a explodujícího gradientu}
 
 Výše popsané základní rekurentní neuronové sítě, někdy označovány jako vanilla
-RNN, trpí několika zásadními problémy. U dopředných sítí jsme zmiňovali problém
+RNN, trpí několika zásadními problémy. U dopředných sítí byl zmíněn problém
 mizejícího gradientu (ang. vanishing gradient), vystupující zejména u hlubších
 sítí. Ten se projevuje i u RNN a je zesílený tím, že jsou jednotlivé iterace
 naskládané na sebe, podobně jako vrstvy. Zejména pak u delších sekvencí budou
@@ -96,36 +96,36 @@ mít dřívější vstupy velmi malý vliv na učení sítě.
 
 U RNN se také projevuje problém opačný – explodující gradient (ang. exploding
 gradient). Ten způsobuje, že v průběhu sekvence se váhy začnou exponenciálně
-zvětšovat a dosáhnou tak nepřiměřeně velkých hodnot.
+zvětšovat a dosáhnou tak nepřiměřeně velkých hodnot \cite{rnn}.
 
-Podívejme se, co přesně tyto problémy způsobuje. Součástí algoritmu
-backpropagation je počítání parciální derivace ztrátové funkce podle
-jednotlivých vah. V případě BPTT potřebujeme mimo jiné počítat parciální
-derivace skrytého stavu mezi jednotlivými iteracemi $\frac{\partial
-        h_{t-1}}{\partial h_t}$. Tyto derivace následně opakovaně násobíme při použití
-řetězového pravidla. Pokud je tato derivace $\frac{\partial h_{t-1}}{\partial
-        h_t}<1$, jeho vynásobení bude mít za následek postupné zmenšování gradientu.
-Pokud budeme například mít sekvencí $100$ iteraci, pak i kdyby se gradienty v
-každé iteraci zmenšovaly $0,9$ krát, po $100$ iteracích by gradient klesl na
-hodnotu $0,9^{100} \approx 2,7 \times 10^{-5}$, což je prakticky nula. Pokud se
-naopak bude gradient zvětšovat $1,1$ krát, po $100$ iteracích by gradient
-vzrostl na $1,1^{100} \approx 13 780$, což způsobí úplnou destabilizaci sítě a
-nedosáhneme žádného výsledku. Vidíme tedy, že v případě, kdy je $\frac{\partial
-        h_{t-1}}{\partial h_t}>1$, dochází k explodujícímu gradientu.
+% Podívejme se, co přesně tyto problémy způsobuje. Součástí algoritmu
+% backpropagation je počítání parciální derivace ztrátové funkce podle
+% jednotlivých vah. V případě BPTT potřebujeme mimo jiné počítat parciální
+% derivace skrytého stavu mezi jednotlivými iteracemi $\frac{\partial
+%         h_{t-1}}{\partial h_t}$. Tyto derivace následně opakovaně násobíme při použití
+% řetězového pravidla. Pokud je tato derivace $\frac{\partial h_{t-1}}{\partial
+%         h_t}<1$, jeho vynásobení bude mít za následek postupné zmenšování gradientu.
+% Pokud budeme například mít sekvencí $100$ iteraci, pak i kdyby se gradienty v
+% každé iteraci zmenšovaly $0,9$ krát, po $100$ iteracích by gradient klesl na
+% hodnotu $0,9^{100} \approx 2,7 \times 10^{-5}$, což je prakticky nula. Pokud se
+% naopak bude gradient zvětšovat $1,1$ krát, po $100$ iteracích by gradient
+% vzrostl na $1,1^{100} \approx 13 780$, což způsobí úplnou destabilizaci sítě a
+% nedosáhneme žádného výsledku. Vidíme tedy, že v případě, kdy je $\frac{\partial
+%         h_{t-1}}{\partial h_t}>1$, dochází k explodujícímu gradientu.
 
 Z důvodu těchto problémů byly vyvinuty složitější rekurentní struktury. Jejich
 architektura je v podstatě podobná, jednotlivé vrstvy jsou ale zastoupeny
 jinými stavebními bloky, které umožňují zejména širší pochopení kontextu a
 efektivnější proces trénování. Vanilla RNN se v praxi dnes využívají velmi
 zřídka. K nejpoužívanějším architekturám patří LSTM (ang. long short-term
-memory) a GRU (ang. gated recurrent unit), které nyní popíšeme.
+memory) a GRU (ang. gated recurrent unit), které nyní budou popsány.
 
-\section{LSTM}
+\subsection{LSTM}
 
 Dlouhá krátkodobá paměť (ang. long short-term memory – LSTM ), představena
-Hochreiterem a Schmidhuberem v roce 1997, je typ rekurentní neuronové sítě,
-který byl navržen tak, aby překonal problémy mizejícího a explodujícího
-gradientu.
+Hochreiterem a Schmidhuberem v roce 1997 \cite{lstm}, je typ rekurentní
+neuronové sítě, který byl navržen tak, aby překonal problémy mizejícího a
+explodujícího gradientu.
 
 \begin{figure}[]
     \centering
@@ -157,20 +157,20 @@ výstupní bráně se pomocí tangenciální aktivační funkce vytvoří na zá
 buňky $c_t$ kandidátní skrytý stav. Pak se určí, které z těchto informací budou
 tvořit nový skrytý stav $h_t$.
 
-V každé bráně tedy máme informace, pro které určujeme, zda je poslat dále či
-nikoliv, nazvěme je propouštěný obsah (předchozí stav buňky, kandidátní stav
-buňky či kandidátní skrytý stav). Toto určení se provádí vždy pomocí neuronové
-vrstvy se sigmoidní aktivační funkcí. Do těchto vrstev vstupuje vždy předchozí
-skrytý stav $h_{t-1}$ a aktuální vstup $x_t$. Výstupem je hodnota mezi $0$ a
-$1$ pro každou informaci. Pak se tento výsledek vynásobí propouštěným obsahem.
-Pokud je výstup této vrstvy $0$, informace se nepředávají dál, pokud je $1$,
-informace se předávají dále. Vstupy do všech neuronových vrstev jsou vždy
-vynásobeny váhami, ty ale nejsou pro jednoduchost na obrázku \ref{fig:lstm}.1
-zobrazeny. Na obrázku \ref{fig:lstm_deep} je znázorněna rozvinutá hluboká LSTM
-síť. Jednotlivé vrstvy sítě jsou naskládány vertikálně, jednotlivé iterace pak
-jsou rozvinuty vedle sebe. Jednotlivé vrstvy si předávají skrytý stav -
-krátkodobou paměť, mezi iteracemi si pak daná vrstva předává krátkodobou i
-dlouhodobou paměť.
+V každé bráně tedy jsou informace, u nichž se určuje, zda je poslat dále či
+nikoliv. Tyto informace zde budou označovány jako propouštěný obsah (předchozí stav buňky,
+kandidátní stav buňky či kandidátní skrytý stav). Toto určení se provádí vždy
+pomocí neuronové vrstvy se sigmoidní aktivační funkcí. Do těchto vrstev
+vstupuje vždy předchozí skrytý stav $h_{t-1}$ a aktuální vstup $x_t$. Výstupem
+je hodnota mezi $0$ a $1$ pro každou informaci. Pak se tento výsledek vynásobí
+propouštěným obsahem. Pokud je výstup této vrstvy $0$, informace se nepředávají
+dál, pokud je $1$, informace se předávají dále. Vstupy do všech neuronových
+vrstev jsou vždy vynásobeny váhami, ty ale nejsou pro jednoduchost na obrázku
+\ref{fig:lstm}.1 zobrazeny. Na obrázku \ref{fig:lstm_deep} je znázorněna
+rozvinutá hluboká LSTM síť. Jednotlivé vrstvy sítě jsou naskládány vertikálně,
+jednotlivé iterace pak jsou rozvinuty vedle sebe. Jednotlivé vrstvy si
+předávají skrytý stav - krátkodobou paměť, mezi iteracemi si pak daná vrstva
+předává krátkodobou i dlouhodobou paměť.
 
 \begin{figure}
     \centering
@@ -187,17 +187,17 @@ složitějšího trénování. Také je pro tyto sítě vhodné mít větší mn
 trénovacích dat, jinak může dojít k přetrénování. Využívá se tak zejména pro
 predikci dlouhých a komplexních časových sekvencí či zpracování přirozeného
 jazyka. Zejména u přirozeného jazyka se LSTM sítě osvědčily jako velmi
-efektivní. Potřebujeme totiž, aby si síť pamatovala dlouhé závislosti, zároveň
-máme většinou k dispozici obrovské množství vzorků.
+efektivní. Je totiž potřeba, aby si síť pamatovala dlouhé závislosti, zároveň
+je k dispozici obrovské množství vzorků.
 
-Síť LSTM by mohla být vhodná pro klasifikaci pózy zejména pokud bychom
-potřebovali analyzovat pohyb v delších časových úsecích. Událost pádu se naopak
-obvykle odehrává v krátkém čase, nicméně můžeme otestovat, jakých výsledků bude
-tato architektura dosahovat oproti jiným rekurentním sítím, zejména v případě,
-kdy bychom modelu nepředávali pouze pózu z $n$ posledních snímků, ale celou
-sekvenci detekovanou pro danou osobu.
+Síť LSTM by mohla být vhodná pro klasifikaci pózy zejména pokud by bylo potřeba
+analyzovat pohyb v delších časových úsecích. Událost pádu se naopak obvykle
+odehrává v krátkém čase, nicméně může se otestovat, jakých výsledků bude tato
+architektura dosahovat oproti jiným rekurentním sítím, zejména v případě, kdy
+modelu nebyla předávána pouze póza z $n$ posledních snímků, ale celá sekvence
+detekována pro danou osobu.
 
-\section{GRU}
+\subsection{GRU}
 
 Gated Recurrent Unit (GRU) je novější typ rekurentní neuronové sítě, který
 představil v roce 2014 Cho et al. \cite{gru}. Je postavený na principu brán,
@@ -225,14 +225,14 @@ stavu a které z kandidátního skrytého stavu.
 Hlavní výhodou GRU je jednoduchost. Oproti LSTM má méně parametrů a provádí
 méně výpočtů. Je tak jednak rychlejší při evaluaci, jednak jednodušší pro
 natrénování. Také, u GRU sítí je menší pravděpodobnost přetrénování, což je
-výhodné zejména v situacích, kdy máme omezený počet trénovacích dat. GRU sítě
-se často využívají v úlohách, kde je důležité rychlé zpracování a efektivita,
-např. v mobilních aplikacích a zpracování v reálném čase. Je to ale za cenu
-trošku horšího zpracování komplexních a dlouhodobých závislostí. Oproti LSTM
-nemá GRU takovou kontrolu nad tím, které informace dlouhodobě uchovávat a má
-sklon k rychlejšímu zapomínání. Proto se až tak nehodí pro složitější úlohy a
-situace, kdy je nutné si pamatovat velmi dlouhé časové závislosti. Nicméně jsou
-dneska první volbou pro mnoho úloh, po LSTM sítích se pak sahá, až když si GRU
-sítě s danou úlohou neporadí.
+výhodné zejména v situacích, kdy je počet dostupných trénovacích dat omezený. GRU
+sítě se často využívají v úlohách, kde je důležité rychlé zpracování a
+efektivita, např. v mobilních aplikacích a zpracování v reálném čase. Je to ale
+za cenu trošku horšího zpracování komplexních a dlouhodobých závislostí. Oproti
+LSTM nemá GRU takovou kontrolu nad tím, které informace dlouhodobě uchovávat a
+má sklon k rychlejšímu zapomínání. Proto se až tak nehodí pro složitější úlohy
+a situace, kdy je nutné si pamatovat velmi dlouhé časové závislosti. Nicméně GRU sítě
+jsou dneska první volbou pro mnoho úloh, po LSTM sítích se pak sahá, až když si
+GRU sítě s danou úlohou neporadí.
 
 \endinput

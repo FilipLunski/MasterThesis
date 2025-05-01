@@ -1,4 +1,4 @@
-\chapter{Konvoluční neuronové sítě}
+\section{Konvoluční neuronové sítě}
 \label{chap:CNN}
 
 I když byly jedny z prvních NN použity ke zpracování obrazu, brzy se ukázalo,
@@ -15,12 +15,12 @@ snaží zredukovat rozměr vstupních dat pomocí konvolučních vrstev, které 
 schopny efektivně zpracovávat obrazová data, a extrahovat z nich důležité
 vlastnosti, jež následně můžeme zpracovat pomocí poměrně jednoduché NN.
 
-Jelikož je základem našeho problému analýza obrazových dat, použijeme
-pravděpodobně právě konvoluční sítě, minimálně v první fázi, kdy z obrazu
-extrahujeme klíčové body osob. V této kapitole se proto podíváme na základní
-principy konvolučních neuronových sítí.
+Jelikož je základem navrhovaného řešení automatizovaná analýza obrazových
+dat, budou pravděpodobně použity právě konvoluční sítě, minimálně v první fázi,
+kdy z obrazu extrahujeme klíčové body osob. Tato sekce se proto zaměří na
+základní principy konvolučních neuronových sítí.
 
-% \section{Problémy zpracování obrazu pomocí klasických neuronových sítí}
+% \subsection{Problémy zpracování obrazu pomocí klasických neuronových sítí}
 
 % Klasickým přístupem pro zpracování obrazů pomocí neuronové sítě je vytvoření
 % sítě se stejným počtem prvků vstupní vrstvy, jako je počet pixelů vstupního
@@ -44,13 +44,14 @@ principy konvolučních neuronových sítí.
 % dat pomocí konvolučních vrstev, které jsou schopny efektivně zpracovávat
 % obrazová data.
 
-\section{Konvoluce}
+\subsection{Konvoluce}
 
-V kontextu práce s obrazovými daty je konvoluce binární operace, kdy pro daný pixel
-v obrazu sečteme hodnoty pixelů v jeho okolí vynásobené váhami vyjádřenými
-maskou, která se nazývá jádro konvoluce (ang. kernel). Výsledný obraz je také
-nazýván konvoluce. Z matematického pohledu se jedná o diskrétní dvourozměrnou
-konvoluci – binární operaci diskrétních funkcí, která je definována následovně:
+V kontextu práce s obrazovými daty je konvoluce binární operace, kdy pro daný
+pixel v obrazu jsou sečteny hodnoty pixelů v jeho okolí vynásobené váhami
+vyjádřenými maskou, která se nazývá jádro konvoluce (ang. kernel). Výsledný
+obraz je také nazýván konvoluce. Z matematického pohledu se jedná o diskrétní
+dvourozměrnou konvoluci – binární operaci diskrétních funkcí, která je
+definována následovně:
 
 \begin{equation*}
     (h*f)(x,y)=\sum _{i=-k}^{k}\sum _{j=-k}^{k}h(x-i,y-j)\cdot f(i,j)
@@ -63,8 +64,8 @@ Hodnota konvoluce na dané pozici je tedy suma součinů hodnot pixelů vstupní
 obrazu a hodnot váh vyjádřených jádrem konvoluce položeným středem na danou
 pozici.
 % , viz obrázek \ref{fig:convolution}. 
-Nejčastěji je velikost jádra lichá,
-jelikož je pak jednodušší určení středu jádra \cite{cnn_introduction}.
+Nejčastěji je velikost jádra lichá, jelikož je pak jednodušší určení středu
+jádra \cite{cnn_introduction}.
 
 % \begin{figure}[]
 %     \centering
@@ -83,7 +84,7 @@ jelikož je pak jednodušší určení středu jádra \cite{cnn_introduction}.
 
 Konvoluční jádro může být pevně dáno pro danou úlohu, např. pro detekci hran se
 často používá Sobelův operátor, který využívá dvě jádra – pro vertikální a
-horizontální hrany. 
+horizontální hrany.
 % Jádra pro detekci hran jsou zobrazena na obrázku
 % \ref{fig:sobel}.
 
@@ -118,16 +119,18 @@ a tak si efektivně vytvořit i složitější filtry, které by člověk těžk
 ručně. Zjistili, že váhy konvolučních jader se mohou trénovat pomocí algoritmu
 backpropagation stejně jako váhy neuronů v plně propojených vrstvách.
 
+%todo citations
 Takový přístup má mnoho výhod. Konvoluce se dá velmi dobře paralelizovat a
 zajistit tak vysokou efektivitu výpočtů. Oproti plně propojeným vrstvám má vždy
 konvoluce počet vah pouze rovný počtu prvků ve všech jádrech. I v případě
-provedení mnoha konvolucí je počet váh výrazně menší než v případě potřebného
+provedení mnoha konvolucí je počet vah výrazně menší než v případě potřebného
 počtu a velikosti plně propojených vrstev. Zároveň lze pomocí konvolucí
 efektivně extrahovat různé vlastnosti ze vstupního obrazu, ty pak pomocí plně
 propojených vrstev zpracovat a využít k řešení problému. Proto se také výstupu
 konvoluce často říká mapa příznaků (ang. feature map).
 
-% \section{Krok a padding}
+
+% \subsection{Krok a padding}
 
 % Pro pochopení funkčnosti konvolučních neuronových sítí je ještě důležité
 % pochopit dva parametry, které ovlivňují výstup konvoluční vrstvy. Jedná se o
@@ -157,7 +160,7 @@ konvoluce často říká mapa příznaků (ang. feature map).
 % kde $n$ je velikost vstupního obrazu, $p$ je velikost paddingu, $s$ je krok a
 % jádro je velikosti $f \times f$.
 
-\section{Konvoluční vrstva}
+\subsection{Konvoluční vrstva}
 
 Konvoluční vrstva je základním prvkem konvoluční neuronové sítě. V jistém slova
 smyslu je podobná plně propojené vrstvě, jelikož obsahuje váhy, biasy a
@@ -165,23 +168,23 @@ aktivační funkce. Namísto plného propojení s neurony následující vrstvy 
 aplikována konvoluce na vstupní data. K výstupní mapě je přičten bias a
 následně může být aplikována aktivační funkce.
 
-Jedná vrstva může mít několik konvolučních jader, každé s vlastními váhami a
+Jedna vrstva může mít několik konvolučních jader, každé s vlastními váhami a
 biasem. Je třeba zároveň pamatovat, že každé jádro musí mít hloubku rovnou
 počtu vstupních map, resp. počtu kanálu vstupního obrazu v případě vstupní
-vrstvy. Konvoluci pak aplikujeme zvlášť pro každé jádro, počet výstupních map
+vrstvy. Konvoluce je pak aplikována zvlášť pro každé jádro, počet výstupních map
 příznaků tedy bude roven počtu jader v dané vrstvě. V praxi bude každé jádro
-vyjadřovat jinou vlastnost, kterou se snažíme ze vstupního obrazu extrahovat.
+vyjadřovat jinou vlastnost, kterou je třeba ze vstupního obrazu extrahovat.
 
 Množinu parametrů dané konvoluční vrstvy tedy tvoří hodnoty jader a jejích
 příslušné biasy. K hyperparametrům pak patří počet jader a jejich velikost,
 aktivační funkce, krok a padding.
 
-\section{Poolovací vrstva}
+\subsection{Poolovací vrstva}
 Jak již bylo zmíněno, v konvolučních vrstvách vzniká vícero map příznaků
-vyjadřující různé vlastnosti. Tím se ale množství dat zvětšuje, což porušuje
+vyjadřujících různé vlastnosti. Tím se ale množství dat zvětšuje, což porušuje
 samotnou myšlenku konvolučních sítí, která je založena na snaze zredukovat
-rozměr dat. Proto se snažíme rozměr map příznaků zmenšovat. Jak již bylo
-zmíněno, dojde k redukci rozměrů v konvoluční vrstvě, pokud použijeme krok $k >
+rozměr dat. Proto je cílem zmenšit rozměr map příznaků. Jak již bylo
+zmíněno, k redukci rozměrů v konvoluční vrstvě dojde, pokud použijeme krok $k >
     1$. Častěji ale je k tomuto účelu prováděno podvzorkování dat v tzv.
 poolovacích vrstvách (z ang. pooling layer) \cite{rawat2017deep}.
 
@@ -194,13 +197,13 @@ Velikost výstupní mapy pro vstup velikosti $n \times n$ a poolovací oblasti
 velikosti $t \times t$ je tedy $\left\lfloor \frac{n}{t} \right\rfloor \times
     \left\lfloor \frac{n}{t} \right\rfloor$.
 
-\section{Architektura CNN}
+\subsection{Architektura CNN}
 
-Konvoluční neuronové sítě se skládají ze dvou částí – konvoluční části a plně
+Konvoluční neuronové sítě se většinou skládají ze dvou částí – konvoluční části a plně
 propojené části.
 
 Konvoluční část se skládá z několika konvolučních vrstev proplétaných s
-poolovacími vrstvami. V této části se pracuje s mapami příznaků. Její výstupem
+poolovacími vrstvami. V této části se pracuje s mapami příznaků. Jejím výstupem
 je soubor map příznaků, resp. mapa příznaků s větší hloubkou, která vyjadřuje
 různé vlastnosti vstupního obrazu.
 
@@ -216,6 +219,6 @@ Tyto architektury často zahrnují i další specifické techniky jako je extrak
 vlastnosti na různých úrovních rozlišení či metody zaměření analýzy pouze na
 zajímavé oblasti. Také jsou často postaveny na obecných ověřených CNN
 architekturách, pomocí kterých extrahují ve vstupní fázi vlastnosti, které pak
-způsobem specifickým pro danou úlohu zpracovávají.
+způsobem specifickým pro danou úlohu zpracovávají \cite{cnnreview}.
 
 \endinput

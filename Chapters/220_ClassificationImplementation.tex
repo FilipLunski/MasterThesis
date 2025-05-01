@@ -1,33 +1,34 @@
-\chapter{Implementace klasifikační neuronové sítě}
+\chapter{Implementace neuronové sítě pro klasifikaci klíčových bodů}
 \label{chap:ClassificationImplementation}
 
-Problematika vyhodnocování je velmi široká a přináší mnoho problémů. Ostatně i
-člověk někdy může špatně interpretovat chování druhé osoby. Například pokud
-někdo skáče do postele či jinak prudce lehá, může to vypadat jako nebezpečná
-situace. Stejně se v počítačovém vidění nevyhneme falešným poplachům, nicméně
-se budeme snažit zapojit různé techniky pro zlepšení přesnosti našeho
-detektoru.
+Problematika vyhodnocování situací ve videu je velmi široká a přináší mnoho
+problémů. Ostatně i člověk někdy může špatně interpretovat chování druhé osoby.
+Například pokud někdo skáče do postele či jinak prudce lehá, může to vypadat
+jako nebezpečná situace. Stejně tak se v počítačovém vidění nelze vyhnout
+falešným poplachům. Součástí této práce tedy je snaha o zapojení různých
+technik pro zlepšení přesnosti detekce.
 
-Naším úkolem je nyní vytvořit algoritmus, který pro danou pózu (reprezentovanou
+Úkolem je nyní vytvořit algoritmus, který pro danou pózu (reprezentovanou
 klíčovými body), resp. sekvenci takových póz (získané pro jednu osobu ze
 sekvence snímků), určí, zda se jedná o situaci pádu, či nikoliv. Tento
 algoritmus bude přijímat vždy pózu jedné osoby, funkcionalita pro více osob
 bude řešená později.
 
-V kapitole \ref{chap:Pose} jsme pro detekci klíčových bodů zvolili model
+V kapitole \ref{chap:Pose} byl pro detekci klíčových bodů zvolen model
 \textit{YOLO pose}. Ten je předtrénovaný na datasetu \textit{COCO}, který pro
 lidské pózy definuje 17 klíčových bodů v dvourozměrném prostoru. To udává
-velikost vstupu do našeho klasifikačního algoritmu. Navrhneme tedy a
-natrénujeme neuronovou síť, jejíž vstupem bude 17 2D klíčových bodů – tedy 34
+velikost vstupu do našeho klasifikačního algoritmu. Bude tedy navrhnuta a
+natrénována neuronová síť, jejímž vstupem bude 17 2D klíčových bodů – tedy 34
 čísel – a výstupem bude klasifikace třídy pózy – \textit{normální} a
 \textit{upadl}.
 
-V této kapitole se zaměříme na implementaci klasifikačního algoritmu pro
-analýzu pózy. Nejdříve se podíváme na použité technologie a knihovny, které nám
-pomohou s vývojem. Poté rozebereme možné architektury sítě a ukážeme, jak byly
-implementovány. Dále se zaměříme na návrh vnitřní struktury u těchto
-architektur, zkusíme je natrénovat v různých konfiguracích a vybereme
-nejoptimálnější řešení. Nakonec toto řešení otestujeme na testovacím datasetu.
+Tato kapitola bude zaměřena na implementaci klasifikačního algoritmu pro
+analýzu pózy. Nejdříve budou krátce popsány použité technologie a knihovny,
+které pomohou při vývoji. Poté budou rozebrány možné architektury sítě a bude
+ukázáno, jak byly implementovány nezávisle na výsledné struktuře. Dále bude
+navržena vnitřní struktura těchto architektur, a to tak, že budou trénovány v
+různých konfiguracích a bude vybráno nejoptimálnější řešení. Nakonec budou
+výsledné modely otestovány na testovací sadě.
 
 \section{Použité technologie}
 
@@ -42,47 +43,51 @@ neuronových sítí postavený na vysokoúrovňových stavebních blocích s pod
 automatické derivace pro počítaní gradientů.
 
 Implementace neuronových sítí v PyTorch je velice jednoduchá a díky vysoké míře
-abstrakce umožňuje se při vývoji soustředit na samotnou architekturu a design
+abstrakce umožňuje soustředit se při vývoji na samotnou architekturu a design
 sítě, nikoliv na detaily implementace. Pro vytvoření nové neuronové sítě stačí
 vytvořit třídu, která bude dědit od základní třídy $nn.Module$, v konstruktoru
 definovat jednotlivé vrstvy včetně různých regularizačních hyperparametrů. V
 metodě $forward$ pak definujeme dopředný průchod sítě. Dále máme možnost
-kontrolovat např. výpočet ztrátové funkce či metriky přesnosti.
+kontrolovat např. výpočet ztrátové funkce či metriky přesnosti
+\cite{pytorchdocs}.
 
 PyTorch obsahuje také předpřipravené moduly pro GRU či LSTM sítě, včetně
-vícevrstvých architektur. Pro tyto moduly definujeme velikost vstupu a velikost
-skrytého stavu, dále můžeme definovat počet vrstev či dropout. Výstup z těchto
-modulů je pak skrytý stav, který můžeme dále zpracovávat pomocí jednoduché
-dopředné sítě pro predikci třídy.
+vícevrstvých architektur. Pro tyto moduly se definuje velikost vstupu a
+velikost skrytého stavu, dále lze definovat počet vrstev či dropout. Výstup z
+těchto modulů je pak skrytý stav, který je dále možné zpracovávat pomocí
+jednoduché dopředné sítě pro predikci třídy.
 
 \subsection{Lightning}
 \label{sec:Lightning}
 
 PyTorch Lightning je wrapper pro PyTorch, který dále usnadňuje vývoj
-neuronových sítí. Stará se za nás o detaily procesu trénování, jako je správa
-epoch, logování či optimalizace kroku učení (ang. learning rate). Podporuje
-také nativně práci s TensorBoard, což je logovací nástroj umožňující přehledné
+neuronových sítí. Stará se o detaily procesu trénování, jako je správa epoch,
+logování či optimalizace kroku učení (ang. learning rate). Podporuje také
+nativně práci s TensorBoard, což je logovací nástroj umožňující přehledné
 sledování metrik během trénování, včetně grafického zobrazení ve webovém
 prostředí.
 
-Pro implementaci modelu vytvoříme třídu, která dědí z
-$lightning.LightningModule$, a kromě konstruktoru, ve kterém inicializujeme
-jednotlivé vrstvy, definujeme metody $training\_step$ (krok trénování),
-$validation\_step$ – krok validace, $configure\_optimizers$ – definování
-optimalizační techniky a $forward$, která definuje, jak signál prochází
-jednotlivými vrstvami.
+Pro implementaci modelu je třeba vytvořit třídu, která dědí z
+$lightning.LightningModule$, a kromě konstruktoru, ve kterém jsou
+inicializovány jednotlivé vrstvy, se definují metody $training\_step$ (krok
+trénování), $validation\_step$ – krok validace, $configure\_optimizers$ –
+definování optimalizační techniky a $forward$, která definuje, jak signál
+prochází jednotlivými vrstvami.
 
-\section{Implementace vybraných architektur}
+\section{Implementace vybraných architektur nezávislá na konfiguraci}
 \label{sec:SelectedArchitectures}
 
-Podíváme se nyní, jak jsme jednotlivé architektury implementovali, nezávisle na
-jejich vnitřní struktuře a konfiguraci.
+Nyní bude popsána implementace jednotlivých architektur, nezávisle na jejich
+vnitřní struktuře a konkrétní konfiguraci. Celou konfiguraci bude možné předat
+jako argumenty do konstruktoru modelu. Pro návrh struktury v další sekci tak
+bude možné experimentovat z hyperparametry a konfiguracemi, s cílem najít
+optimální řešení.
 
 \subsection{Dopředná neuronová síť}
 
-Nejjednodušší architekturou, kterou můžeme pro náš model použít, je dopředná
-neuronová síť. Tento model pak bude klasifikovat jednotlivé pózy, aniž by znal
-jejich kontext. Síť bude klasifikovat klíčové body pouze podle aktuální
+Nejjednodušší architekturou, kterou je možné pro klasifikační model použít, je
+dopředná neuronová síť. Tento model pak bude klasifikovat jednotlivé pózy, aniž
+by znal jejich kontext. Síť bude klasifikovat klíčové body pouze podle aktuální
 lokalizace ve snímku, nikoliv podle pohybu.
 
 Výhodou této architektury je jednoduchost, potažmo rychlost. Síť nepotřebuje
@@ -90,8 +95,8 @@ mnoho parametrů a oproti rekurentním sítím potřebuje pro evaluaci pouze jed
 dopředný průchod vrstvami sítě.
 
 Další výhodou je jednoduchost trénování a používání. V případě více osob pro
-samotnou klasifikaci pádu není nutné sledování osob. Můžeme jednoduše
-klasifikovat všechny detekované pózy, aniž bychom řešili, které osobě patří.
+samotnou klasifikaci pádu není nutné sledování osob. Lze jednoduše klasifikovat
+všechny detekované pózy, aniž by se řešilo, které osobě patří.
 
 Tato síť ale ve výsledku bude klasifikovat pózy pouze dle vzájemného umístění
 jednotlivých klíčových bodů, potažmo délky končetin, nebude ale brát v úvahu
@@ -101,23 +106,24 @@ pohyb, bude schopna sledovat mj. i změnu natočení postavy a to bez ohledu na
 natočení kamery.
 
 Při použití této architektury jsou jako vstupní data použity klíčové body jedné
-osoby z daného jednoho snímku. Trénovací data pak pouze přečteme z trénovacího
-souboru a překonvertujeme je do formy tenzoru, konkrétně je zabalíme do
-instance třídy $DataLoader$. Při použití ve výsledném programu předáme modelu
-klíčové body každé detekované osoby v daném snímku.
+osoby z daného jednoho snímku. Trénovací data jsou pak pouze čteny z
+trénovacího souboru a konvertovány do formy tenzoru, konkrétně jsou zabalovány
+do instance třídy $DataLoader$. Při použití ve výsledném programu jsou modelu
+předávány klíčové body každé detekované osoby v daném snímku.
 
 Výstupem sítě je hodnota od $0$ do $1$, čísla od $0$ do $0.5$ jsou považována
 za třídu \textit{normální}, zatímco čísla od $0.5$ do $1$ za třídu
 \textit{upadl}.
 
-Pro implementaci dopředné sítě v Pytorch Lightning jsme použili modul
-$nn.sequential$, ve kterém definujeme postupné kroky průchodů sítě. $nn.Linear$
-definuje vrstvu sítě včetně počtu neuronů předcházející a aktuální vrstvy. Dále
-můžeme definovat aktivační funkci po dané vrstvě a regularizační techniky jako
-je dropout či normalizace. Příklad implementace dopředné sítě je uveden v kódu
-\ref{src:ffnn}. V tomto příkladě jsou definovány dvě vnitřní vrstvy o velikosti
-$128$ a $32$ a výstupní vrstva s jedním neuronem. Mezi vrstvami je aplikována
-normalizace a dropout $0.3$, jako aktivační funkce je použita ReLU.
+Pro implementaci dopředné sítě v Pytorch Lightning byl použit modul
+$nn.Sequential$, ve kterém se definují postupné kroky průchodů sítě.
+$nn.Linear$ definuje vrstvu sítě včetně počtu neuronů předcházející a aktuální
+vrstvy. Dále lze definovat aktivační funkci po dané vrstvě a regularizační
+techniky jako je dropout či normalizace. Příklad implementace dopředné sítě je
+uveden v kódu \ref{src:ffnn}. V tomto příkladě jsou definovány dvě vnitřní
+vrstvy o velikosti $128$ a $32$ a výstupní vrstva s jedním neuronem. Mezi
+vrstvami je aplikována normalizace a dropout $0.3$, jako aktivační funkce je
+použita ReLU.
 
 \begin{lstlisting}[language=Python, label=src:ffnn, caption={Ukázka implementace Dopředné sítě v PyTorch Lightning}]
 class KeypointClassifierFFNN(L.LightningModule):
@@ -160,12 +166,12 @@ class KeypointClassifierFFNN(L.LightningModule):
     return loss
 \end{lstlisting}
 
-Abychom mohli tuto síť efektivně trénovat, musíme umožnit jednoduchou změnu
+Aby bylo možné tuto síť efektivně trénovat, je třeba umožnit jednoduchou změnu
 konfigurace sítě. Třída $KeypointClassifierFFNN$ proto v konstruktoru přijímá
 parametry \textit{layers} – pole čísel reprezentujících velikosti jednotlivých
 vrstev, \textit{activation} – identifikátor vybrané aktivační funkce a
 \textit{dropout} definující velikost dropoutu, viz kód \ref{src:ffnn_params}.
-Jako ztrátovou funkci jsme použili křížovou entropii, tedy
+Jako ztrátová funkce byla použita křížová entropie, tedy
 $nn.BCEWithLogitsLoss()$, která je vhodná pro binární klasifikaci.
 
 \begin{lstlisting}[language=Python, label=src:ffnn_params, caption={Parametrizace konfigurace dopředné sítě}] 
@@ -195,9 +201,9 @@ dnešní době je nejpoužívanější rekurentní architekturou GRU (Gated Recu
 Unit).
 
 Příklad implementace GRU sítě je uveden v kódu \ref{src:gru}, kde je definována
-GRU jednotka s jednou vrstvou, velikosti vstupního vektoru $34$ a skrytým
-stavem velikosti $128$, následována dvouvrstvou dopřednou plně propojenou sítí
-ze $128$ neurony v první vrstvě a s jedním neuronem ve druhé vrstvě.
+GRU jednotka s jednou vrstvou, velikostí vstupního vektoru $34$ a skrytým
+stavem o velikosti $128$, následována dvouvrstvou dopřednou plně propojenou
+sítí ze $128$ neurony v první vrstvě a s jedním neuronem ve druhé vrstvě.
 
 \begin{lstlisting}[language=Python, label=src:gru, caption={Ukázka implementace GRU sítě v PyTorch Lightning}]
     class KeypointClassifierGRU(lightning.LightningModule):
@@ -219,13 +225,13 @@ ze $128$ neurony v první vrstvě a s jedním neuronem ve druhé vrstvě.
     
 \end{lstlisting}
 
-Část těchto hyperparametrů jsme opět parametrizovali, abychom mohli postupně
+Část těchto hyperparametrů byla opět parametrizována, aby bylo možné postupně
 otestovat různé jejich kombinace a vyhodnotit jejich vliv na výkon modelu, viz
 kód \ref{src:params}. Jedná se o velikost vstupního vektoru, velikost skrytého
 stavu sítě GRU, počet vrstev GRU, velikost první plně propojené vrstvy,
 velikost výstupní vrstvy (pro binární klasifikaci vždy $1$, potřebné pro
 pozdější optimalizace) a dropout pro GRU i plně propojené vrstvy. Všechny tyto
-hyperparametry budeme ladit v další části.
+hyperparametry budou laděny v další části.
 
 \begin{lstlisting}[language=Python, label=src:params, caption={Parametry konstruktoru třídy $KeypointClassifierGRU$ definující hyperparametry sítě}]
 class KeypointClassifierGRU(L.LightningModule):
@@ -241,51 +247,52 @@ klasifikaci.
 Další populární rekurentní architekturou je LSTM (Long Short-Term Memory). Ta
 je lepší pro delší sekvence, je to ale za cenu větší komplexity. Jak již bylo
 vysvětleno, s nárůstem komplexity se zvyšuje riziko přetrénování, zejména při
-nedostatku trénovacích dat. Vzhledem k množství trénovacích dat, které máme k
+nedostatku trénovacích dat. Vzhledem k množství trénovacích dat, které jsou k
 dispozici, se tak dá předpokládat, že trénování této sítě bude spíše méně
 stabilní než v případě sítě GRU.
 
 Implementace sítě LSTM se od GRU liší pouze použitím modulu $nn.LSTM$ místo
 $nn.GRU$. Použití těchto modulů je v PyTorch velice podobné, pouze LSTM vrací
-kromě skrytého stavu také stav buňky (dlouhodobou paměť), ten ale stejně
-nevyužijeme. Pro síť LSTM budeme ladit stejnou množinu hyperparametrů, jako pro
-GRU síť, abychom mohli porovnat jejich výkonnost.
+kromě skrytého stavu také stav buňky (dlouhodobou paměť), ten ale stejně nebude
+použit. Pro síť LSTM bude laděna stejná množina hyperparametrů, jako pro GRU
+síť, aby bylo možné porovnat jejich výkonnost.
 
-\section{Návrh architektury a konfigurace sítě}
+\section{Návrh struktury a konfigurace sítě}
 
-Nyní přistoupíme do samotného návrhu architektury a konfigurace sítě. Vybrané
-architektury jsme natrénovali v různých konfiguracích a celý postup trénování
-jsme zapisovali pomocí logovacího nástroje TensorBoard. Nyní na základě grafů
-základních metrik, jako jsou ztrátová funkce či přesnost, zhodnotíme výkon
-vybraných architektur, podíváme se, jaký mají jednotlivé hyperparametry vliv na
-proces trénování a výsledný výkon. Nakonec vybereme nejoptimálnější variantu.
+Dále je proveden samotný návrh struktury a konfigurace sítě. Vybrané
+architektury byly natrénovány v různých konfiguracích a celý postup trénování
+byl zapisován pomocí logovacího nástroje TensorBoard. Nyní na základě grafů
+základních metrik, jako jsou ztrátová funkce či přesnost, bude zhodnocen výkon
+vybraných architektur. Zároveň bude analyzován vliv jednotlivých hyperparametrů
+na proces trénování a výsledný výkon. Nakonec bude vybrána nejoptimálnější
+varianta.
 
-K hyperparametrům, které jsme zkoušeli, patří počet vrstev a jejich velikost a
-velikost dropoutu. U dopředných sítí jsme navíc zkoušeli i různé aktivační
-funkce, u rekurentních sítí pak velikost skrytého stavu. Pro optimalizaci váh
+K hyperparametrům, které byly vyzkoušeny, patří počet vrstev a jejich velikost
+a velikost dropoutu. U dopředných sítí byly navíc zkoušeny i různé aktivační
+funkce, u rekurentních sítí pak velikost skrytého stavu. Pro optimalizaci vah
 během trénování byl použit optimalizační algoritmus Adam \cite{adam}, jehož
-výhodou je
+výhodou je rychlost a efektivita.
 
 \subsection{Dopředná neuronová síť}
 
-Nejprve jsme zkoušeli natrénovat dopřednou neuronovou síť. Vyzkoušeli jsme od
+Nejprve bylo zkoušeno trénování dopředné neuronové sítě. Bylo vyzkoušeno od
 dvou do čtyř vnitřních vrstev, ve velikostech od $32$ do $512$ neuronů, vždy
-mocniny dvou. Pojďme postupně rozebrat jednotlivé hyperparametry a jejich vliv
-na výkon modelu.
+mocniny dvou. Nyní budou postupně rozebrány jednotlivé hyperparametry a jejich
+vliv na výkon modelu.
 
-U dopředných sítí se nám nejlépe ověřila velikost dávky $4096$. Síť se lépe
+U dopředných sítí se nejlépe osvědčila velikost dávky $4096$. Síť se lépe
 trénovala s použitím normalizace (modul $nn.BatchNorm1d$) a dropoutu. Pro
 většinu konfigurací byla velikost dropoutu $0.4$ nejoptimálnější.
 
-Síť jsme zkoušeli trénovat s těmito vybranými aktivačními funkcemi: $ReLU$,
-$Tanh$, $PReLU$ a $Mish$. $ReLU$ a $PReLU$ často dosahovaly podobných výsledků,
+Síť byla trénována s těmito vybranými aktivačními funkcemi: $ReLU$, $Tanh$,
+$PReLU$ a $Mish$. $ReLU$ a $PReLU$ často dosahovaly podobných výsledků,
 většinou ale nejlepších výsledků dosahovala $ReLU$. Příkladem je graf přesnosti
 pro trénování sítě se třemi vnitřními vrstvami velikosti $128$, $64$, a $32$ na
 obrázku \ref{graph:fnnactivations}.
 
 \begin{figure}[]
     \centering
-    \caption{Graf přesnosti na validačních datech v průběhu trénování dopředných sítí s různými aktivačními funkcemi}
+    \caption{Graf závislosti přesnosti na validačních datech v průběhu trénování dopředných sítí s různými aktivačními funkcemi}
     \label{graph:fnnactivations}
     \begin{tikzpicture}
         \begin{axis}[
@@ -330,18 +337,18 @@ obrázku \ref{graph:fnnactivations}.
 \end{figure}
 
 Obecně větší sítě dosahovaly lepších výsledků – menší ztrátové funkce a vyšší
-přesnosti na validačních datech, v jistém momentě jsme již ale začali narážet
+přesnosti na validačních datech, v jistém momentě již ale se ale začalo narážet
 na problém se stabilitou trénování. Nejoptimálnějších výsledků dosáhla síť se
-třemi vrstvami o velikostech $128$, $64$ a $32$. Jak můžeme vidět na grafu
+třemi vrstvami o velikostech $128$, $64$ a $32$. Jak lze vidět na grafu
 \ref{graph:deepffnn}, sítě s větší šířkou nebo hloubkou sice dosahují lepších
-výsledků, začínají ale brzy výrazně kolísat. Zkoušeli jsme v těchto případech i
-L2 regularizaci (parametr $weight\_decay$), to ale neřešilo problém. Pro
-komplexnější sítě bychom pravděpodobně potřebovali větší množství dat.
+výsledků, začínají ale brzy výrazně kolísat. V těchto případech byla zkoušena i
+L2 regularizace (parametr $weight\_decay$), to ale neřešilo problém. Pro
+komplexnější sítě by pravděpodobně bylo potřebné větší množství dat.
 
-Pojďme si tedy shrnout, jaká je pro nás nejoptimálnější konfigurace: použili
-jsme tři vrstvy o velikostech $128$, $64$ a $32$, dropout $0.3$, normalizaci
-mezi vrstvami, velikost dávky 4096 a aktivační funkci $ReLU$. Dosáhli jsme tak
-validační ztráty $0.18$ a validační přesnosti 93.8%
+Nejoptimálnější konfigurace tedy je tato: tří vrstvy o velikostech $128$, $64$
+a $32$, dropout $0.3$, normalizace mezi vrstvami, velikost dávky 4096 a
+aktivační funkce $ReLU$. Bylo tak dosaženo validační ztráty $0.18$ a validační
+přesnosti 93.8.%
 
 \begin{figure}[]
     \centering
@@ -396,47 +403,46 @@ Jak již bylo zmíněno, v oblasti jednodušších RNN jsou dnešním standardem
 sítě, sítě LSTM se používají zejména, pokud si GRU s problémem neradí, anebo je
 vzhledem k problému důležité uchování dlouhodobých závislostí.
 
-Stejnou taktiku zvolíme i my. Nejdříve otestujeme GRU sítě, a to pro několik
-možností délky analyzované sekvence. To znamená, že pro každý snímek předáme
-síti očekávanou třídu a sekvenci póz dané osoby z $n$ posledních snímků. Pak
-vyzkoušíme síti předávat celou sekvenci póz dané osoby.
+Stejná taktika byla zvolena i zde. Nejdříve bude otestována GRU síť, a to pro
+několik možností délky analyzované sekvence. To znamená, že pro každý snímek
+bude síti předána očekávaná třída a sekvence póz dané osoby z $n$ posledních
+snímků. Následně bude testováno předávání celé sekvence póz dané osoby.
 
-Naše GRU síť se skládá z několika vrstev GRU, konkrétně jsme zkoušeli trénovat
-1 až 3 vrstvy, které následuje jedna plně propojená vrstva a výstupní vrstva.
-Velikosti GRU vrstev jsme volili v rozsahu od 64 do 256, u plně propojené
-vrstvy jsme volili mezi 32 a 128 neurony. Většinou jsme používali dávky o
-velikosti $4096$, menší dávky velice destabilizovaly trénování.
+Testovaná GRU síť se skládá z několika vrstev GRU, konkrétně bylo testováno
+trénování s 1 až 3 vrstvami, které následuje jedna plně propojená vrstva a
+výstupní vrstva. Velikosti GRU vrstev byla zvolena v rozsahu od 64 do 256, u
+plně propojené vrstvy bylo zvoleno mezi 32 a 128 neurony. Většinou byly použity
+dávky o velikosti $4096$, menší dávky velice destabilizovaly trénování.
 
-Zjistili jsme, že na rozdíl od dopředných sítí, v případě GRU nejlepších
+Bylo zjištěno, že na rozdíl od dopředných sítí, v případě GRU nejlepších
 výsledků dosahovaly jednodušší sítě. Většina sítí s jednou GRU vrstvou tak
-dosahovala poměrně stabilních výsledků. Nejvyšší přesnosti jsme pak dosáhli
-sítí s jednou GRU vrstvou o velikosti $64$ a plně propojenou vrstvou o
-velikosti $64$, s dropoutem 0.4 v plně propojené vrstvě. Co se týče dropout
-mezi GRU vrstvami, bylo u hlubších sítí většinou dosaženo stabilnějších
-výsledků s větší hodnotou dropoutu jako je 0.4, u jednovrstvých GRU sítí je
-dropout nerelevantní, jelikož se aplikuje mezi vrstvami.
+dosahovala poměrně stabilních výsledků. Nejvyšší přesnosti bylo dosaženo u sítě
+s jednou GRU vrstvou o velikosti $64$ a plně propojenou vrstvou o velikosti
+$64$, s dropoutem 0.4 v plně propojené vrstvě. Co se týče dropoutu mezi GRU
+vrstvami, bylo u hlubších sítí většinou dosaženo stabilnějších výsledků s větší
+hodnotou dropoutu jako je 0.4, u jednovrstvých GRU sítí je dropout
+nerelevantní, jelikož se aplikuje mezi vrstvami.
 
 Sítě s více GRU vrstvami většinou než dosáhly optimálního výkonu, začaly
-kolísat a ve validační ztrátě a přesnosti se objevovaly obrovské výkyvy.
-Zkoušeli jsme větší dávky – $8162$, které sice stabilizovaly trénování při
-stejném počtu epoch, jelikož se ale větší dávka loučí s pomalejším učením,
+kolísat a ve validační ztrátě a přesnosti se objevovaly obrovské výkyvy. Byly
+zkoušeny větší dávky – $8162$, které sice stabilizovaly trénování při stejném
+počtu epoch, jelikož se ale větší dávka spojuje s pomalejším učením,
 nedosahovaly takové přesnosti jako při dávkách velikosti $4096$. Pro dosažení
-podobné přesnosti jsme tedy zkoušeli trénovat ve více epochách, tehdy ale brzy
-docházelo k přetrénování.
+podobné přesnosti tedy bylo vyzkoušeno trénování ve více epochách, tehdy ale
+brzy docházelo k přetrénování.
 
 RNN sítě obecně můžou přijímat sekvence libovolné délky, je ale efektivnější,
 pokud je síť trénovaná na jednotné délce, tato délka sekvence je pak použitá i
-v případě inferencí. Zkoušeli jsme tedy trénovat sítě na sekvencích o délce
-$50$ a $100$ snímků, vyzkoušeli jsme i neomezenou délku sekvence, tedy modelu
-předáváme klíčové body z celé sekvence snímků, na kterých byla daná osoba
-detekována. Obecně jsme ale zjistili, že vždycky dosahují stabilnějších
-výsledků sítě spíše s kratšími sekvencemi. Zůstali jsme tedy u sekvencí délky
-$50$.
+v případě inferencí. Bylo tedy testováno trénování sítě na sekvencích o délce
+$50$ a $100$ snímků a s neomezenou délkou – modelu byly předány klíčové body z
+celé sekvence snímků, na kterých byla daná osoba detekována. Obecně bylo ale
+zjištěno, že vždycky dosahují stabilnějších výsledků sítě se spíše kratšími
+sekvencemi. Pro další práci tedy byla zvolena délka sekvence $50$.
 
-Naší nejlepší konfigurací GRU sítě je tedy jedna GRU vrstva o velikosti $64$,
+Nejlepší konfigurací GRU sítě je tedy jedna GRU vrstva o velikosti $64$,
 následována plně propojenou vrstvou s $64$ neurony a dropoutem 0.4. Trénována
 byla na sekvencích o délce $50$ snímků, s velikostí dávky $4096$ a s použitím
-optimalizace Adam. Na obrázku \ref{graph:gru} pak můžeme vidět, že jsme dosáhli
+optimalizace Adam. Na obrázku \ref{graph:gru} pak lze vidět, že bylo dosaženo
 trénovací ztráty $0.066$, validační ztráty $0.211$ a přesnosti $93.12\%$ .
 
 \begin{figure}[] % 'htbp' controls figure placement (here, top, bottom, page)
@@ -491,9 +497,9 @@ trénovací ztráty $0.066$, validační ztráty $0.211$ a přesnosti $93.12\%$ 
 
 \subsection{LSTM síť}
 
-LSTM sítě jsme trénovali se stejnými hyperparametry a konfiguracemi jako sítě
+LSTM sítě byly trénovány se stejnými hyperparametry a konfiguracemi jako sítě
 GRU. Obecně se také dá říct, že měly tyto parametry u obou architektur velice
-podobný vliv na výsledky, a tedy to, co jsme napsali o GRU sítích, by se
+podobný vliv na výsledky, a tedy to, co bylo napsáno o GRU sítích, by se
 většinou dalo napsat i o LSTM sítích. Také měly nejlepší výsledky s jednou
 vrstvou, podobně se projevovala délka sekvence, a obdobně byl většinou
 optimální dropout velikosti $0.4$.
@@ -501,16 +507,19 @@ optimální dropout velikosti $0.4$.
 Obecně ale LSTM sítě byly mnohem méně stabilní, a prakticky v žádné konfiguraci
 se nepodařilo natrénovat síť do požadované přesnosti, aniž by došlo k
 přetrénování anebo by začala validační ztráta extrémně kolísat. Pravděpodobně
-tedy nemáme dostatečný vzorek trénovacích dat pro trénování LSTM sítě. Také,
-sítě LSTM nejsou vhodny pro každou úlohu, spíše vynikají pro delší sekvence.
+tedy není k dispozici dostatečně velký vzorek trénovacích dat pro trénování
+LSTM sítě. Sítě LSTM nejsou také vhodné pro každou úlohu, spíše vynikají pro
+delší sekvence.
 
 \section{Testování}
 \label{sec:testing}
 
-Vybrané modely jsme nakonec otestovali na testovacím datasetu. Ověříme jejich
-přesnost a dobu inference. Konkrétně jsme testovali dopřednou neuronovou síť a
-GRU síť, které v další kapitole, až bude naimplementovaný celý detektor pádu,
-otestujeme na reálných datech.
+Vybrané klasifikační modely nakonec byly otestovány na testovací sadě (tedy
+datech vytvořených z testovacích videí, viz sekce \ref{sec:TrainingDataPrep}).
+Nyní bude provedena analýza jejich přesnosti a doby inference. Konkrétně byly
+testovány dopředná neuronová síť a GRU síť, které v další kapitole, až bude
+naimplementovaný celý detektor pádu, budou otestovány na videích z testovací
+sady.
 
 \begin{table}[htbp]
     \centering
@@ -525,9 +534,9 @@ otestujeme na reálných datech.
     \end{tabular}
 \end{table}
 
-V tabulce \ref{tab:testing} vidíme, že obě sítě dosahují velmi dobrého výkonu.
-Dopředná síť dosáhla přesnosti $94.43\%$ a ztráty $0.148$, zatímco GRU síť
-dosáhla jak lepší přesnosti $96.88\%$, tak trošku menší ztráty $0.138$. Obě
+V tabulce \ref{tab:testing} lze vidět, že obě sítě dosahují velmi dobrého
+výkonu. Dopředná síť dosáhla přesnosti $94.43\%$ a ztráty $0.148$, zatímco GRU
+síť dosáhla jak lepší přesnosti $96.88\%$, tak trošku menší ztráty $0.138$. Obě
 sítě by tak mohly být použity pro detekci pádu, jelikož je ale pro klasifikační
 úlohy v konečném řešení důležitější přesnost, GRU síť vypadá jako lepší
 kandidát.
@@ -539,74 +548,10 @@ využít potenciál paralelismu, navíc zpracováváme výstupy po jednom. Reži
 tedy převáží nad jejími výhodami. Ve všech případech se ale u doby inference
 jedná o zlomky milisekund, ve výsledném programu doba prakticky zanedbatelná.
 
-V další kapitole budeme implementovat detektor pádu, tedy program, který spojí
-obě fáze detekce. Pomocí něj pak vyzkoušíme tyto dva modely, zejména s ohledem
-na robustnost,
-%
-%
-%
-% TODO ::(
-%
-%
-%
-%
-%
-%
-%
-%
-%
-%
-%
-%
-%
+V další kapitole bude zkompletován detektor pádu, tedy program, který spojí obě
+fáze detekce. Pomocí něj pak budou tyto dva modely vyzkoušeny na videích,
+zejména s ohledem na robustnost a stabilitu detektoru.
 
-% \endinput
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% %
 % \subsection{Vícetřídní klasifikace}
 
 % Jak již bylo zmíněno (\ref{sec:TrainingData}), pro naše řešení potřebujeme
